@@ -8,15 +8,21 @@
       <el-form-item label="密码" prop="pass">
         <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
       </el-form-item>
+
+        <el-form-item label="确认密码" prop="checkPass" v-if="show">
+        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+      </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-        <el-button @click="">注册</el-button>
+        <el-button type="primary" @click="Login('ruleForm')">登录</el-button>
+        <el-button @click="Register('ruleForm')">注册</el-button>
       </el-form-item>
     </el-form>
+
   </body>
 </template>
 
 <script>
+
     export default {
         name: "Login",
         data() {
@@ -42,10 +48,22 @@
                     callback();
                 }
             };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.pass) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
             return {
+                show: false,
                 ruleForm: {
                     pass: '',
-                    name: ''
+                    name: '',
+                    checkPass: '',
+
                 },
                 rules: {
                     pass: [
@@ -53,41 +71,91 @@
                     ],
                     name: [
                         { validator: checkAge, trigger: 'blur' }
+                    ],
+                    checkPass: [
+                        { validator: validatePass2, trigger: 'blur' }
                     ]
                 }
             };
         },
+        mounted() {
+
+        },
         methods: {
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.$axios.post('/updateAndAdd', {
-                            recordName: this.recordName,
-                            userName: this.form.name,
-                            password: this.form.password
-                        }).then(res => {
-                            if (res.data.code === 200) {
-                                this.$message({
-                                    type: 'success',
-                                    message: this.title+'成功!'
-                                });
-                            }
-                        }).catch(error => {
-                            this.$message({
-                                type: 'error',
-                                message: '出现异常!'
-                            });
-                            console.log(error)
-                        });
-                        this.clean();
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
+            Login(formName) {
+                if(!this.show){
+                  this.$refs[formName].validate((valid) => {
+                          if (valid) {
+                              this.$axios.post('/login', {
+                                  username: this.ruleForm.name,
+                                  password: this.ruleForm.pass
+                              }).then(res => {
+                                  if (res.data.code === 200) {
+                                      this.$message({
+                                          type: 'success',
+                                          message: res.data.message
+                                      });
+                                      this.$store.commit('login', res.data.data);
+                                      this.$router.push("/index");
+                                  }
+                                  if (res.data.code === 400) {
+                                      this.$message({
+                                          type: 'error',
+                                          message: res.data.message
+                                      });
+                                  }
+                              }).catch(error => {
+                                  this.$message({
+                                      type: 'error',
+                                      message: '出现异常!'
+                                  });
+                                  console.log(error)
+                              });
+                          } else {
+                              console.log('error submit!!');
+                              return false;
+                          }
+                  });
+                }else{
+                    this.show = false
+                }
             },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
+            Register(formName){
+                if(this.show) {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            this.$axios.post('/register', {
+                                username: this.ruleForm.name,
+                                password: this.ruleForm.pass
+                            }).then(res => {
+                                console.log(res)
+                                if (res.data.code === 200) {
+                                    this.$message({
+                                        type: 'success',
+                                        message: res.data.message
+                                    });
+                                }
+                                if (res.data.code === 400) {
+                                    this.$message({
+                                        type: 'error',
+                                        message: res.data.message
+                                    });
+                                }
+                            }).catch(error => {
+                                this.$message({
+                                    type: 'error',
+                                    message: "未知错误"
+                                });
+                                console.log(error.data.message)
+                            });
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                }else{
+                    this.show = true
+                }
             }
         }
     }
@@ -110,7 +178,7 @@
   .login-container {
     border-radius: 15px;
     background-clip: padding-box;
-    margin: 18% auto;
+    margin: 16% auto;
     width: 350px;
     padding: 35px 35px 15px 35px;
     background: #fff;

@@ -125,7 +125,7 @@
             }
         },
         mounted() {
-            this.initUser()
+            // this.initUser()
         },
         methods: {
             handleEdit(index, row) {

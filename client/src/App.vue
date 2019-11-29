@@ -6,10 +6,17 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+    mounted() {
+      window.addEventListener('unload', this.saveState)
+    },
+    methods: {
+      saveState(){
+          sessionStorage.setItem('user', JSON.stringify(this.$store.state))
+      }
+    }
 }
 </script>
-
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

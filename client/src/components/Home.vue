@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-menu></nav-menu>
+    <nav-menu class="nav"></nav-menu>
     <router-view/>
   </div>
 </template>
@@ -14,5 +14,7 @@
 </script>
 
 <style scoped>
-
+  .nav {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  }
 </style>

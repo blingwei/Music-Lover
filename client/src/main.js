@@ -18,6 +18,31 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+router.beforeEach((to, from, next) => {
+    if(store.state.user.username){
+       axios.get('/authentication').then(resp => {
+         if(resp) next({
+           query: {time: from.path}
+         })
+       })
+      next()
+    }else{
+      if(to.path == "/login"){
+        next();
+      }else{
+        next({
+          path: '/login',
+          query: {redirect: to.fullPath}
+        })
+      }
+    }
+
+
+})
+
+
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
