@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.CommentMapper">
+    <resultMap id="baseResultMap" type="com.blingwei.musicService.pojo.Comment">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId" />
+        <result column="matter_id" property="matterId" />
+        <result column="type" property="type" />
+        <result column="pid" property="pid" />
+        <result column="reply_id" property="replyId" />
+        <result column="create_time" property="createDate" />
+        <result column="content" property="content" />
+        <result column="pick_num" property="pickNum" />
+    </resultMap>
+
+
+
+    <sql id="baseSql">
+        user_id, matter_id, type, pid, reply_id, create_time, content, pick_num
+    </sql>
+
+    <insert id="addCommit" parameterType="Comment" useGeneratedKeys="true" keyProperty="id">
+        insert into comment (user_id, matter_id, type,
+        <if test="replyId != null">
+            reply_id,
+        </if>
+        <if test="pid != null">
+            pid,
+        </if>
+         create_time, content) values (#{userId}, #{matterId}, #{type},
+        <if test="replyId != null">
+            #{replyId},
+        </if>
+        <if test="pid != null">
+            #{pid},
+        </if>
+          now(), #{content})
+    </insert>
+
+
+</mapper>

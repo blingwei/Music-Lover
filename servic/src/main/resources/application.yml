@@ -8,11 +8,25 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+#    配置上传的文件大小限制
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 40MB
 mybatis:
   mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.blingwei.musicService.pojo
+  config-location: classpath:configs/mybatis-config.xml
 
 
 
 elasticsearch:
-  hostname: 127.0.0.1
+  host: 127.0.0.1
   port: 9300
+  schema: http
+  connectTimeOut: 1000
+  socketTimeOut: 30000
+  connectionRequestTimeOut: 500
+  maxConnectNum: 100
+  maxConnectPerRoute: 100

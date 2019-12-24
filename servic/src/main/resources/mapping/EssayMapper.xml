@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.EssayMapper">
+    <resultMap id="baseResultMap" type="com.blingwei.musicService.pojo.Essay">
+        <id column="id" property="id"/>
+        <result column="title" property="title" />
+        <result column="intor" property="intor" />
+        <result column="content" property="content" />
+    </resultMap>
+    <insert id="addEssay" useGeneratedKeys="true" keyProperty="id" parameterType="Essay">
+        insert into essay (title, intor, content) values (#{title}, #{intor}, #{content} )
+    </insert>
+
+    <select id="findEssayById" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select * from essay where id = #{id}
+    </select>
+
+</mapper>

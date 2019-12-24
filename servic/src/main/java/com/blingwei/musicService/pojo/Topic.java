@@ -9,7 +9,7 @@ public class Topic {
     private String intor;//简介
     private Date createDate;
     private List<Category> categoryList;
-    private List<EassyWithSong> essayWithSongList;
+    private List<EssayWithSong> essayWithSongList;
 
     public Integer getId() {
         return id;
@@ -51,11 +51,11 @@ public class Topic {
         this.categoryList = categoryList;
     }
 
-    public List<EassyWithSong> getEssayWithSongList() {
+    public List<EssayWithSong> getEssayWithSongList() {
         return essayWithSongList;
     }
 
-    public void setEssayWithSongList(List<EassyWithSong> essayWithSongList) {
+    public void setEssayWithSongList(List<EssayWithSong> essayWithSongList) {
         this.essayWithSongList = essayWithSongList;
     }
 }

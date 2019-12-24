@@ -4,10 +4,10 @@ import org.omg.CORBA.INTERNAL;
 
 import java.util.Date;
 
-public class EassyWithSong {
+public class EssayWithSong {
     private Integer id;
-    private Integer songID;
     private Integer essayId;
+    private Integer songId;
     private Integer userId;
     private Date createTime;
     private Integer heat;//热度
@@ -25,12 +25,12 @@ public class EassyWithSong {
         this.id = id;
     }
 
-    public Integer getSongID() {
-        return songID;
+    public Integer getSongId() {
+        return songId;
     }
 
-    public void setSongID(Integer songID) {
-        this.songID = songID;
+    public void setSongId(Integer songId) {
+        this.songId = songId;
     }
 
     public Integer getEssayId() {

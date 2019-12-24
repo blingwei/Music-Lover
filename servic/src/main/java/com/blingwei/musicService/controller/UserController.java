@@ -4,6 +4,7 @@ package com.blingwei.musicService.controller;
 import com.blingwei.musicService.pojo.User;
 import com.blingwei.musicService.result.Result;
 import com.blingwei.musicService.service.UserService;
+import com.blingwei.musicService.utils.ResultFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -32,9 +33,9 @@ public class UserController {
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(name, user.getPassword());
         try{
             subject.login(usernamePasswordToken);
-            return new Result(200,"登录成功",usernamePasswordToken);
+            return ResultFactory.buildSuccessResult("登录成功", usernamePasswordToken);
         }catch (Exception e){
-            return new Result(400,"账号或密码错误",usernamePasswordToken);
+            return ResultFactory.buildFailResult("账号或密码错误");
         }
     }
 
@@ -45,7 +46,7 @@ public class UserController {
         name = HtmlUtils.htmlEscape(name);
         user.setUsername(name);
         if(userService.findUserByName(name)!=null){
-            return new Result(400, "用户名已存在", null);
+            return ResultFactory.buildFailResult("用户名已存在");
         }
         //随机生成16位的盐
         String salt = new SecureRandomNumberGenerator().nextBytes().toString();
@@ -53,19 +54,21 @@ public class UserController {
         user.setPassword(passInDB);
         user.setSalt(salt);
         userService.addUser(user);
-        return new Result(200, "注册成功", null);
+        return ResultFactory.buildSuccessResult("注册成功", null);
     }
 
     @GetMapping("api/logout")
     public Result logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return new Result(200,"注销成功", null);
+        return ResultFactory.buildSuccessResult("注销成功", null);
 }
 
     @GetMapping(value = "api/authentication")
     public String authentication(){
-        return "身份认证成功";
+        if(SecurityUtils.getSubject().getPrincipal()!=null)
+         return "身份认证成功";
+        return null;
     }
 
 }

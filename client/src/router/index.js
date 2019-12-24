@@ -5,7 +5,8 @@ import Login from '@/components/Login'
 import Index from "@/components/Index"
 import Personal from "../components/personal/Personal";
 import MusicSea from "../components/musicSea/MusicSea";
-import SeaDisplay from "../components/musicSea/SeaDisplay";
+import Creation from "../components/creation/Creation";
+import EssayWithSongDisplay from "../components/essayWithSongDisplay/EssayWithSongDisplay";
 
 Vue.use(Router)
 
@@ -37,17 +38,22 @@ export default new Router({
           name: 'MusicSea',
           component: MusicSea ,
         },
+        {
+          path: '/creation',
+          name: 'Creation',
+          component: Creation
+        },
+        {
+          path: '/essayDisplay',
+          name: 'EssayWithSongDisplay',
+          component: EssayWithSongDisplay
+        },
       ]
     },
     {
       path: '/login',
       name: 'Login',
       component: Login
-    },
-    {
-      path: '/test',
-      name: 'SeaDisplay',
-      component: SeaDisplay
     },
 
 

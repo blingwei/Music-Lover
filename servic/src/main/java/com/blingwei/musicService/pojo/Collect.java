@@ -1,6 +1,6 @@
 package com.blingwei.musicService.pojo;
 
-import com.blingwei.musicService.enums.Type;
+import com.blingwei.musicService.enums.TypeEnum;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ public class Collect {
     private Integer id;
     private Integer userId;
     private Integer matterId;//操作的对象的id
-    private Type type;//操作的类型
+    private TypeEnum type;//操作的类型
     private Date createDate;
 
     public Integer getId() {
@@ -35,11 +35,19 @@ public class Collect {
         this.matterId = matterId;
     }
 
-    public Type getType() {
+    public TypeEnum getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(TypeEnum type) {
         this.type = type;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }

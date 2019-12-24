@@ -1,6 +1,6 @@
 package com.blingwei.musicService.pojo;
 
-import com.blingwei.musicService.enums.Type;
+import com.blingwei.musicService.enums.TypeEnum;
 
 import java.util.Date;
 
@@ -8,10 +8,12 @@ public class Comment {
     private Integer id;
     private Integer userId;
     private Integer matterId;//操作的对象的id
-    private Type type;//操作的类型
+    private Integer pid; //父id
+    private Integer replyId; //回复的人的id
+    private TypeEnum type;//操作的类型
     private Date createDate;
     private String content;
-    private Integer heat;//热度
+    private Integer pickNum;//点赞数
 
     public Integer getId() {
         return id;
@@ -37,11 +39,11 @@ public class Comment {
         this.matterId = matterId;
     }
 
-    public Type getType() {
+    public TypeEnum getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(TypeEnum type) {
         this.type = type;
     }
 
@@ -61,11 +63,27 @@ public class Comment {
         this.content = content;
     }
 
-    public Integer getHeat() {
-        return heat;
+    public Integer getPid() {
+        return pid;
     }
 
-    public void setHeat(Integer heat) {
-        this.heat = heat;
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public Integer getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(Integer replyId) {
+        this.replyId = replyId;
+    }
+
+    public Integer getPickNum() {
+        return pickNum;
+    }
+
+    public void setPickNum(Integer pickNum) {
+        this.pickNum = pickNum;
     }
 }

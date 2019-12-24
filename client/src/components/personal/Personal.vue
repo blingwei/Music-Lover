@@ -1,12 +1,12 @@
 <template>
   <div class="display">
-    <div class="top">
-      <h1>touxiang</h1>
+    <div class="top" >
+      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" ></el-avatar>
     </div>
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="sideMenu">
-      <el-tab-pane label="用户管理" name="userInfo"><UserInfo class="userMain"/></el-tab-pane>
+      <el-tab-pane label="我的信息" name="userInfo"><UserInfo class="userMain"/></el-tab-pane>
       <el-tab-pane label="我的收藏" name="userCollect">我的收藏</el-tab-pane>
-      <el-tab-pane label="我的动态" name="userState">角色管理</el-tab-pane>
+      <el-tab-pane label="我的动态" name="userState">我的动态</el-tab-pane>
       <el-tab-pane label="我的关注" name="userAttention">我的关注</el-tab-pane>
       <el-tab-pane label="我的粉丝" name="userFans">我的粉丝</el-tab-pane>
     </el-tabs>
@@ -37,16 +37,20 @@
 
 <style scoped>
   .sideMenu {
+    margin-top: 20px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    /*top: 100px;*/
   }
   .display {
-    position: fixed;
-    left: 20%;
+
+    margin-left: 20%;
     width: 60%;
   }
   .top {
+    text-align: left;
+    margin-top: 50px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100px;
     top: 50px;
   }
 </style>

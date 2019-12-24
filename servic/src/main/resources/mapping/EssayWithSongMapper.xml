@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.EssayWithSongMapper">
+    <resultMap id="baseResultMap" type="com.blingwei.musicService.pojo.EssayWithSong">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="song_id" property="songId" jdbcType="INTEGER" />
+        <result column="essay_id" property="essayId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="heat" property="heat" jdbcType="INTEGER"/>
+        <result column="pick_num" property="pickNum"  jdbcType="INTEGER"/>
+        <result column="reward" property="reward" jdbcType="INTEGER"/>
+        <result column="commit_num" property="commitNum" jdbcType="INTEGER"/>
+        <result column="collect_num" property="collectNum" jdbcType="INTEGER"/>
+        <result column="views" property="views" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+
+    </sql>
+
+    <insert id="addEssayWithSong" parameterType="EssayWithSong" useGeneratedKeys="true" keyProperty="id">
+        insert into essay_song (song_id, essay_id, user_id, create_time) values (#{songId}, #{essayId}, #{userId}, now())
+    </insert>
+
+    <select id="findEssayWithSongById" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select * from essay_song where id = #{id}
+    </select>
+
+    <select id="findEssayWithSongByEssayId" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select * from essay_song where essay_id = #{id};
+    </select>
+
+</mapper>

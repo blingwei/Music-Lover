@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.SongMapper">
+    <resultMap id="baseResultMap" type="com.blingwei.musicService.pojo.Song">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="url" property="url"/>
+    </resultMap>
+    <insert id="addSong" parameterType="Song" useGeneratedKeys="true" keyProperty="id">
+        insert into song (name, url) values (#{name}, #{url})
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select * from song where id = #{id}
+    </select>
+
+
+</mapper>
