@@ -1,4 +1,4 @@
-package com.blingwei.musicService.utils;
+package com.blingwei.musicService.dao.esServise;
 
 import com.blingwei.musicService.pojo.Essay;
 import com.blingwei.musicService.pojo.EssayForElastic;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class ElasticserachUtil {
+public class EssayWithSongEsService {
 
     @Autowired
     private RestHighLevelClient restHighLevelClient;
@@ -40,7 +40,7 @@ public class ElasticserachUtil {
     @PostConstruct
     public void init(){
         staticRestHighLevelClient = restHighLevelClient;
-    }
+    } //给static的字段注入
 
 
     private static final String index = "essay";
@@ -84,7 +84,7 @@ public class ElasticserachUtil {
             highlightBuilder.field(highlightSongName);
             highlightBuilder.field(highlightTitle);
             highlightBuilder.field(highlightIntor);
-            highlightBuilder.preTags("<span style='color: red'>");
+            highlightBuilder.preTags("<span style='color: red'>");//高亮的字段会在前面加上该标签
             highlightBuilder.postTags("</span>");
             sourceBuilder.highlighter(highlightBuilder);
 
