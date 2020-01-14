@@ -16,6 +16,10 @@
         select * from user
     </select>
 
+    <select id="findUserById" resultMap="baseResultMap" parameterType="java.lang.Integer">
+        select * from user where id = #{id}
+    </select>
+
     <delete id="deleteUser" parameterType="java.lang.Integer">
         delete from user where id = #{id}
     </delete>

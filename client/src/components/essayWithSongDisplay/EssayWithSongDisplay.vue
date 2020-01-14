@@ -7,16 +7,19 @@
       <comment ref="childComment"></comment>
     </div>
     <div class="badge">
-      <el-badge :value="200" :max="99" class="item">
+      <el-badge :value="commentNum" :max="99" class="item" >
         <el-button size="small" @click="isComment">评论</el-button>
       </el-badge>
-      <el-badge :value="100" :max="10" class="item">
-        <el-button size="small" @click="pickUp">点赞</el-button>
+      <el-badge :value="pickNum" :max="10" class="item" >
+        <el-button size="small" @click="toPick">
+          <span v-if="pickStatus" style="color: #3377aa"> 已点赞</span>
+          <span v-else>点赞</span>
+        </el-button>
       </el-badge>
-      <el-badge :value="100" :max="10" class="item">
+      <el-badge :value="rewardNum" :max="10" class="item" >
         <el-button size="small">打赏</el-button>
       </el-badge>
-      <el-badge :value="100" :max="10" class="item">
+      <el-badge :value="collectNum" :max="10" class="item" >
         <el-button size="small" @click="collect">收藏</el-button>
       </el-badge>
     </div>
@@ -42,15 +45,20 @@
                     replyId: '0',
                     type: "2",
                     content: "",
-                }
+                },
+                commentNum: 0,
+                pickNum: 0,
+                pickStatus: false,
+                rewardNum: 0,
+                collectNum: 0,
             }
         },
         methods:{
+            init(){
+                this.getPickNumAndStatus()
+            },
             isComment(){
                 this.$refs.commentItem.dialogVisible = true;
-            },
-            pickUp(){
-
             },
             collect(){
             },
@@ -61,8 +69,47 @@
                 this.comment.pid = "0";
                 this.comment.replyId = "0";
                 this.comment.content = "";
-            }
-        }
+            },
+            getPickNumAndStatus(){
+                let obj = this;
+                obj.$axios.get("getEssayWithSongNumAndStatus", {
+                    params: {
+                        matterId: obj.$store.state.essayId
+                    }
+                }).then(res => {
+                    obj.pickNum = res.data.data.num;
+                    obj.pickStatus = res.data.data.pickStatus
+                })
+            },
+
+            toPick(){
+                let obj = this;
+                if(obj.pickStatus){
+                    this.$axios.get("cancelPickEssayWithSong", {
+                        params: {
+                            matterId: obj.$store.state.essayId
+                        }
+                    }).then(res => {
+                        obj.pickStatus = false;
+                        obj.pickNum = res.data.data
+                    })
+
+                }else{
+                    this.$axios.get("pickEssayWithSong", {
+                        params: {
+                            matterId: obj.$store.state.essayId
+                        }
+                    }).then(res => {
+                        obj.pickStatus = true;
+                        obj.pickNum = res.data.data;
+                    })
+                }
+            },
+        },
+
+        mounted() {
+            this.init();
+        },
     }
 </script>
 
@@ -84,5 +131,8 @@
     top: 320px;
     left: 80%;
   }
-
+ .item{
+   width: 70px;
+   height: 40px;
+ }
 </style>

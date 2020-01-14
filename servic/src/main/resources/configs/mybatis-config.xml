@@ -4,5 +4,6 @@
 <configuration>
     <typeHandlers>
         <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"  javaType="com.blingwei.musicService.enums.TypeEnum"/>
+        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"  javaType="com.blingwei.musicService.enums.PickStatusEnum"/>
     </typeHandlers>
 </configuration>

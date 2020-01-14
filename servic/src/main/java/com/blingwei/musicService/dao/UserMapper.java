@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserMapper {
     User findByName(String name);
     List<User> findAllUser();
+    User findUserById(Integer id);
     void deleteUser(Integer id);
     void addUser(User user);
     void updateUser(User user);

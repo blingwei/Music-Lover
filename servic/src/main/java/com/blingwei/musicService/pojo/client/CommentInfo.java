@@ -11,6 +11,8 @@ public class CommentInfo {
     private String type;
     private String content;
     private String createDate;
+    private Integer pickNum;
+    private boolean pickStatus;
 
     public Integer getId() {
         return id;
@@ -90,5 +92,21 @@ public class CommentInfo {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public Integer getPickNum() {
+        return pickNum;
+    }
+
+    public void setPickNum(Integer pickNum) {
+        this.pickNum = pickNum;
+    }
+
+    public boolean isPickStatus() {
+        return pickStatus;
+    }
+
+    public void setPickStatus(boolean pickStatus) {
+        this.pickStatus = pickStatus;
     }
 }

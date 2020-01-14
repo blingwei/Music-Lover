@@ -8,14 +8,21 @@
         </div>
       </div>
       <div><p class="me-view-comment-content">{{comment.content}}</p>
-        <div class="me-view-comment-tools" @click="toComment(comment.id)">&nbsp;<a>评论</a> </div>
+        <div style="width: 100%; height: 30px">
+          <div class="me-view-comment-tools" @click="toComment(comment.id)">&nbsp;<a>评论</a>  </div>
+          <div class="me-view-comment-tools" @click="toPick(comment.id)">
+            <span v-if="pickStatus" style="color: #3377aa"> 已点赞({{pickNum}})</span>
+            <span v-else>点赞({{pickNum}})</span>
+          </div>
+        </div>
         <div class="me-reply-list" v-for="(replay, index) in comments.filter(showReplay.bind(null,comment.id))">
           <div class="me-reply-item">
-            <div style="font-size: 14px;"><span class="me-reply-user">{{replay.username}}:</span> <span
-              class="me-reply-user" v-if="replay.replayName">@{{replay.replayName}} </span> <span>{{replay.content}}</span></div>
-            <div class="me-view-meta"><span style="padding-right: 10px;">{{replay.createDate}}</span> <a
-              class="me-view-comment-tool" @click="toReplay(replay.userId, comment.id)">回复
-            </a></div>
+            <div class="me-reply-item-first"><span class="me-reply-user">{{replay.username}}:</span>
+              <span class="me-reply-user" v-if="replay.replayName">@{{replay.replayName}} </span> <span>{{replay.content}}</span>
+            </div>
+            <div class="me-view-meta"><span style="padding-right: 10px;">{{replay.createDate}}</span>
+              <a class="me-view-comment-tool" @click="toReplay(replay.userId, comment.id)">回复</a>
+            </div>
           </div>
         </div>
       </div>
@@ -33,10 +40,9 @@
             this.initComment();
         },
         data() {
-
             return {
                 comments: [],
-                replays: [],
+                replays: [],//回复的评论
                 firstComments: [], //第一层的评论
                 comment:{
                     username: this.$store.state.user.username,
@@ -45,10 +51,14 @@
                     replyId: '0',
                     type: "2",
                     content: "",
-                }
+                },
+                commentLength: 0,
+                pickStatus: false,
+                pickNum: 0,
             }
         },
         methods:{
+            //评论功能
             initComment(){
               this.$axios.get("comment/findEssayWithSongComment", {
                   params: {
@@ -57,13 +67,11 @@
               }).then(res => {
                   if(res.data.code === 200){
                       this.comments = res.data.data;
-                      console.log("this.comments");
-                      console.log(this.comments);
                       this.firstComments = this.comments.filter(res => res.pid == 0);
-                      console.log("this.firstcomments")
-                      console.log(this.firstComments)
+                      this.commentLength = this.comments.length;
+                      console.log(this.commentLength)
                   }
-              })
+              });
             },
             toComment(pid){
                 this.comment.pid = pid;
@@ -81,9 +89,42 @@
                 this.comment.pid = "0";
                 this.comment.replyId = "0";
                 this.comment.content = "";
-            }
+            },
 
-        }
+            //点赞功能
+            toPick(matterId){
+                let obj = this;
+                if(obj.pickStatus){
+                    this.$axios.get("comment/cancelPickComment", {
+                        params: {
+                            matterId: matterId
+                        }
+                    }).then(res => {
+                        obj.pickStatus = false
+                        obj.pickNum = res.data.data
+                    })
+
+                }else{
+                    this.$axios.get("comment/pickComment", {
+                        params: {
+                            matterId: matterId
+                        }
+                    }).then(res => {
+                        obj.pickStatus = true;
+                        obj.pickNum = res.data.data
+                    })
+                }
+
+
+            },
+
+
+        },
+        watch: {
+            commentLength(){
+                this.$parent.commentNum = this.commentLength;
+            }
+        },
     }
 </script>
 
@@ -112,8 +153,8 @@
     line-height: 1.5;
   }
   .me-view-comment-tools {
+    float: left;
     font-size: 14px;
-    margin-top: 4px;
     margin-bottom: 10px;
   }
   .me-view-comment-tools :hover {
@@ -124,6 +165,7 @@
   .me-reply-list {
     padding-left: 16px;
     border-left: 4px solid #c5cac3;
+
   }
   .me-reply-item {
     margin-bottom: 8px;
@@ -133,6 +175,11 @@
   .me-view-meta {
     font-size: 12px;
     color: #969696;
+  }
+  .me-reply-item-first{
+    display: inline;
+    font-size: 14px;
+
   }
   a {
     cursor: pointer;
@@ -146,6 +193,7 @@
   }
 
   .me-reply-user {
+    text-align: left;
     color: #78b6f7;
   }
   .me-view-info {

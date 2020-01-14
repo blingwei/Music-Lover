@@ -59,7 +59,8 @@
         },
         mounted(){
             this.init()
-        }
+        },
+
     }
 </script>
 

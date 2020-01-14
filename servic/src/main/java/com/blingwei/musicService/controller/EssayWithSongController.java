@@ -1,10 +1,12 @@
 package com.blingwei.musicService.controller;
 
+import com.blingwei.musicService.dao.redisService.LikeRedisService;
+import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
 import com.blingwei.musicService.pojo.*;
 import com.blingwei.musicService.result.Result;
 import com.blingwei.musicService.service.EssayWithSongService;
 import com.blingwei.musicService.service.UserService;
-import com.blingwei.musicService.utils.ElasticserachUtil;
+import com.blingwei.musicService.dao.esServise.EssayWithSongEsService;
 import com.blingwei.musicService.utils.ResultFactory;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
@@ -27,6 +29,9 @@ public class EssayWithSongController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LikeRedisServiceImpl likeRedisService;
 
 
     @RequestMapping("creation/uploadSong")
@@ -84,7 +89,7 @@ public class EssayWithSongController {
         try {
             essayWithSongService.addEssayWithSong(essayWithSong, essay);
             EssayForElastic essayForElastic = new EssayForElastic(essay.getId(), essay.getTitle(), essay.getIntor(), essay.getContent(), essayWithSongService.findSongById(songId).getName(), user.getUsername());
-            ElasticserachUtil.add(essayForElastic);
+            EssayWithSongEsService.add(essayForElastic);
             return ResultFactory.buildSuccessResult("上传成功", null);
         }catch (Exception e){
             e.printStackTrace();
@@ -96,7 +101,7 @@ public class EssayWithSongController {
     public Result findAllEssayWithSong(@Param("message") String message){
         try {
             List<Map<String, Object>> resultList = new ArrayList<>();
-            List<EssayForElastic> essays = ElasticserachUtil.find(message);
+            List<EssayForElastic> essays = EssayWithSongEsService.find(message);
             for(EssayForElastic essayForElastic: essays){
                 Map<String, Object> resultMap = new HashMap<>();
                 resultMap.put("essay", essayForElastic);
@@ -122,12 +127,48 @@ public class EssayWithSongController {
             resultMap.put("essayWithSong" , essayWithSong);
             Song song = essayWithSongService.findSongById(essayWithSong.getSongId());
             resultMap.put("song", song);
+            String pickNum = likeRedisService.getPickEssayWithSongNum(id+"")+"";
+            resultMap.put("pickNum", pickNum);
             return ResultFactory.buildSuccessResult(null, resultMap);
         }catch (Exception e){
             return ResultFactory.buildFailResult(null);
         }
 
     }
+
+    @RequestMapping("pickEssayWithSong")
+    public Result pickEssayWithSong(@Param("matterId") String matterId){
+        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
+        likeRedisService.pickEssayWithSong(userId, matterId);
+        String pickNum = likeRedisService.getPickEssayWithSongNum(matterId) + "";
+        return ResultFactory.buildSuccessResult(null, pickNum);
+    }
+
+    @RequestMapping("cancelPickEssayWithSong")
+    public Result cancelPickEssayWithSong(@Param("matterId") String matterId){
+        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
+        likeRedisService.cancelPickEssayWithSong(userId, matterId);
+        String pickNum = likeRedisService.getPickEssayWithSongNum(matterId) + "";
+        return ResultFactory.buildSuccessResult(null, pickNum);
+    }
+
+    @RequestMapping("getEssayWithSongNumAndStatus")
+    public Result getEssayWithSongNum(@Param("matterId") String matterId){
+        Integer num = likeRedisService.getPickEssayWithSongNum(matterId);
+        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
+        boolean pickStatus = false;
+        try{
+             pickStatus= likeRedisService.getPickEssayWithSongStatus(userId, matterId) != 0;
+        }catch (Exception e){
+            pickStatus = false;
+        }
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("num", num);
+        resultMap.put("pickStatus", pickStatus);
+        return ResultFactory.buildSuccessResult("", resultMap);
+    }
+
 
 
 

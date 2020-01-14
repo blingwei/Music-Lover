@@ -8,7 +8,7 @@ public class Comment {
     private Integer id;
     private Integer userId;
     private Integer matterId;//操作的对象的id
-    private Integer pid; //父id
+    private Integer pid; //pi
     private Integer replyId; //回复的人的id
     private TypeEnum type;//操作的类型
     private Date createDate;

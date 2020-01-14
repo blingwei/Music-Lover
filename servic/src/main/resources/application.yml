@@ -14,11 +14,12 @@ spring:
       enabled: true
       max-file-size: 20MB
       max-request-size: 40MB
+  redis:
+    database: 1
 mybatis:
   mapper-locations: classpath:mapping/*.xml
   type-aliases-package: com.blingwei.musicService.pojo
   config-location: classpath:configs/mybatis-config.xml
-
 
 
 elasticsearch:
