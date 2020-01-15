@@ -10,9 +10,9 @@
       <div><p class="me-view-comment-content">{{comment.content}}</p>
         <div style="width: 100%; height: 30px">
           <div class="me-view-comment-tools" @click="toComment(comment.id)">&nbsp;<a>评论</a>  </div>
-          <div class="me-view-comment-tools" @click="toPick(comment.id)">
-            <span v-if="pickStatus" style="color: #3377aa"> 已点赞({{pickNum}})</span>
-            <span v-else>点赞({{pickNum}})</span>
+          <div class="me-view-comment-tools" @click="toPick(comment)">
+            <span v-if="comment.pickStatus" style="color: #3377aa"> 已点赞({{comment.pickNum}})</span>
+            <span v-else>点赞({{comment.pickNum}})</span>
           </div>
         </div>
         <div class="me-reply-list" v-for="(replay, index) in comments.filter(showReplay.bind(null,comment.id))">
@@ -51,10 +51,11 @@
                     replyId: '0',
                     type: "2",
                     content: "",
+                    pickStatus: false,
+                    pickNum: 0,
                 },
                 commentLength: 0,
-                pickStatus: false,
-                pickNum: 0,
+
             }
         },
         methods:{
@@ -70,6 +71,7 @@
                       this.firstComments = this.comments.filter(res => res.pid == 0);
                       this.commentLength = this.comments.length;
                       console.log(this.commentLength)
+                      console.log(this.comments)
                   }
               });
             },
@@ -92,26 +94,27 @@
             },
 
             //点赞功能
-            toPick(matterId){
+            toPick(comment){
                 let obj = this;
-                if(obj.pickStatus){
+                if(comment.pickStatus){
                     this.$axios.get("comment/cancelPickComment", {
                         params: {
-                            matterId: matterId
+                            matterId: comment.id
                         }
                     }).then(res => {
-                        obj.pickStatus = false
-                        obj.pickNum = res.data.data
+                        comment.pickStatus = false;
+                        comment.pickNum = res.data.data
                     })
 
                 }else{
                     this.$axios.get("comment/pickComment", {
                         params: {
-                            matterId: matterId
+                            matterId: comment.id
                         }
                     }).then(res => {
-                        obj.pickStatus = true;
-                        obj.pickNum = res.data.data
+                        obj.$message.success("点赞成功");
+                        comment.pickStatus = true;
+                        comment.pickNum = res.data.data
                     })
                 }
 

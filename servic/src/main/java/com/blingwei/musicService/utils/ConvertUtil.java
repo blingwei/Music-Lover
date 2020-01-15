@@ -3,6 +3,7 @@ package com.blingwei.musicService.utils;
 import com.blingwei.musicService.dao.EssayWithSongMapper;
 import com.blingwei.musicService.dao.UserMapper;
 import com.blingwei.musicService.dao.redisService.LikeRedisService;
+import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
 import com.blingwei.musicService.enums.TypeEnum;
 import com.blingwei.musicService.pojo.Comment;
 import com.blingwei.musicService.pojo.client.CommentInfo;
@@ -22,7 +23,7 @@ public class ConvertUtil {
     private EssayWithSongMapper essayWithSongMapper;
 
     @Autowired
-    private LikeRedisService likeRedisService;
+    private LikeRedisServiceImpl likeRedisService;
 
     public  Comment covertComment(CommentInfo commentInfo){
         Comment comment = new Comment();
@@ -35,6 +36,7 @@ public class ConvertUtil {
             case ESSAY_WITH_SONG:
                 matterId = essayWithSongMapper.findEssayWithSongByEssayId(commentInfo.getMatterId()).getId();
                 break;
+            default: break;
         }
         comment.setMatterId(matterId);
         if(commentInfo.getPid() != null){
@@ -63,11 +65,11 @@ public class ConvertUtil {
                 commentInfo.setReplayName(replayName);
                 commentInfo.setReplyId(comment.getReplyId());
             }
-            if(likeRedisService.getPickCommentStatus(comment.getUserId()+"",comment.getMatterId()+"") != null){
-                commentInfo.setPickStatus(likeRedisService.getPickCommentStatus(comment.getUserId()+"",comment.getMatterId()+"")!=0);
+            if(likeRedisService.getPickCommentStatus(comment.getUserId()+"",comment.getId()+"") != null){
+                commentInfo.setPickStatus(likeRedisService.getPickCommentStatus(comment.getUserId()+"",comment.getId()+"")!=0);
             }
-            if(likeRedisService.getPickCommentNum(comment.getMatterId()+"")!=null){
-                commentInfo.setPickNum(likeRedisService.getPickCommentNum(comment.getMatterId()+""));
+            if(likeRedisService.getPickCommentNum(comment.getId()+"")!=null){
+                commentInfo.setPickNum(likeRedisService.getPickCommentNum(comment.getId()+""));
             }
             commentInfoList.add(commentInfo);
         }

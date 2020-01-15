@@ -51,7 +51,7 @@ public class LikeRedisServiceImpl implements LikeRedisService {
     @Override
     public Integer getPickCommentStatus(String userId, String matterId) {
         String key = createKey(userId, matterId, TypeEnum.COMMENT);
-        return (Integer) redisTemplate.opsForHash().get(COMMENT_LIKE_NUM_KEY,key);
+        return (Integer) redisTemplate.opsForHash().get(COMMENT_LIKE_KEY,key);
     }
 
 

@@ -1,6 +1,7 @@
 package com.blingwei.musicService.controller;
 
 import com.blingwei.musicService.dao.redisService.LikeRedisService;
+import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
 import com.blingwei.musicService.pojo.Comment;
 import com.blingwei.musicService.pojo.client.CommentInfo;
 import com.blingwei.musicService.result.Result;
@@ -38,7 +39,7 @@ public class CommentController {
     private UserService userService;
 
     @Autowired
-    private LikeRedisService likeRedisService;
+    private LikeRedisServiceImpl likeRedisService;
 
     @RequestMapping("/addComment")
     public Result addComment(@RequestBody CommentInfo commentInfo){
@@ -81,22 +82,6 @@ public class CommentController {
         return ResultFactory.buildSuccessResult(null, pickNum);
     }
 
-    @RequestMapping("getCommentNumAndStatus")
-    public Result getEssayWithSongNum(@Param("matterId") String matterId){
-        Integer num = likeRedisService.getPickCommentNum(matterId);
-        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
-        boolean pickStatus = false;
-        try{
-            pickStatus= likeRedisService.getPickCommentStatus(userId, matterId) != 0;
-        }catch (Exception e){
-            pickStatus = false;
-        }
-
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("num", num);
-        resultMap.put("pickStatus", pickStatus);
-        return ResultFactory.buildSuccessResult("", resultMap);
-    }
 
 
 
