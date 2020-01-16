@@ -1,8 +1,21 @@
 package com.blingwei.musicService.enums;
 
+/**
+ * @author liangwei
+ */
+
 public enum PickStatusEnum implements BaseEnum<PickStatusEnum, Integer>{
+    /**
+     * 未知的类型
+     */
     UN_KNOW(-1, "未知类型"),
+    /**
+     * 点赞状态
+     */
     PICK(0,"点赞"),
+    /**
+     * 取消点赞状态
+     */
     CANCEL_PICK(1, "取消点赞");
 
 

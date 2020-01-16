@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
+/**
+ * @author liangwei
+ */
 @Service
 public class LikeRedisServiceImpl implements LikeRedisService {
 

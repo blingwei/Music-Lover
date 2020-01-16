@@ -5,13 +5,15 @@ import com.blingwei.musicService.enums.TypeEnum;
 
 import java.util.Date;
 
+/**
+ * @author liangwei
+ */
 public class UserPick {
     private Integer id;
     private Integer userId;
     private Integer matterId;
     private TypeEnum type;
     private Date createTime;
-    private Integer is_delete;
     private PickStatusEnum pickStatus;
 
     public Integer getId() {
@@ -52,14 +54,6 @@ public class UserPick {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public Integer getIs_delete() {
-        return is_delete;
-    }
-
-    public void setIs_delete(Integer is_delete) {
-        this.is_delete = is_delete;
     }
 
     public PickStatusEnum getPickStatus() {
