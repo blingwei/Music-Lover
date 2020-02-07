@@ -1,8 +1,10 @@
 package com.blingwei.musicService.service.Impl;
 
+import com.blingwei.musicService.dao.CollectMapper;
 import com.blingwei.musicService.dao.EssayMapper;
 import com.blingwei.musicService.dao.EssayWithSongMapper;
 import com.blingwei.musicService.dao.SongMapper;
+import com.blingwei.musicService.pojo.Collect;
 import com.blingwei.musicService.pojo.Essay;
 import com.blingwei.musicService.pojo.EssayWithSong;
 import com.blingwei.musicService.pojo.Song;
@@ -14,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+/**
+ * @author 86187
+ */
 @Service
 public class EssayWithSongServiceImpl implements EssayWithSongService {
 
@@ -25,6 +30,8 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
 
     @Autowired
     private EssayWithSongMapper essayWithSongMapper;
+
+
 
 
     @Override

@@ -1,6 +1,8 @@
 package com.blingwei.musicService.dao.redisService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author liangwei
@@ -40,14 +42,44 @@ public interface LikeRedisService {
     Integer getPickCommentNum(String matterId);
 
     /**
-     * 获取该用户给该目标的点赞状态
+     * 获取该用户给该文章的点赞状态
      * @param userId
      * @param matterId
      * @return
      */
     Integer  getPickEssayWithSongStatus(String userId, String matterId);
+    /**
+     * 获取该用户给该评论的点赞状态
+     * @param userId
+     * @param matterId
+     * @return
+     */
     Integer  getPickCommentStatus(String userId, String matterId);
+    /**
+     * 取消给音乐文章点赞
+     * @param userId
+     * @param matterId
+     */
     void cancelPickEssayWithSong(String userId, String matterId);
+    /**
+     * 取消给评论点赞
+     * @param userId
+     * @param matterId
+     */
     void cancelPickComment(String userId, String matterId);
+
+    /**
+     * 获取所有的音乐文章点赞信息
+     * @return map<userID:matterId:2  ,  status>
+     */
+    Map getAllEssayWithSongPick();
+
+    /**
+     * 获取所有的评论点赞信息
+     * @return map<userID:matterId:3  ,  status>
+     */
+    Map getAllCommentPick();
+
+    void clean();
 
 }

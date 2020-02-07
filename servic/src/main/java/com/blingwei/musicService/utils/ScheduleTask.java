@@ -1,32 +1,30 @@
-package com.blingwei.musicService;
+package com.blingwei.musicService.utils;
 
-import com.blingwei.musicService.dao.CommentMapper;
-import com.blingwei.musicService.dao.redisService.LikeRedisService;
 import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
 import com.blingwei.musicService.enums.PickStatusEnum;
 import com.blingwei.musicService.enums.TypeEnum;
 import com.blingwei.musicService.manage.UserPickManage;
-import com.blingwei.musicService.pojo.Comment;
 import com.blingwei.musicService.pojo.UserPick;
-import net.sf.json.JSON;
-import org.apache.shiro.SecurityUtils;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.ClassUtils;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-
-@SpringBootTest
-class ServicApplicationTests {
-
-    @Autowired
-    private CommentMapper commitMapper;
+/**
+ * @author 86187
+ * 创建定时任务
+ */
+@Component
+@EnableScheduling //开启定时任务
+public class ScheduleTask {
 
     @Autowired
     private LikeRedisServiceImpl likeRedisService;
@@ -34,36 +32,12 @@ class ServicApplicationTests {
     @Autowired
     private UserPickManage userPickManage;
 
-    @Test
-    void contextLoads() {
-        Comment comment = new Comment();
-        comment.setUserId(1);
-        comment.setMatterId(1);
-        comment.setType(TypeEnum.ESSAY_WITH_SONG);
-        comment.setPid(0);
-        comment.setContent("你的心");
-        commitMapper.addCommit(comment);
-    }
-
-    @Test
-    void findCommentByMatterIdTest(){
-        List<Comment> comments = commitMapper.findEssayWithSongCommentByMatterId(1);
-        comments.size();
-    }
-
-
-    @Test
-    void redisTest(){
-//        likeRedisService.pickEssayWithSong("13","13");
-//        likeRedisService.getPickEssayWithSongNum("13");
-//        System.out.println(likeRedisService.getPickEssayWithSongNum("13"));
-//        likeRedisService.cancelPickEssayWithSong("12","13");
-        String path = ClassUtils.getDefaultClassLoader().getResource("").getPath();
-        System.out.println(path);
-    }
-
-    @Test
-    void scheduleTeskTest(){
+    /**
+     * 每隔3个小时把Redis中用户的点赞数据写进数据库
+     */
+    @Async("scheduledPoolTaskExecutor")
+    @Scheduled(cron = "0 0 0/3 * * ? ")
+    public void insertUserPick(){
         Map<String, Integer> essayWithSongPickMap = likeRedisService.getAllEssayWithSongPick();
         List<UserPick> userPicks = new ArrayList();
         List<UserPick> userExistPicks = new ArrayList<>();
@@ -102,15 +76,10 @@ class ServicApplicationTests {
         if(!CollectionUtils.isEmpty(userExistPicks)){
             userPickManage.insertExistUserPicks(userExistPicks);
         }
-        System.out.println();
+        likeRedisService.clean();
+        System.out.println("执行定时任务");
+
     }
-
-//    @Test
-//    void test(){
-//        SecurityUtils.getSubject().getPrincipal();
-//        System.out.println();
-//    }
-
 
 
 }

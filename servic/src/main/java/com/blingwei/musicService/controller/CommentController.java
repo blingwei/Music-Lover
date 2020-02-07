@@ -2,6 +2,7 @@ package com.blingwei.musicService.controller;
 
 import com.blingwei.musicService.dao.redisService.LikeRedisService;
 import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
+import com.blingwei.musicService.manage.UserPickManage;
 import com.blingwei.musicService.pojo.Comment;
 import com.blingwei.musicService.pojo.client.CommentInfo;
 import com.blingwei.musicService.result.Result;
@@ -68,7 +69,7 @@ public class CommentController {
 
     @RequestMapping("pickComment")
     public Result pickComment(@Param("matterId") String matterId){
-        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
+        String userId = userService.getCurrentUser().getId() + ""  ;
         likeRedisService.pickComment(userId, matterId);
         String pickNum = likeRedisService.getPickCommentNum(matterId) + "";
         return ResultFactory.buildSuccessResult(null, pickNum);
@@ -76,7 +77,7 @@ public class CommentController {
 
     @RequestMapping("cancelPickComment")
     public Result cancelPickComment(@Param("matterId") String matterId){
-        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
+        String userId = userService.getCurrentUser().getId() + ""  ;
         likeRedisService.cancelPickComment(userId, matterId);
         String pickNum = likeRedisService.getPickCommentNum(matterId) + "";
         return ResultFactory.buildSuccessResult(null, pickNum);

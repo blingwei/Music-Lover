@@ -1,25 +1,19 @@
-package com.blingwei.musicService.pojo;
+package com.blingwei.musicService.bean.requestBaen;
 
 import com.blingwei.musicService.enums.SexEnum;
 
 import java.util.Date;
 
-public class UserInfo {
+public class EditUserInfoRequest {
     private Integer id;
 
-    private SexEnum sex;
+    private Integer sex;
 
     private Integer age;
 
     private String introduce;
 
-    private Date createTime;
-
-    private Integer isDelete;
-
     private Integer userId;
-
-    private String url;
 
     public Integer getId() {
         return id;
@@ -29,11 +23,11 @@ public class UserInfo {
         this.id = id;
     }
 
-    public SexEnum getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(SexEnum sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -50,23 +44,7 @@ public class UserInfo {
     }
 
     public void setIntroduce(String introduce) {
-        this.introduce = introduce == null ? null : introduce.trim();
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
+        this.introduce = introduce;
     }
 
     public Integer getUserId() {
@@ -75,13 +53,5 @@ public class UserInfo {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 }

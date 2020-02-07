@@ -1,14 +1,14 @@
 <template>
   <div class="display">
     <div class="top" >
-      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" ></el-avatar>
+      <UserInfo class="userMain"/>
     </div>
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="sideMenu">
-      <el-tab-pane label="我的信息" name="userInfo"><UserInfo class="userMain"/></el-tab-pane>
-      <el-tab-pane label="我的收藏" name="userCollect">我的收藏</el-tab-pane>
-      <el-tab-pane label="我的动态" name="userState">我的动态</el-tab-pane>
-      <el-tab-pane label="我的关注" name="userAttention">我的关注</el-tab-pane>
-      <el-tab-pane label="我的粉丝" name="userFans">我的粉丝</el-tab-pane>
+      <el-tab-pane label="动态" name="userState">动态</el-tab-pane>
+      <el-tab-pane label="收藏" name="userCollect"><UserCollect/></el-tab-pane>
+      <el-tab-pane label="关注" name="userAttention">关注</el-tab-pane>
+      <el-tab-pane label="创作" name="userPublic">创作</el-tab-pane>
+      <el-tab-pane label="专栏" name="userColumn">专栏</el-tab-pane>
     </el-tabs>
 
   </div>
@@ -18,13 +18,16 @@
 
 <script>
   import UserInfo from "./UserInfo";
+  import UserCollect  from "./UserCollect";
 
-    export default {
+
+
+  export default {
         name: "Personal",
-        components: {UserInfo},
+        components: {UserInfo, UserCollect},
         data() {
             return {
-                activeName: 'userInfo'
+                activeName: 'userState'
             }
         },
         methods:{
@@ -50,7 +53,11 @@
     margin-top: 50px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     width: 100%;
-    height: 100px;
+    height: 200px;
     top: 50px;
+  }
+  .userMain{
+    width: 100%;
+    height: 100%;
   }
 </style>

@@ -1,9 +1,12 @@
 package com.blingwei.musicService.controller;
 
 
+import com.blingwei.musicService.bean.requestBaen.EditUserInfoRequest;
 import com.blingwei.musicService.pojo.User;
+import com.blingwei.musicService.pojo.UserInfo;
 import com.blingwei.musicService.result.Result;
 import com.blingwei.musicService.service.UserService;
+import com.blingwei.musicService.utils.ConvertUtil;
 import com.blingwei.musicService.utils.ResultFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -11,10 +14,7 @@ import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 
@@ -24,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ConvertUtil convertUtil;
 
     @RequestMapping("/api/login")
     public Result login(@RequestBody User user){
@@ -66,9 +69,30 @@ public class UserController {
 
     @GetMapping(value = "api/authentication")
     public String authentication(){
-        if(SecurityUtils.getSubject().getPrincipal()!=null)
-         return "身份认证成功";
+        if(SecurityUtils.getSubject().getPrincipal()!=null){
+            return "身份认证成功";
+        }
         return null;
+    }
+
+    @RequestMapping("api/getUserInfo")
+    public Result getUserInfo(){
+        UserInfo userInfo = userService.getCurrentUserInfo();
+        return ResultFactory.buildSuccessResult("", convertUtil.showUserInfo(userInfo));
+    }
+
+    @PostMapping("api/editUserInfo")
+    public Result editUserInfo(@RequestBody EditUserInfoRequest userInfo){
+        try{
+            userInfo.setUserId(userService.getCurrentUser().getId());
+            userService.editUser(convertUtil.convertUserInfo(userInfo));
+            return ResultFactory.buildSuccessResult("修改成功", null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultFactory.buildFailResult(e.getMessage());
+        }
+
+
     }
 
 

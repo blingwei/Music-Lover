@@ -1,7 +1,11 @@
 package com.blingwei.musicService.controller;
 
+import com.blingwei.musicService.bean.responseBean.CollectResponse;
+import com.blingwei.musicService.bean.responseBean.PickResponse;
 import com.blingwei.musicService.dao.redisService.LikeRedisService;
 import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
+import com.blingwei.musicService.manage.UserCollectManage;
+import com.blingwei.musicService.manage.UserPickManage;
 import com.blingwei.musicService.pojo.*;
 import com.blingwei.musicService.result.Result;
 import com.blingwei.musicService.service.EssayWithSongService;
@@ -33,10 +37,17 @@ public class EssayWithSongController {
     @Autowired
     private LikeRedisServiceImpl likeRedisService;
 
+    @Autowired
+    private UserPickManage userPickManage;
+
+    @Autowired
+    private UserCollectManage userCollectManage;
+
 
     @RequestMapping("creation/uploadSong")
     public Result uploadSong(@RequestBody MultipartFile file){
-        String folder = "D:\\myProject\\Music Lover\\client\\static\\audio";
+
+        String folder = "D:\\myProject\\Music-45Lover\\client\\static\\audio";
         File imageFolder = new File(folder);
         String filename = file.getOriginalFilename();
         String suffix = ".mp3";
@@ -45,8 +56,9 @@ public class EssayWithSongController {
         }
         File f = new File(imageFolder, getRandomString(6) + file.getOriginalFilename()
                 .substring(file.getOriginalFilename().length() - 4));
-        if (!f.getParentFile().exists())
+        if (!f.getParentFile().exists()){
             f.getParentFile().mkdirs();
+        }
         try{
             file.transferTo(f);
             Song song = new Song();
@@ -152,24 +164,29 @@ public class EssayWithSongController {
         return ResultFactory.buildSuccessResult(null, pickNum);
     }
 
-    @RequestMapping("getEssayWithSongNumAndStatus")
-    public Result getEssayWithSongNum(@Param("matterId") String matterId){
-        Integer num = likeRedisService.getPickEssayWithSongNum(matterId);
-        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
-        boolean pickStatus = false;
-        try{
-             pickStatus= likeRedisService.getPickEssayWithSongStatus(userId, matterId) != 0;
-        }catch (Exception e){
-            pickStatus = false;
-        }
-
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("num", num);
-        resultMap.put("pickStatus", pickStatus);
-        return ResultFactory.buildSuccessResult("", resultMap);
+    @RequestMapping("getEssayWithSongPickNumAndStatus")
+    public Result getEssayWithSongPickNumAndStatus(@Param("matterId") Integer matterId){
+        PickResponse pickResponse = userPickManage.getEssayWithSongPickResponse(matterId);
+        return ResultFactory.buildSuccessResult("", pickResponse);
     }
 
+    @RequestMapping("collectEssayWithSong")
+    public Result collectEssayWithSong(@Param("matterId") Integer matterId){
+        int collectNum = userCollectManage.collectEssayWithSong(matterId);
+        return ResultFactory.buildSuccessResult(null, collectNum);
+    }
 
+    @RequestMapping("cancelCollectEssayWithSong")
+    public Result cancelCollectEssayWithSong(@Param("matterId") Integer matterId){
+        int collectNum = userCollectManage.cancelCollectEssayWithSong(matterId);
+        return ResultFactory.buildSuccessResult(null, collectNum);
+    }
+
+    @RequestMapping("getEssayWithSongCollectNumAndStatus")
+    public Result getEssayWithSongCollectNumAndStatus(@Param("matterId") Integer matterId){
+        CollectResponse collectResponse = userCollectManage.getCollectResponse(matterId);
+        return ResultFactory.buildSuccessResult("", collectResponse);
+    }
 
 
 

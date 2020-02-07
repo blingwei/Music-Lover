@@ -1,24 +1,34 @@
 package com.blingwei.musicService.enums;
 
 /**
- * @author 86187
+ * @author liangwei
+ * 表示用户的动作类型
  */
 
-public enum TypeEnum implements BaseEnum<TypeEnum, Integer>{
+public enum OperateEnum implements BaseEnum<OperateEnum, Integer>{
     /**
-     *
+     * 未知的类型
      */
     UN_KNOW(-1, "未知类型"),
-    USER(0,"用户"),
-    SONG(1, "歌曲"),
-    ESSAY_WITH_SONG(2, "音乐文章"),
-    COMMENT(3, "评论");
+
+    COLLECT(0,"收藏"),
+
+    CANCEL_PICK(1, "关注"),
+
+
+    PICK(2,"点赞"),
+
+    PUBLISH(3, "发表"),
+
+    VIEW(4, "浏览");
+
+
 
     private final Integer value;
     private final String message;
 
 
-    private TypeEnum(Integer value, String message){
+    private OperateEnum(Integer value, String message){
         this.value = value;
         this.message = message;
     }
@@ -34,9 +44,8 @@ public enum TypeEnum implements BaseEnum<TypeEnum, Integer>{
         return message;
     }
 
-
-    public static TypeEnum valueOf(Integer value){
-        for(TypeEnum typeEnum:TypeEnum.values()){
+    public static OperateEnum valueOf(Integer value){
+        for(OperateEnum typeEnum: OperateEnum.values()){
 
             if(typeEnum.getValue().equals(value)){
                 return typeEnum;
@@ -46,11 +55,12 @@ public enum TypeEnum implements BaseEnum<TypeEnum, Integer>{
     }
 
     public static String getName(Integer value){
-        for(TypeEnum typeEnum:TypeEnum.values()){
+        for(OperateEnum typeEnum: OperateEnum.values()){
             if(typeEnum.getValue().equals(value)){
                 return typeEnum.getMessage();
             }
         }
         return UN_KNOW.getMessage();
     }
+
 }

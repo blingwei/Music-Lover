@@ -4,8 +4,14 @@ import com.blingwei.musicService.enums.TypeEnum;
 import com.blingwei.musicService.pojo.UserPick;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+/**
+ * @author 86187
+ */
+@Repository
 
 public interface UserPickMapper {
     int deleteByPrimaryKey(Integer id);
@@ -18,8 +24,17 @@ public interface UserPickMapper {
 
     int updateByPrimaryKey(UserPick record);
 
-    Integer findpickNumByMatterId(@Param("matterId") Integer matterId, @Param("type") TypeEnum type);
+    Integer getEssayWithSongPickNumByMatterId(@Param("matterId") Integer matterId);
 
-    UserPick getPickByUserIdAndMatterId(@Param("userId") Integer userId, @Param("matterId") Integer matterId, @Param("type") TypeEnum type);
+    UserPick getEssayWithSongPickByUserIdAndMatterId(@Param("userId") Integer userId, @Param("matterId") Integer matterId);
+
+    Integer getCommentPickNumByMatterId(@Param("matterId") Integer matterId);
+
+    UserPick getCommentPickByUserIdAndMatterId(@Param("userId") Integer userId, @Param("matterId") Integer matterId);
+
+    int insertUserPicks(List<UserPick> userPicks);
+
+    int insertExistUserPicks(List<UserPick> userPicks);
+
 
 }

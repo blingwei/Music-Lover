@@ -1,12 +1,20 @@
 package com.blingwei.musicService.utils;
 
+import com.blingwei.musicService.bean.requestBaen.EditUserInfoRequest;
+import com.blingwei.musicService.bean.responseBean.PickResponse;
+import com.blingwei.musicService.bean.responseBean.UserInfoResponse;
 import com.blingwei.musicService.dao.EssayWithSongMapper;
 import com.blingwei.musicService.dao.UserMapper;
 import com.blingwei.musicService.dao.redisService.LikeRedisService;
 import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
+import com.blingwei.musicService.enums.SexEnum;
 import com.blingwei.musicService.enums.TypeEnum;
+import com.blingwei.musicService.manage.UserPickManage;
 import com.blingwei.musicService.pojo.Comment;
+import com.blingwei.musicService.pojo.User;
+import com.blingwei.musicService.pojo.UserInfo;
 import com.blingwei.musicService.pojo.client.CommentInfo;
+import com.blingwei.musicService.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +32,12 @@ public class ConvertUtil {
 
     @Autowired
     private LikeRedisServiceImpl likeRedisService;
+
+    @Autowired
+    private UserPickManage userPickManage;
+
+    @Autowired
+    private UserService userService;
 
     public  Comment covertComment(CommentInfo commentInfo){
         Comment comment = new Comment();
@@ -65,14 +79,29 @@ public class ConvertUtil {
                 commentInfo.setReplayName(replayName);
                 commentInfo.setReplyId(comment.getReplyId());
             }
-            if(likeRedisService.getPickCommentStatus(comment.getUserId()+"",comment.getId()+"") != null){
-                commentInfo.setPickStatus(likeRedisService.getPickCommentStatus(comment.getUserId()+"",comment.getId()+"")!=0);
-            }
-            if(likeRedisService.getPickCommentNum(comment.getId()+"")!=null){
-                commentInfo.setPickNum(likeRedisService.getPickCommentNum(comment.getId()+""));
-            }
+            PickResponse pickResponse = userPickManage.getCommentResponse(comment.getId(), comment.getUserId());
+            commentInfo.setPickNum(pickResponse.getNum());
+            commentInfo.setPickStatus(pickResponse.getPickStatus());
             commentInfoList.add(commentInfo);
         }
         return commentInfoList;
     }
+
+    public UserInfo convertUserInfo(EditUserInfoRequest userInfoRequest){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setAge(userInfoRequest.getAge());
+        userInfo.setSex(SexEnum.valueOf(userInfoRequest.getSex()));
+        userInfo.setIntroduce(userInfoRequest.getIntroduce());
+        return userInfo;
+    }
+
+    public UserInfoResponse showUserInfo(UserInfo userInfo){
+        UserInfoResponse userInfoResponse = new UserInfoResponse();
+        userInfoResponse.setName(userMapper.findUserById(userInfo.getUserId()).getUsername());
+        userInfoResponse.setAge(userInfo.getAge());
+        userInfoResponse.setSex(userInfo.getSex().getMessage());
+        userInfoResponse.setIntroduce(userInfo.getIntroduce());
+        return userInfoResponse;
+    }
+
 }

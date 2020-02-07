@@ -12,11 +12,11 @@ public enum PickStatusEnum implements BaseEnum<PickStatusEnum, Integer>{
     /**
      * 点赞状态
      */
-    PICK(0,"点赞"),
+    PICK(1,"点赞"),
     /**
      * 取消点赞状态
      */
-    CANCEL_PICK(1, "取消点赞");
+    CANCEL_PICK(0, "取消点赞");
 
 
 

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -69,10 +71,29 @@ public class LikeRedisServiceImpl implements LikeRedisService {
     @Override
     public void cancelPickComment(String userId, String matterId) {
         String key = createKey(userId,matterId,TypeEnum.COMMENT);
-        redisTemplate.opsForHash().put(COMMENT_LIKE_KEY, key, 1);
+        redisTemplate.opsForHash().put(COMMENT_LIKE_KEY, key, 0);
         String num_key = createNumKey(matterId,TypeEnum.COMMENT);
         redisTemplate.opsForHash().increment(COMMENT_LIKE_NUM_KEY, num_key, -1);
     }
+
+    @Override
+    public Map getAllEssayWithSongPick() {
+        return redisTemplate.opsForHash().entries(ESSAY_WITH_SONG_LIKE_KEY);
+    }
+
+    @Override
+    public Map getAllCommentPick() {
+        return redisTemplate.opsForHash().entries(COMMENT_LIKE_KEY);
+    }
+
+    @Override
+    public void clean() {
+        redisTemplate.delete(ESSAY_WITH_SONG_LIKE_KEY);
+        redisTemplate.delete(ESSAY_WITH_SONG_LIKE_NUM_KEY);
+        redisTemplate.delete(COMMENT_LIKE_KEY);
+        redisTemplate.delete(COMMENT_LIKE_NUM_KEY);
+    }
+
 
     private String createKey(String userId, String matterId, TypeEnum type){
         return userId+":"+matterId+":"+type.getValue();

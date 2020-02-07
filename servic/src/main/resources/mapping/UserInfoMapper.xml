@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.UserInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="introduce" jdbcType="VARCHAR" property="introduce" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.blingwei.musicService.pojo.UserInfo">
+    insert into user_info ( create_time,
+      user_id)
+    values (now(),
+      #{userId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.UserInfo">
+    update user_info
+    set sex = #{sex,jdbcType=TINYINT},
+      age = #{age,jdbcType=INTEGER},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByUserId" parameterType="com.blingwei.musicService.pojo.UserInfo">
+    update user_info
+    set sex = #{sex,jdbcType=TINYINT},
+        age = #{age,jdbcType=INTEGER},
+        introduce = #{introduce,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, sex, age, introduce, create_time, is_delete, user_id
+    from user_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, sex, age, introduce, create_time, user_id, url
+    from user_info
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, sex, age, introduce, create_time, is_delete, user_id
+    from user_info
+  </select>
+
+</mapper>

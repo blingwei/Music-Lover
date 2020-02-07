@@ -14,7 +14,7 @@ public class UserPick {
     private Integer matterId;
     private TypeEnum type;
     private Date createTime;
-    private PickStatusEnum pickStatus;
+    private PickStatusEnum status;
 
     public Integer getId() {
         return id;
@@ -56,11 +56,11 @@ public class UserPick {
         this.createTime = createTime;
     }
 
-    public PickStatusEnum getPickStatus() {
-        return pickStatus;
+    public PickStatusEnum getStatus() {
+        return status;
     }
 
-    public void setPickStatus(PickStatusEnum pickStatus) {
-        this.pickStatus = pickStatus;
+    public void setStatus(PickStatusEnum status) {
+        this.status = status;
     }
 }

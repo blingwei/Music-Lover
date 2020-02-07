@@ -20,7 +20,10 @@
         <el-button size="small">打赏</el-button>
       </el-badge>
       <el-badge :value="collectNum" :max="10" class="item" >
-        <el-button size="small" @click="collect">收藏</el-button>
+        <el-button size="small" @click="collect">
+          <span v-if="collectStatus" style="color: #3377aa"> 已收藏</span>
+          <span v-else>收藏</span>
+        </el-button>
       </el-badge>
     </div>
     <comment-item ref="commentItem"></comment-item>
@@ -48,19 +51,63 @@
                 },
                 commentNum: 0,
                 pickNum: 0,
-                pickStatus: false,
+                pickStatus: false, //是否点赞
                 rewardNum: 0,
                 collectNum: 0,
+                collectStatus: false // 是否收藏
             }
         },
         methods:{
             init(){
-                this.getPickNumAndStatus()
+                this.getPickNumAndStatus();
+                this.getCollectNumAndStatus();
             },
-            isComment(){
-                this.$refs.commentItem.dialogVisible = true;
-            },
+
+
+            //收藏
             collect(){
+              let obj = this;
+              if(obj.collectStatus){
+                this.$axios.get("cancelCollectEssayWithSong", {
+                  params: {
+                    matterId: obj.$store.state.essayId
+                  }
+                }).then(res => {
+                  obj.collectStatus = false;
+                  obj.collectNum = res.data.data;
+                  console.log("123")
+                  console.log(res.data.data)
+                })
+
+              }else{
+                this.$axios.get("collectEssayWithSong", {
+                  params: {
+                    matterId: obj.$store.state.essayId
+                  }
+                }).then(res => {
+                  obj.collectStatus = true;
+                  obj.collectNum = res.data.data;
+                  console.log("123")
+                  console.log(res.data.data)
+                })
+              }
+            },
+
+            getCollectNumAndStatus(){
+              let obj = this;
+              obj.$axios.get("getEssayWithSongCollectNumAndStatus", {
+                params: {
+                  matterId: obj.$store.state.essayId
+                }
+              }).then(res => {
+                obj.collectNum = res.data.data.num;
+                obj.collectStatus = res.data.data.collectStatus
+              })
+            },
+
+            //评论
+            isComment(){
+              this.$refs.commentItem.dialogVisible = true;
             },
             initComment(){
                 this.$refs.childComment.initComment();
@@ -70,9 +117,11 @@
                 this.comment.replyId = "0";
                 this.comment.content = "";
             },
+
+            //点赞
             getPickNumAndStatus(){
                 let obj = this;
-                obj.$axios.get("getEssayWithSongNumAndStatus", {
+                obj.$axios.get("getEssayWithSongPickNumAndStatus", {
                     params: {
                         matterId: obj.$store.state.essayId
                     }

@@ -5,19 +5,11 @@ import com.blingwei.musicService.enums.TypeEnum;
 import java.util.Date;
 
 public class Collect {
-    private Integer id;
     private Integer userId;
     private Integer matterId;//操作的对象的id
     private TypeEnum type;//操作的类型
-    private Date createDate;
+    private Date createTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getUserId() {
         return userId;
@@ -43,11 +35,11 @@ public class Collect {
         this.type = type;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

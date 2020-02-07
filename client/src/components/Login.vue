@@ -58,14 +58,14 @@
                 }
             };
             return {
-                show: false,
+                show: false, //是登录还是注册
                 ruleForm: {
                     pass: '',
                     name: '',
                     checkPass: '',
 
                 },
-                rules: {
+                rules: { //验证规则
                     pass: [
                         { validator: validatePass, trigger: 'blur' }
                     ],
