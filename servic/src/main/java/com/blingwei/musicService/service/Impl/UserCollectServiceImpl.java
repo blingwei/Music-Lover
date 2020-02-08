@@ -1,10 +1,13 @@
 package com.blingwei.musicService.service.Impl;
 
+import com.blingwei.musicService.bean.responseBean.CollectInfoResponse;
 import com.blingwei.musicService.dao.CollectMapper;
 import com.blingwei.musicService.pojo.Collect;
 import com.blingwei.musicService.service.UserCollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserCollectServiceImpl implements UserCollectService {
@@ -38,5 +41,10 @@ public class UserCollectServiceImpl implements UserCollectService {
     @Override
     public Collect getCollectWithoutIsDelete(Collect collect) {
         return collectMapper.selectAllByPrimaryKey(collect.getUserId(),collect.getMatterId(),collect.getType());
+    }
+
+    @Override
+    public List<CollectInfoResponse> findCollectInfos(Integer userId) {
+        return collectMapper.findCollectInfos(userId);
     }
 }

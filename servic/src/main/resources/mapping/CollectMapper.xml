@@ -56,5 +56,17 @@
     and is_delete = 0
   </select>
 
+  <select id="findCollectInfos" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.CollectInfoResponse">
+    select e.title as title, e.content as content, e.id as essayId, u.username as userName
+    from collect c
+           left join
+         essay_song es on (c.matter_id = es.id and c.type = 2)
+           left join
+         essay e on(es.essay_id = e.id)
+           left join
+         user u on (es.user_id = u.id)
+    where c.user_id = #{userId}
+  </select>
+
 
 </mapper>

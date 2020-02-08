@@ -47,7 +47,7 @@ public class EssayWithSongController {
     @RequestMapping("creation/uploadSong")
     public Result uploadSong(@RequestBody MultipartFile file){
 
-        String folder = "D:\\myProject\\Music-45Lover\\client\\static\\audio";
+        String folder = "D:\\myProject\\Music-Lover\\client\\static\\audio";
         File imageFolder = new File(folder);
         String filename = file.getOriginalFilename();
         String suffix = ".mp3";

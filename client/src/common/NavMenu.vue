@@ -40,9 +40,15 @@
         methods:{
             handleCommand(command) {
                 if(command === "quit"){
-                    this.$store.commit('logout')
+                    this.$store.commit('logout');
+                    this.$router.go(0)//刷新页面
+                }else if(command === "personal")
+                {
+                  this.$router.push({name:"Personal", params:{userName: this.$store.state.user.username}});
+                }else if(command === "creation"){
+                  this.$router.push("/"+command);
                 }
-                this.$router.push("/"+command);
+
             }
         }
     }

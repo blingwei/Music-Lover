@@ -89,8 +89,11 @@ public class ConvertUtil {
 
     public UserInfo convertUserInfo(EditUserInfoRequest userInfoRequest){
         UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(userInfoRequest.getUserId());
         userInfo.setAge(userInfoRequest.getAge());
-        userInfo.setSex(SexEnum.valueOf(userInfoRequest.getSex()));
+        if(!userInfoRequest.getSex().equals(SexEnum.UN_KNOW)){
+            userInfo.setSex(SexEnum.valueOf(userInfoRequest.getSex()));
+        }
         userInfo.setIntroduce(userInfoRequest.getIntroduce());
         return userInfo;
     }
@@ -99,7 +102,9 @@ public class ConvertUtil {
         UserInfoResponse userInfoResponse = new UserInfoResponse();
         userInfoResponse.setName(userMapper.findUserById(userInfo.getUserId()).getUsername());
         userInfoResponse.setAge(userInfo.getAge());
-        userInfoResponse.setSex(userInfo.getSex().getMessage());
+        if(userInfo.getSex()!=null){
+            userInfoResponse.setSex(userInfo.getSex().getMessage());
+        }
         userInfoResponse.setIntroduce(userInfo.getIntroduce());
         return userInfoResponse;
     }

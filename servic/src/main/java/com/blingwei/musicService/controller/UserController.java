@@ -8,6 +8,7 @@ import com.blingwei.musicService.result.Result;
 import com.blingwei.musicService.service.UserService;
 import com.blingwei.musicService.utils.ConvertUtil;
 import com.blingwei.musicService.utils.ResultFactory;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -76,8 +77,8 @@ public class UserController {
     }
 
     @RequestMapping("api/getUserInfo")
-    public Result getUserInfo(){
-        UserInfo userInfo = userService.getCurrentUserInfo();
+    public Result getUserInfo(@Param("userName" )String userName){
+        UserInfo userInfo = userService.getUserInoByUserName(userName);
         return ResultFactory.buildSuccessResult("", convertUtil.showUserInfo(userInfo));
     }
 
@@ -91,8 +92,6 @@ public class UserController {
             e.printStackTrace();
             return ResultFactory.buildFailResult(e.getMessage());
         }
-
-
     }
 
 

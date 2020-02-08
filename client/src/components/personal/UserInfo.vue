@@ -22,7 +22,7 @@
       <div class="information">简介: <span v-if="userInfo.introduce != ' '">{{userInfo.introduce}}</span> <span v-else>未设置</span></div>
     </el-col>
     <el-col :span="4">
-      <el-button @click="editUserInfo" style="margin-top: 140px">编 辑 资 料</el-button>
+      <el-button @click="editUserInfo" style="margin-top: 140px" v-if="this.$store.state.personal.identity">编 辑 资 料</el-button>
     </el-col>
   </el-row>
     <el-dialog title="编辑" :visible.sync="dialogFormVisible">
@@ -73,7 +73,6 @@
           sex: " ",
           age:" ",
           introduce: " "
-
         },
         options: [{
           value: '0',
@@ -87,10 +86,13 @@
     },
     methods:{
       init() {
-        this.$axios.get("getUserInfo").then(res =>{
+        this.$axios.get("getUserInfo",{
+          params: {
+            userName: this.$store.state.personal.personalUsername
+          }
+        }).then(res =>{
           if(res.data.code === 200){
             this.userInfo = res.data.data
-
           }
         })
       },

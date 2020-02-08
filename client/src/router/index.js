@@ -8,7 +8,7 @@ import MusicSea from "../components/musicSea/MusicSea";
 import Creation from "../components/creation/Creation";
 import EssayWithSongDisplay from "../components/essayWithSongDisplay/EssayWithSongDisplay";
 
-Vue.use(Router)
+Vue.use(Router);
 
 
 export default new Router({
@@ -59,3 +59,8 @@ export default new Router({
 
   ]
 })
+
+const routerPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+};

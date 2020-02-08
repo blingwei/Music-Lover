@@ -14,7 +14,7 @@ public interface UserService {
     void updateUser(String name, User user);
     User getCurrentUser();
     UserInfo getCurrentUserInfo();
-
+    UserInfo getUserInoByUserName(String userName);
     void editUser(UserInfo userInfo);
 
 }

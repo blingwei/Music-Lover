@@ -67,6 +67,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserInfo getUserInoByUserName(String userName) {
+        Integer userId = findUserByName(userName).getId();
+        return userInfoMapper.selectByUserId(userId);
+    }
+
+    @Override
     public void editUser(UserInfo userInfo) {
         userInfoMapper.updateByUserId(userInfo);
     }

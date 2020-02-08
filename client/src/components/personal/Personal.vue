@@ -1,7 +1,7 @@
 <template>
   <div class="display">
     <div class="top" >
-      <UserInfo class="userMain"/>
+      <UserInfo class="userMain" ref="userInfo"/>
     </div>
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="sideMenu">
       <el-tab-pane label="动态" name="userState">动态</el-tab-pane>
@@ -27,15 +27,31 @@
         components: {UserInfo, UserCollect},
         data() {
             return {
-                activeName: 'userState'
+              activeName: 'userState',
             }
         },
         methods:{
+            init() {
+              if(this.$route.params.userName != null){
+                let personalUsername = this.$route.params.userName;
+                let identity = this.$route.params.userName === personalUsername;
+                let data = {
+                  personalUsername: personalUsername,
+                  identity : identity
+                };
+                this.$store.commit('setPersonal', data)
+              }
+
+            },
             handleClick(tab, event) {
                 console.log(tab, event);
             }
-        }
-    }
+        },
+        beforeMount(){
+          this.init();
+        },
+
+  }
 </script>
 
 <style scoped>

@@ -1,5 +1,6 @@
 package com.blingwei.musicService.dao;
 
+import com.blingwei.musicService.bean.responseBean.CollectInfoResponse;
 import com.blingwei.musicService.enums.TypeEnum;
 import com.blingwei.musicService.pojo.Collect;
 import org.apache.ibatis.annotations.Param;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author 86187
+ */
 @Repository
 public interface CollectMapper {
     int deleteByPrimaryKey(Collect record);
@@ -25,4 +29,6 @@ public interface CollectMapper {
     int getCollectNumByMatterIdAndType(@Param("matterId") Integer matterId, @Param("type")TypeEnum type);
 
     boolean getCollectStatus(Collect record);
+
+    List<CollectInfoResponse> findCollectInfos(Integer userId);
 }

@@ -1,12 +1,16 @@
 package com.blingwei.musicService.manage;
 
+import com.blingwei.musicService.bean.responseBean.CollectInfoResponse;
 import com.blingwei.musicService.bean.responseBean.CollectResponse;
 import com.blingwei.musicService.enums.TypeEnum;
 import com.blingwei.musicService.pojo.Collect;
+import com.blingwei.musicService.service.EssayWithSongService;
 import com.blingwei.musicService.service.UserCollectService;
 import com.blingwei.musicService.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author 86187
@@ -20,9 +24,14 @@ public class UserCollectManage {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EssayWithSongService essayWithSongService;
+
+
+
     public int collectEssayWithSong(Integer matterId){
         Collect collect = new Collect();
-        collect.setMatterId(matterId);
+        collect.setMatterId(essayWithSongService.findEssayWithSongByEssayId(matterId).getId());
         collect.setUserId(userService.getCurrentUser().getId());
         collect.setType(TypeEnum.ESSAY_WITH_SONG);
         userCollectService.addCollect(collect);
@@ -31,7 +40,7 @@ public class UserCollectManage {
 
     public int  cancelCollectEssayWithSong(Integer matterId){
         Collect collect = new Collect();
-        collect.setMatterId(matterId);
+        collect.setMatterId(essayWithSongService.findEssayWithSongByEssayId(matterId).getId());
         collect.setUserId(userService.getCurrentUser().getId());
         collect.setType(TypeEnum.ESSAY_WITH_SONG);
         userCollectService.deleteCollect(collect);
@@ -51,6 +60,11 @@ public class UserCollectManage {
             collectResponse.setCollectStatus(false);
         }
         return collectResponse;
+    }
+
+    public List<CollectInfoResponse> getCollectsByUserName(String userName){
+        Integer userId = userService.findUserByName(userName).getId();
+        return userCollectService.findCollectInfos(userId);
     }
 
 }
