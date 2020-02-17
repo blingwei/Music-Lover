@@ -1,10 +1,12 @@
 package com.blingwei.musicService.bean.responseBean;
 
 
+import com.blingwei.musicService.bean.commanBean.ConditionMessageBean;
+
 /**
  * @author 86187
  */
-public class CollectInfoResponse {
+public class EssayWithSongCardResponse extends ConditionMessageBean {
     private String title;
     private String userName;
     private String content;

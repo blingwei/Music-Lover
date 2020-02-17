@@ -56,16 +56,59 @@
     and is_delete = 0
   </select>
 
-  <select id="findCollectInfos" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.CollectInfoResponse">
+  <select id="findCollectInfos" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
     select e.title as title, e.content as content, e.id as essayId, u.username as userName
     from collect c
            left join
-         essay_song es on (c.matter_id = es.id and c.type = 2)
+         essay_song es on (c.matter_id = es.id)
            left join
          essay e on(es.essay_id = e.id)
            left join
          user u on (es.user_id = u.id)
     where c.user_id = #{userId}
+      and  c.type = 2
+      and c.is_delete = 0
+  </select>
+
+  <select id="findMyAttentions" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+    SELECT u.id as id, ANY_VALUE(u.username) as name, ANY_VALUE(ui.url) as url, ANY_VALUE(ui.introduce) as introduce
+    from collect c left join
+         user u on c.matter_id = u.id
+                   left join user_info ui
+                             on u.id = ui.user_id
+    where c.is_delete = 0
+      and c.type = 0
+      and c.user_id = #{userId}
+  </select>
+  <select id="getAttentionNumByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*) from collect where matter_id = #{userId} and type = 0 and is_delete = 0
+  </select>
+
+  <select id="getAttentionNumByTopicId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*) from collect where matter_id = #{topicId} and type = 4 and is_delete = 0
+  </select>
+
+
+  <select id="findAttentionMes" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+    SELECT u.id as id, u.username as name, ui.url as url, ui.introduce as introduce
+    from collect c left join
+         user u on c.user_id = u.id
+                   left join user_info ui
+                             on u.id = ui.user_id
+    where c.is_delete = 0
+      and c.type = 0
+      and c.matter_id = #{userId}
+
+  </select>
+
+  <select id="findAttentionTopics" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+    SELECT t.id as id, t.name as name, t.url as url, t.introduce as introduce
+    from collect c
+         left join topic t
+                   on c.matter_id = t.id
+    where c.is_delete = 0
+      and c.type = 4
+      and c.user_id = #{userId}
   </select>
 
 

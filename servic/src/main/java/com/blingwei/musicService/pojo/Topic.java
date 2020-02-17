@@ -1,15 +1,28 @@
 package com.blingwei.musicService.pojo;
 
 import java.util.Date;
-import java.util.List;
 
+/**
+ * @author 86187
+ */
 public class Topic {
     private Integer id;
-    private String title;//标题
-    private String intor;//简介
-    private Date createDate;
-    private List<Category> categoryList;
-    private List<EssayWithSong> essayWithSongList;
+
+    private Integer userId;
+
+    private String introduce;
+
+    private String label;
+
+    private String url;
+
+    private Byte status;
+
+    private Date createTime;
+
+    private Integer isDelete;
+
+    private String name;
 
     public Integer getId() {
         return id;
@@ -19,43 +32,67 @@ public class Topic {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getIntor() {
-        return intor;
+    public String getIntroduce() {
+        return introduce;
     }
 
-    public void setIntor(String intor) {
-        this.intor = intor;
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce == null ? null : introduce.trim();
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getLabel() {
+        return label;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setLabel(String label) {
+        this.label = label == null ? null : label.trim();
     }
 
-    public List<Category> getCategoryList() {
-        return categoryList;
+    public String getUrl() {
+        return url;
     }
 
-    public void setCategoryList(List<Category> categoryList) {
-        this.categoryList = categoryList;
+    public void setUrl(String url) {
+        this.url = url == null ? null : url.trim();
     }
 
-    public List<EssayWithSong> getEssayWithSongList() {
-        return essayWithSongList;
+    public Byte getStatus() {
+        return status;
     }
 
-    public void setEssayWithSongList(List<EssayWithSong> essayWithSongList) {
-        this.essayWithSongList = essayWithSongList;
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

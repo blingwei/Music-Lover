@@ -12,7 +12,8 @@ public enum TypeEnum implements BaseEnum<TypeEnum, Integer>{
     USER(0,"用户"),
     SONG(1, "歌曲"),
     ESSAY_WITH_SONG(2, "音乐文章"),
-    COMMENT(3, "评论");
+    COMMENT(3, "评论"),
+    TOPIC(4, "专栏");
 
     private final Integer value;
     private final String message;

@@ -2,6 +2,8 @@ package com.blingwei.musicService.controller;
 
 
 import com.blingwei.musicService.bean.requestBaen.EditUserInfoRequest;
+import com.blingwei.musicService.enums.TypeEnum;
+import com.blingwei.musicService.manage.UserCollectManage;
 import com.blingwei.musicService.pojo.User;
 import com.blingwei.musicService.pojo.UserInfo;
 import com.blingwei.musicService.result.Result;
@@ -21,6 +23,7 @@ import org.springframework.web.util.HtmlUtils;
 
 
 @RestController
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -29,7 +32,10 @@ public class UserController {
     @Autowired
     private ConvertUtil convertUtil;
 
-    @RequestMapping("/api/login")
+    @Autowired
+    private UserCollectManage userCollectManage;
+
+    @RequestMapping("login")
     public Result login(@RequestBody User user){
         String name = user.getUsername();
         name = HtmlUtils.htmlEscape(name);
@@ -43,7 +49,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/api/register")
+    @RequestMapping("register")
     public Result register(@RequestBody User user){
         String name = user.getUsername();
         String pass = user.getPassword();
@@ -61,14 +67,14 @@ public class UserController {
         return ResultFactory.buildSuccessResult("注册成功", null);
     }
 
-    @GetMapping("api/logout")
+    @GetMapping("logout")
     public Result logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return ResultFactory.buildSuccessResult("注销成功", null);
 }
 
-    @GetMapping(value = "api/authentication")
+    @GetMapping(value = "authentication")
     public String authentication(){
         if(SecurityUtils.getSubject().getPrincipal()!=null){
             return "身份认证成功";
@@ -76,13 +82,13 @@ public class UserController {
         return null;
     }
 
-    @RequestMapping("api/getUserInfo")
+    @RequestMapping("getUserInfo")
     public Result getUserInfo(@Param("userName" )String userName){
         UserInfo userInfo = userService.getUserInoByUserName(userName);
         return ResultFactory.buildSuccessResult("", convertUtil.showUserInfo(userInfo));
     }
 
-    @PostMapping("api/editUserInfo")
+    @PostMapping("editUserInfo")
     public Result editUserInfo(@RequestBody EditUserInfoRequest userInfo){
         try{
             userInfo.setUserId(userService.getCurrentUser().getId());

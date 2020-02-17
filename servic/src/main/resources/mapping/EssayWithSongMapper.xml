@@ -33,4 +33,24 @@
         select * from essay_song where essay_id = #{id};
     </select>
 
+    <select id="getEssayWithSongNumByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from essay_song where user_id = #{userId}
+    </select>
+
+    <select id="getPublicInfosByUserName" parameterType="java.lang.String" resultType="com.blingwei.musicService.bean.responseBean.PublishInfoResponse">
+        SELECT e.title as title, e.content as content, e.id as essayId, es.id as id
+        from essay_song es
+                 LEFT JOIN essay e on es.essay_id = e.id
+                 LEFT JOIN user u on es.user_id = u.id
+        where u.userName = #{userName}
+    </select>
+
+    <select id="findEssayNameById" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT essay.title
+        from essay, essay_song
+        where essay.id = essay_song.essay_id
+          and essay_song.id = #{id}
+    </select>
+
+
 </mapper>

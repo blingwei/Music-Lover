@@ -1,19 +1,16 @@
 package com.blingwei.musicService.service.Impl;
 
-import com.blingwei.musicService.dao.CollectMapper;
-import com.blingwei.musicService.dao.EssayMapper;
-import com.blingwei.musicService.dao.EssayWithSongMapper;
-import com.blingwei.musicService.dao.SongMapper;
-import com.blingwei.musicService.pojo.Collect;
-import com.blingwei.musicService.pojo.Essay;
-import com.blingwei.musicService.pojo.EssayWithSong;
-import com.blingwei.musicService.pojo.Song;
+import com.blingwei.musicService.bean.responseBean.PublishInfoResponse;
+import com.blingwei.musicService.dao.*;
+import com.blingwei.musicService.enums.OperateEnum;
+import com.blingwei.musicService.enums.TypeEnum;
+import com.blingwei.musicService.pojo.*;
 import com.blingwei.musicService.service.EssayWithSongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.List;
 
 
 /**
@@ -31,7 +28,8 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
     @Autowired
     private EssayWithSongMapper essayWithSongMapper;
 
-
+    @Autowired
+    private ConditionMapper conditionMapper;
 
 
     @Override
@@ -46,12 +44,18 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
         return res;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int addEssayWithSong(EssayWithSong essayWithSong, Essay essay) {
         addEssay(essay);
         essayWithSong.setEssayId(essay.getId());
-        return essayWithSongMapper.addEssayWithSong(essayWithSong);
+        essayWithSongMapper.addEssayWithSong(essayWithSong);
+        Condition condition = new Condition();
+        condition.setUserId(essayWithSong.getUserId());
+        condition.setMatterId(essayWithSong.getId());
+        condition.setType(TypeEnum.ESSAY_WITH_SONG);
+        condition.setOperate(OperateEnum.PUBLISH);
+        return conditionMapper.insert(condition);
     }
 
     @Override
@@ -70,8 +74,23 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
     }
 
     @Override
+    public String findEssayNameById(Integer id) {
+        return essayWithSongMapper.findEssayNameById(id);
+    }
+
+    @Override
     public Essay findEssayById(Integer id) {
         return essayMapper.findEssayById(id);
+    }
+
+    @Override
+    public int getEssayWithSongNumByUserId(Integer userId) {
+        return essayWithSongMapper.getEssayWithSongNumByUserId(userId);
+    }
+
+    @Override
+    public List<PublishInfoResponse> getPublicInfosByUserName(String userName) {
+        return essayWithSongMapper.getPublicInfosByUserName(userName);
     }
 
 

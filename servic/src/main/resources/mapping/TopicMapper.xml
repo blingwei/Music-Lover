@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.TopicMapper">
+  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Topic">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="introduce" jdbcType="VARCHAR" property="introduce" />
+    <result column="label" jdbcType="VARCHAR" property="label" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from topic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.blingwei.musicService.pojo.Topic">
+    insert into topic (user_id, introduce,
+      label, url,  create_time, name
+    )
+    values ( #{userId,jdbcType=INTEGER}, #{introduce,jdbcType=VARCHAR},
+            #{label,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+            now(), #{name,jdbcType=VARCHAR}
+           )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Topic">
+    update topic
+    set user_id = #{userId,jdbcType=INTEGER},
+        introduce = #{introduce,jdbcType=VARCHAR},
+      `label` = #{label,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, introduce, `label`, url, `status`, create_time, is_delete, `name`
+    from topic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, introduce, label, url, status, create_time, name
+    from topic
+    where user_id = #{userId,jdbcType=INTEGER}
+    and is_delete = 0
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, introduce, `label`, url, `status`, create_time, is_delete, `name`
+    from topic
+  </select>
+
+  <select id="findTopicInfoById" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.TopicInfoBean">
+    SELECT t.`name` as name, t.introduce as introduce, t.url as url, COUNT(*) as productionNum,  t.user_id as userId
+    from relation_topic_publish rtb
+      LEFT JOIN topic t on rtb.topic_id = t.id
+    where rtb.is_delete = 0
+      and t.id = #{id}
+
+  </select>
+  <select id="findPublishByTopicId" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
+    select  e.title as title, u.username as userName, e.content as content, e.id as essayId
+    from
+      relation_topic_publish rtb
+        LEFT JOIN topic t on rtb.topic_id = t.id
+        LEFT JOIN essay_song es on rtb.publish_id = es.id
+        LEFT JOIN essay e on es.essay_id = e.id
+        left JOIN `user` u on es.user_id = u.id
+    where rtb.is_delete = 0
+      and t.id = #{id}
+  </select>
+
+  <select id="findPublishNumById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*) from relation_topic_publish
+    where is_delete = 0
+    and topic_id = #{id}
+
+  </select>
+
+  <insert id="contributeForTopic" >
+    insert into relation_topic_publish (topic_id, publish_id, create_time) values
+    <foreach collection="ids" separator=","  item="item">
+      (#{topicId}, #{item}, now())
+    </foreach>
+  </insert>
+
+</mapper>

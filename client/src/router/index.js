@@ -7,6 +7,7 @@ import Personal from "../components/personal/Personal";
 import MusicSea from "../components/musicSea/MusicSea";
 import Creation from "../components/creation/Creation";
 import EssayWithSongDisplay from "../components/essayWithSongDisplay/EssayWithSongDisplay";
+import Topic from "../components/Topic";
 
 Vue.use(Router);
 
@@ -47,6 +48,11 @@ export default new Router({
           path: '/essayDisplay',
           name: 'EssayWithSongDisplay',
           component: EssayWithSongDisplay
+        },
+        {
+          path: '/topic',
+          name: 'Topic',
+          component: Topic
         },
       ]
     },

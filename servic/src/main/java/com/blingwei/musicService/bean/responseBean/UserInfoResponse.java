@@ -5,6 +5,7 @@ public class UserInfoResponse {
     private Integer age;
     private String sex;
     private String introduce;
+    private boolean status;//你是否关注了这个用户
 
 
     public String getName() {
@@ -37,5 +38,13 @@ public class UserInfoResponse {
 
     public void setIntroduce(String introduce) {
         this.introduce = introduce;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

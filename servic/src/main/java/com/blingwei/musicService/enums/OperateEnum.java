@@ -13,8 +13,7 @@ public enum OperateEnum implements BaseEnum<OperateEnum, Integer>{
 
     COLLECT(0,"收藏"),
 
-    CANCEL_PICK(1, "关注"),
-
+    ATTENTION(1, "关注"),
 
     PICK(2,"点赞"),
 

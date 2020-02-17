@@ -41,7 +41,14 @@
     <select id="findEssayWithSongCommentByMatterId" parameterType="java.lang.Integer" resultMap="baseResultMap">
         select id, user_id, matter_id, type, pid, reply_id, create_time, content, pick_num
         from comment where matter_id = #{id} and type = 2
+                       and is_delete = 0
     </select>
+
+    <select id="findCommentById" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select id, user_id, matter_id, type, pid, reply_id, create_time, content, pick_num
+        from comment where id = #{id} and is_delete = 0
+    </select>
+
 
 
 

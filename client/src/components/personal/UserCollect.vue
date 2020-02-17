@@ -81,11 +81,11 @@
   }
 
   .display {
-    width: 100%;
-    height: 180px;
-    margin-bottom: 10px;
-    text-align: left;
-  }
+         width: 100%;
+         height: 180px;
+         margin-bottom: 10px;
+         text-align: left;
+     }
   .content {
     font-size: 10px; height: 100px;
     display: -webkit-box;
@@ -97,7 +97,7 @@
   .click{
     font-size: 10px;  color: #78b6f7;
   }
-  .click :hover{
+  .click:hover{
     cursor: pointer;
   }
 </style>

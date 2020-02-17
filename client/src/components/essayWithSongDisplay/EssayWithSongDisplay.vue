@@ -75,7 +75,7 @@
                 }).then(res => {
                   obj.collectStatus = false;
                   obj.collectNum = res.data.data;
-                  console.log("123")
+                  console.log("123");
                   console.log(res.data.data)
                 })
 
@@ -87,7 +87,7 @@
                 }).then(res => {
                   obj.collectStatus = true;
                   obj.collectNum = res.data.data;
-                  console.log("123")
+                  console.log("123");
                   console.log(res.data.data)
                 })
               }

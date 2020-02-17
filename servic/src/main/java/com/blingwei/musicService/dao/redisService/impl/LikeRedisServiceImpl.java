@@ -1,10 +1,14 @@
 package com.blingwei.musicService.dao.redisService.impl;
 
+import com.blingwei.musicService.dao.ConditionMapper;
 import com.blingwei.musicService.dao.redisService.LikeRedisService;
+import com.blingwei.musicService.enums.OperateEnum;
 import com.blingwei.musicService.enums.TypeEnum;
+import com.blingwei.musicService.pojo.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +24,9 @@ public class LikeRedisServiceImpl implements LikeRedisService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ConditionMapper conditionMapper;
+
 
     @Override
     public void pickEssayWithSong(String userId, String matterId) {
@@ -27,6 +34,12 @@ public class LikeRedisServiceImpl implements LikeRedisService {
         redisTemplate.opsForHash().put(ESSAY_WITH_SONG_LIKE_KEY, key, 1);
         String num_key = createNumKey(matterId,TypeEnum.ESSAY_WITH_SONG);
         redisTemplate.opsForHash().increment(ESSAY_WITH_SONG_LIKE_NUM_KEY, num_key, 1);
+        Condition condition = new Condition();
+        condition.setUserId(Integer.parseInt(userId));
+        condition.setMatterId(Integer.parseInt(matterId));
+        condition.setType(TypeEnum.ESSAY_WITH_SONG);
+        condition.setOperate(OperateEnum.PICK);
+        conditionMapper.insert(condition);
     }
 
     @Override
@@ -35,6 +48,12 @@ public class LikeRedisServiceImpl implements LikeRedisService {
         redisTemplate.opsForHash().put(COMMENT_LIKE_KEY, key, 1);
         String num_key = createNumKey(matterId,TypeEnum.COMMENT);
         redisTemplate.opsForHash().increment(COMMENT_LIKE_NUM_KEY, num_key, 1);
+        Condition condition = new Condition();
+        condition.setUserId(Integer.parseInt(userId));
+        condition.setMatterId(Integer.parseInt(matterId));
+        condition.setType(TypeEnum.COMMENT);
+        condition.setOperate(OperateEnum.PICK);
+        conditionMapper.insert(condition);
     }
 
     @Override

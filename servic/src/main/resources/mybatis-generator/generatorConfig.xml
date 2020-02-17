@@ -63,11 +63,20 @@
 
         <!-- table可以有多个,每个数据库中的表都可以写一个table，tableName表示要匹配的数据库表,也可以在tableName属性中通过使用%通配符来匹配所有数据库表,只有匹配的表才会自动生成文件 -->
 
-        <table tableName="user_info" domainObjectName="UserInfo"
+        <table tableName="relation_topic_publish" domainObjectName="RelationTopicPublish"
                enableSelectByPrimaryKey="true"
                enableInsert="true"
                enableUpdateByPrimaryKey="true">
 <!--            <property name="user_pick" value="false"/>-->
+            <!-- 数据库表主键 -->
+
+        </table>
+
+        <table tableName="condition" domainObjectName="Condition"
+               enableSelectByPrimaryKey="true"
+               enableInsert="true"
+               enableUpdateByPrimaryKey="true">
+            <!--            <property name="user_pick" value="false"/>-->
             <!-- 数据库表主键 -->
 
         </table>

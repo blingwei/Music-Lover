@@ -1,10 +1,10 @@
 package com.blingwei.musicService.dao;
 
-import com.blingwei.musicService.bean.responseBean.CollectInfoResponse;
+import com.blingwei.musicService.bean.commanBean.AttentionResponse;
+import com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse;
 import com.blingwei.musicService.enums.TypeEnum;
 import com.blingwei.musicService.pojo.Collect;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,5 +30,15 @@ public interface CollectMapper {
 
     boolean getCollectStatus(Collect record);
 
-    List<CollectInfoResponse> findCollectInfos(Integer userId);
+    List<EssayWithSongCardResponse> findCollectInfos(Integer userId);
+
+    List<AttentionResponse> findMyAttentions(Integer userId);
+
+    List<AttentionResponse> findAttentionMes(Integer userId);
+
+    List<AttentionResponse> findAttentionTopics(Integer userId);
+
+    int getAttentionNumByUserId(Integer userId);
+
+    int getAttentionNumByTopicId(Integer topicId);
 }

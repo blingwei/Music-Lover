@@ -1,11 +1,24 @@
 package com.blingwei.musicService.pojo;
 
-//动态
+import com.blingwei.musicService.enums.OperateEnum;
+import com.blingwei.musicService.enums.TypeEnum;
+
+import java.util.Date;
+
 public class Condition {
     private Integer id;
+
     private Integer userId;
-    private String message;//描述
-    private Integer operandId;//操作的id
+
+    private OperateEnum operate;
+
+    private TypeEnum type;
+
+    private Integer matterId;
+
+    private Date createTime;
+
+    private Integer isDelete;
 
     public Integer getId() {
         return id;
@@ -23,19 +36,43 @@ public class Condition {
         this.userId = userId;
     }
 
-    public String getMessage() {
-        return message;
+    public OperateEnum getOperate() {
+        return operate;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setOperate(OperateEnum operate) {
+        this.operate = operate;
     }
 
-    public Integer getOperandId() {
-        return operandId;
+    public TypeEnum getType() {
+        return type;
     }
 
-    public void setOperandId(Integer operandId) {
-        this.operandId = operandId;
+    public void setType(TypeEnum type) {
+        this.type = type;
+    }
+
+    public Integer getMatterId() {
+        return matterId;
+    }
+
+    public void setMatterId(Integer matterId) {
+        this.matterId = matterId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 }

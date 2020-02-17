@@ -4,6 +4,7 @@ import com.blingwei.musicService.bean.responseBean.CollectResponse;
 import com.blingwei.musicService.bean.responseBean.PickResponse;
 import com.blingwei.musicService.dao.redisService.LikeRedisService;
 import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
+import com.blingwei.musicService.enums.TypeEnum;
 import com.blingwei.musicService.manage.UserCollectManage;
 import com.blingwei.musicService.manage.UserPickManage;
 import com.blingwei.musicService.pojo.*;
@@ -172,13 +173,15 @@ public class EssayWithSongController {
 
     @RequestMapping("collectEssayWithSong")
     public Result collectEssayWithSong(@Param("matterId") Integer matterId){
-        int collectNum = userCollectManage.collectEssayWithSong(matterId);
+        Integer id = essayWithSongService.findEssayWithSongByEssayId(matterId).getId();
+        int collectNum = userCollectManage.collect(id, TypeEnum.ESSAY_WITH_SONG);
         return ResultFactory.buildSuccessResult(null, collectNum);
     }
 
     @RequestMapping("cancelCollectEssayWithSong")
     public Result cancelCollectEssayWithSong(@Param("matterId") Integer matterId){
-        int collectNum = userCollectManage.cancelCollectEssayWithSong(matterId);
+        Integer id = essayWithSongService.findEssayWithSongByEssayId(matterId).getId();
+        int collectNum = userCollectManage.cancelCollect(id, TypeEnum.ESSAY_WITH_SONG);
         return ResultFactory.buildSuccessResult(null, collectNum);
     }
 

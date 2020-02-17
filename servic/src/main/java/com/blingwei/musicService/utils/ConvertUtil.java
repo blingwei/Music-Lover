@@ -9,6 +9,7 @@ import com.blingwei.musicService.dao.redisService.LikeRedisService;
 import com.blingwei.musicService.dao.redisService.impl.LikeRedisServiceImpl;
 import com.blingwei.musicService.enums.SexEnum;
 import com.blingwei.musicService.enums.TypeEnum;
+import com.blingwei.musicService.manage.UserCollectManage;
 import com.blingwei.musicService.manage.UserPickManage;
 import com.blingwei.musicService.pojo.Comment;
 import com.blingwei.musicService.pojo.User;
@@ -18,6 +19,7 @@ import com.blingwei.musicService.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.management.GarbageCollectorMXBean;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,10 @@ public class ConvertUtil {
     @Autowired
     private UserService userService;
 
-    public  Comment covertComment(CommentInfo commentInfo){
+    @Autowired
+    private UserCollectManage collectManage;
+
+    public Comment covertComment(CommentInfo commentInfo){
         Comment comment = new Comment();
         Integer userId = userMapper.findByName(commentInfo.getUsername()).getId();
         comment.setUserId(userId);
@@ -106,6 +111,7 @@ public class ConvertUtil {
             userInfoResponse.setSex(userInfo.getSex().getMessage());
         }
         userInfoResponse.setIntroduce(userInfo.getIntroduce());
+        userInfoResponse.setStatus(collectManage.meIsAttentionUser(userInfo.getUserId(), TypeEnum.USER));
         return userInfoResponse;
     }
 

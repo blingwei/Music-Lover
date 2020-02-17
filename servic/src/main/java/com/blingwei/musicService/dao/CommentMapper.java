@@ -10,4 +10,5 @@ import java.util.List;
 public interface CommentMapper {
     void addCommit(Comment comment);
     List<Comment> findEssayWithSongCommentByMatterId(@Param("id") Integer matterId);
+    Comment findCommentById(Integer id);
 }
