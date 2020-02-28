@@ -1,5 +1,6 @@
 package com.blingwei.musicService.service.Impl;
 
+import com.blingwei.musicService.bean.responseBean.AdminUserInfoResponse;
 import com.blingwei.musicService.dao.UserInfoMapper;
 import com.blingwei.musicService.dao.UserMapper;
 import com.blingwei.musicService.pojo.User;
@@ -75,6 +76,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editUser(UserInfo userInfo) {
         userInfoMapper.updateByUserId(userInfo);
+    }
+
+    @Override
+    public List<AdminUserInfoResponse> getAdminUserInfos() {
+        return userInfoMapper.getAdminUserInfos();
     }
 
 

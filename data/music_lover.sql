@@ -3,19 +3,106 @@
 
  Source Server         : aa
  Source Server Type    : MySQL
- Source Server Version : 80018
+ Source Server Version : 80015
  Source Host           : localhost:3306
  Source Schema         : music_lover
 
  Target Server Type    : MySQL
- Target Server Version : 80018
+ Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 16/01/2020 13:52:04
+ Date: 20/02/2020 16:39:49
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for admin_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_permission`;
+CREATE TABLE `admin_permission`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `dec` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '描述',
+  `url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接口路径',
+  `create_time` datetime(0) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for admin_role
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_role`;
+CREATE TABLE `admin_role`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `dec` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '描述',
+  `create_time` datetime(0) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for admin_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_role_permission`;
+CREATE TABLE `admin_role_permission`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
+  `rid` int(11) NOT NULL,
+  `create_time` datetime(0) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色权限关联表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for admin_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_user_role`;
+CREATE TABLE `admin_user_role`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
+  `rid` int(11) NOT NULL,
+  `create_time` datetime(0) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色关联表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for collect
+-- ----------------------------
+DROP TABLE IF EXISTS `collect`;
+CREATE TABLE `collect`  (
+  `user_id` int(11) NOT NULL,
+  `matter_id` int(11) NOT NULL COMMENT '操作的对象的id',
+  `type` tinyint(4) NOT NULL COMMENT '操作的对象的类型',
+  `create_time` datetime(0) NOT NULL,
+  `is_delete` int(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  PRIMARY KEY (`user_id`, `matter_id`, `type`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of collect
+-- ----------------------------
+INSERT INTO `collect` VALUES (16, 1, 4, '2020-02-13 11:27:36', 0);
+INSERT INTO `collect` VALUES (16, 9, 2, '2020-02-08 17:33:04', 0);
+INSERT INTO `collect` VALUES (16, 17, 0, '2020-02-13 11:28:58', 1);
+INSERT INTO `collect` VALUES (16, 18, 0, '2020-02-13 10:57:34', 0);
+INSERT INTO `collect` VALUES (17, 2, 4, '2020-02-17 15:14:54', 0);
+INSERT INTO `collect` VALUES (17, 9, 2, '2020-02-05 12:51:16', 0);
+INSERT INTO `collect` VALUES (17, 10, 2, '2020-02-08 17:39:08', 0);
+INSERT INTO `collect` VALUES (17, 16, 0, '2020-02-11 16:12:08', 0);
+INSERT INTO `collect` VALUES (17, 21, 0, '2020-02-16 10:57:36', 0);
+INSERT INTO `collect` VALUES (18, 2, 4, '2020-02-13 11:49:21', 0);
+INSERT INTO `collect` VALUES (18, 9, 2, '2020-02-08 17:31:24', 0);
+INSERT INTO `collect` VALUES (18, 16, 0, '2020-02-12 11:55:03', 0);
+INSERT INTO `collect` VALUES (18, 17, 0, '2020-02-12 11:55:02', 0);
+INSERT INTO `collect` VALUES (20, 10, 2, '2020-02-12 12:08:28', 0);
+INSERT INTO `collect` VALUES (20, 11, 2, '2020-02-12 12:13:19', 1);
+INSERT INTO `collect` VALUES (20, 17, 0, '2020-02-12 12:14:23', 0);
+INSERT INTO `collect` VALUES (21, 2, 4, '2020-02-14 15:18:24', 0);
+INSERT INTO `collect` VALUES (21, 10, 2, '2020-02-14 15:17:04', 0);
+INSERT INTO `collect` VALUES (21, 11, 2, '2020-02-13 15:52:09', 0);
+INSERT INTO `collect` VALUES (21, 16, 0, '2020-02-14 15:18:10', 0);
+INSERT INTO `collect` VALUES (21, 18, 0, '2020-02-14 15:18:17', 1);
 
 -- ----------------------------
 -- Table structure for comment
@@ -31,9 +118,9 @@ CREATE TABLE `comment`  (
   `create_time` datetime(0) NOT NULL,
   `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `pick_num` int(11) NOT NULL DEFAULT 0 COMMENT '点赞数',
-  `is_delete` int(1) DEFAULT 0 COMMENT '是否删除',
+  `is_delete` int(1) NULL DEFAULT 0 COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comment
@@ -71,6 +158,47 @@ INSERT INTO `comment` VALUES (32, 17, 2, 2, 0, 0, '2020-01-14 18:00:29', 'fd ', 
 INSERT INTO `comment` VALUES (33, 17, 6, 2, 0, 0, '2020-01-15 15:56:41', 'sdf ', 0, 0);
 INSERT INTO `comment` VALUES (34, 17, 7, 2, 0, 0, '2020-01-15 16:34:59', 'sdf ', 0, 0);
 INSERT INTO `comment` VALUES (35, 17, 7, 2, 0, 0, '2020-01-15 16:35:03', 'f g', 0, 0);
+INSERT INTO `comment` VALUES (36, 17, 9, 2, 0, 0, '2020-01-31 12:13:09', '什么', 0, 0);
+INSERT INTO `comment` VALUES (37, 19, 9, 2, 0, 0, '2020-02-07 15:29:05', '不懂', 0, 0);
+INSERT INTO `comment` VALUES (38, 19, 9, 2, 36, 0, '2020-02-07 15:29:23', '真是个白痴', 0, 0);
+INSERT INTO `comment` VALUES (39, 17, 10, 2, 0, 0, '2020-02-10 11:11:01', '你觉得呢', 0, 0);
+INSERT INTO `comment` VALUES (40, 20, 10, 2, 0, 0, '2020-02-12 12:08:09', '真好听', 0, 0);
+INSERT INTO `comment` VALUES (41, 20, 10, 2, 39, 0, '2020-02-12 12:08:46', '还好', 0, 0);
+INSERT INTO `comment` VALUES (42, 20, 11, 2, 0, 0, '2020-02-12 12:13:15', '通过后', 0, 0);
+INSERT INTO `comment` VALUES (43, 21, 10, 2, 0, 0, '2020-02-14 15:16:52', '好好听', 0, 0);
+INSERT INTO `comment` VALUES (44, 21, 9, 2, 36, 19, '2020-02-14 15:17:33', '怎么这么没素质', 0, 0);
+
+-- ----------------------------
+-- Table structure for condition
+-- ----------------------------
+DROP TABLE IF EXISTS `condition`;
+CREATE TABLE `condition`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `operate` tinyint(4) NOT NULL COMMENT '操作的类型',
+  `type` tinyint(4) NOT NULL COMMENT '操作的对象的类型',
+  `matter_id` int(11) NOT NULL COMMENT '操作的对象的id',
+  `create_time` datetime(0) NOT NULL,
+  `is_delete` int(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '动态表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of condition
+-- ----------------------------
+INSERT INTO `condition` VALUES (1, 12, 1, 1, 1, '2020-02-13 15:50:26', 0);
+INSERT INTO `condition` VALUES (2, 21, 0, 2, 11, '2020-02-13 15:52:09', 0);
+INSERT INTO `condition` VALUES (3, 21, 3, 3, 10, '2020-02-14 15:16:52', 0);
+INSERT INTO `condition` VALUES (4, 21, 2, 3, 40, '2020-02-14 15:16:58', 0);
+INSERT INTO `condition` VALUES (5, 21, 0, 2, 10, '2020-02-14 15:17:04', 0);
+INSERT INTO `condition` VALUES (6, 21, 2, 2, 10, '2020-02-14 15:17:14', 0);
+INSERT INTO `condition` VALUES (7, 21, 3, 3, 9, '2020-02-14 15:17:33', 0);
+INSERT INTO `condition` VALUES (8, 21, 1, 0, 16, '2020-02-14 15:18:10', 0);
+INSERT INTO `condition` VALUES (9, 21, 1, 0, 18, '2020-02-14 15:18:17', 0);
+INSERT INTO `condition` VALUES (10, 21, 1, 4, 2, '2020-02-14 15:18:24', 0);
+INSERT INTO `condition` VALUES (11, 17, 1, 0, 21, '2020-02-16 10:57:36', 0);
+INSERT INTO `condition` VALUES (12, 17, 1, 4, 2, '2020-02-17 15:14:54', 0);
+INSERT INTO `condition` VALUES (13, 17, 1, 4, 2, '2020-02-17 15:41:07', 0);
 
 -- ----------------------------
 -- Table structure for essay
@@ -82,7 +210,7 @@ CREATE TABLE `essay`  (
   `intor` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '简介',
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '内容',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of essay
@@ -95,6 +223,9 @@ INSERT INTO `essay` VALUES (6, '整理了老友记里女孩儿们的穿搭衣橱
 INSERT INTO `essay` VALUES (7, '南京灵谷寺无梁殿', '无梁殿，是中国历史最悠久、规模最大的砖砌拱券结构殿宇，建于1381年，整座建筑采用砖砌拱券结构、不设', '<p>无梁殿，是中国历史最悠久、规模最大的砖砌拱券结构殿宇，建于1381年，整座建筑采用砖砌拱券结构、不设木梁。<br />\n无梁殿全用砖砌，不用寸钉片木，是中国国内现存同类建筑中时代最早、规模最大的。</p>\n<p>小时候，爸妈曾带着我，在无梁殿大窗户的平台上野餐……</p>\n<p>来自 豆瓣App<br />\n赞<br />\n回应 转发 赞 收藏只看楼主<br />\n最赞回应<br />\nningningning<br />\nningningning 2019-12-04 10:57:42<br />\n好美啊</p>\n<p>回应赞 (4)来自 豆瓣App<br />\n三外<br />\n三外 2019-12-04 11:03:27<br />\n古典建筑融入自然美，树的伟大，为自然增色添彩</p>\n');
 INSERT INTO `essay` VALUES (8, 'tyalot', '地方', '<p>是否</p>\n<h3><a id=\"_1\"></a>三级标题</h3>\n<p><ins>下划线</ins></p>\n<table>\n<thead>\n<tr>\n<th>column1</th>\n<th>column2</th>\n<th>column3</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>content1</td>\n<td>content2</td>\n<td>content3</td>\n</tr>\n</tbody>\n</table>\n');
 INSERT INTO `essay` VALUES (9, '一辈子', '不烦你该', '<p>地方撒 方式</p>\n<p><ins>下划线</ins></p>\n<table>\n<thead>\n<tr>\n<th>column1</th>\n<th>column2</th>\n<th>column3</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>content1</td>\n<td>content2</td>\n<td>content3</td>\n</tr>\n</tbody>\n</table>\n');
+INSERT INTO `essay` VALUES (10, '你说的', '对第三方第三方符是大法官', '<p>yum install –y git</p>\n<p>git clone https://github.com/mobz/elasticsearch-head.git</p>\n<p>安装grunt</p>\n<p>cd elasticsearch-head</p>\n<p>npm install -g grunt --registry=https://registry.npm.taobao.org</p>\n<p>在elasticsearch-head目录下node_modules/grunt下如果没有grunt二进制程序，需要执行：</p>\n<p>npm install grunt --save</p>\n<p>修改配置 elasticsearch-head下Gruntfile.js文件</p>\n<p>修改connect配置节点</p>\n');
+INSERT INTO `essay` VALUES (11, '我最爱的孟慧圆', '这是关于我和圆圆的故事', '<table>\n<thead>\n<tr>\n<th>column1</th>\n<th>column2</th>\n<th>column3</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>content1</td>\n<td>content2</td>\n<td>content3</td>\n</tr>\n</tbody>\n</table>\n<p>第三方</p>\n');
+INSERT INTO `essay` VALUES (12, '两仪的', '放得开健康减肥的恐惧空间的科技非公开聚光科技', '<p>电视剧开发了<br />\n符是个</p>\n<table>\n<thead>\n<tr>\n<th>column1</th>\n<th>column2</th>\n<th>column3</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>content1</td>\n<td>content2</td>\n<td>content3</td>\n</tr>\n</tbody>\n</table>\n');
 
 -- ----------------------------
 -- Table structure for essay_song
@@ -106,26 +237,72 @@ CREATE TABLE `essay_song`  (
   `essay_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `create_time` datetime(0) NOT NULL,
-  `heat` int(11) DEFAULT 0 COMMENT '热度',
-  `pick_num` int(11) DEFAULT 0 COMMENT '点赞数',
-  `rewoard` int(11) DEFAULT 0 COMMENT '打赏值',
-  `commit_num` int(11) DEFAULT 0 COMMENT '评论数',
-  `collect_num` int(11) DEFAULT 0 COMMENT '收藏数',
-  `views` int(11) DEFAULT 0 COMMENT '浏览量',
+  `heat` int(11) NULL DEFAULT 0 COMMENT '热度',
+  `pick_num` int(11) NULL DEFAULT 0 COMMENT '点赞数',
+  `rewoard` int(11) NULL DEFAULT 0 COMMENT '打赏值',
+  `commit_num` int(11) NULL DEFAULT 0 COMMENT '评论数',
+  `collect_num` int(11) NULL DEFAULT 0 COMMENT '收藏数',
+  `views` int(11) NULL DEFAULT 0 COMMENT '浏览量',
+  `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '状态， 0为审核中，1为通过， 2为异常违规',
+  `is_delete` int(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of essay_song
 -- ----------------------------
-INSERT INTO `essay_song` VALUES (1, 2, 2, 16, '2019-12-05 14:56:44', 0, 0, 0, 0, 0, 0);
-INSERT INTO `essay_song` VALUES (2, 3, 3, 16, '2019-12-05 15:01:24', 0, 0, 0, 0, 0, 0);
-INSERT INTO `essay_song` VALUES (3, 3, 4, 16, '2019-12-05 15:02:11', 0, 0, 0, 0, 0, 0);
-INSERT INTO `essay_song` VALUES (4, 4, 5, 16, '2019-12-05 15:02:54', 0, 0, 0, 0, 0, 0);
-INSERT INTO `essay_song` VALUES (5, 5, 6, 16, '2019-12-05 15:03:49', 0, 0, 0, 0, 0, 0);
-INSERT INTO `essay_song` VALUES (6, 6, 7, 16, '2019-12-05 15:04:34', 0, 0, 0, 0, 0, 0);
-INSERT INTO `essay_song` VALUES (7, 8, 8, 16, '2019-12-09 11:28:06', 0, 0, 0, 0, 0, 0);
-INSERT INTO `essay_song` VALUES (8, 10, 9, 16, '2019-12-09 11:37:39', 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (1, 2, 2, 16, '2019-12-05 14:56:44', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (2, 3, 3, 16, '2019-12-05 15:01:24', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (3, 3, 4, 16, '2019-12-05 15:02:11', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (4, 4, 5, 16, '2019-12-05 15:02:54', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (5, 5, 6, 16, '2019-12-05 15:03:49', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (6, 6, 7, 16, '2019-12-05 15:04:34', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (7, 8, 8, 16, '2019-12-09 11:28:06', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (8, 10, 9, 16, '2019-12-09 11:37:39', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (9, 11, 10, 17, '2020-01-31 12:08:54', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (10, 12, 11, 16, '2020-02-08 17:36:28', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `essay_song` VALUES (11, 13, 12, 20, '2020-02-12 12:12:30', 0, 0, 0, 0, 0, 0, 0, 0);
+
+-- ----------------------------
+-- Table structure for label
+-- ----------------------------
+DROP TABLE IF EXISTS `label`;
+CREATE TABLE `label`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pid` int(11) NOT NULL DEFAULT 0 COMMENT '父级标签的id，没有则为0',
+  `user_id` int(11) NOT NULL,
+  `create_time` datetime(0) NOT NULL,
+  `is_delete` int(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名字',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for relation_topic_publish
+-- ----------------------------
+DROP TABLE IF EXISTS `relation_topic_publish`;
+CREATE TABLE `relation_topic_publish`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic_id` int(11) NOT NULL,
+  `publish_id` int(11) NOT NULL COMMENT '创作id',
+  `create_time` datetime(0) NOT NULL,
+  `is_delete` int(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '状态， 0为审核中，1为通过， 2为异常违规',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '专栏和发表关联表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of relation_topic_publish
+-- ----------------------------
+INSERT INTO `relation_topic_publish` VALUES (1, 1, 1, '2020-02-11 16:01:01', 0, 0);
+INSERT INTO `relation_topic_publish` VALUES (2, 1, 2, '2020-02-05 16:01:14', 0, 0);
+INSERT INTO `relation_topic_publish` VALUES (3, 1, 3, '2020-02-21 16:01:29', 0, 0);
+INSERT INTO `relation_topic_publish` VALUES (4, 2, 4, '2020-02-12 16:01:44', 0, 0);
+INSERT INTO `relation_topic_publish` VALUES (5, 2, 6, '2020-02-10 16:01:55', 0, 0);
+INSERT INTO `relation_topic_publish` VALUES (10, 1, 7, '2020-02-17 14:19:56', 0, 0);
+INSERT INTO `relation_topic_publish` VALUES (11, 1, 6, '2020-02-17 14:19:56', 0, 0);
+INSERT INTO `relation_topic_publish` VALUES (12, 1, 8, '2020-02-17 14:19:56', 0, 0);
+INSERT INTO `relation_topic_publish` VALUES (13, 1, 9, '2020-02-17 15:01:27', 0, 0);
 
 -- ----------------------------
 -- Table structure for song
@@ -136,7 +313,7 @@ CREATE TABLE `song`  (
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of song
@@ -151,6 +328,32 @@ INSERT INTO `song` VALUES (7, 'Taylor Swift - Welcome To New York.', 'D:\\myProj
 INSERT INTO `song` VALUES (8, 'Taylor Swift - This Love.', 'D:\\myProject\\Music Lover\\files\\h29732.mp3');
 INSERT INTO `song` VALUES (9, 'Taylor Swift - Out Of The Woods.', 'D:\\myProject\\Music Lover\\client\\static\\audio\\vmg0bn.mp3');
 INSERT INTO `song` VALUES (10, 'Taylor Swift - You Are In Love.', 'D:\\myProject\\Music Lover\\client\\static\\audio\\t1xz5w.mp3');
+INSERT INTO `song` VALUES (11, '孟慧圆圆圆 - 京城八十一号.', 'D:\\myProject\\Music Lover\\client\\static\\audio\\rvm1gd.mp3');
+INSERT INTO `song` VALUES (12, '孟慧圆圆圆 - 只要有你的地方.', 'D:\\myProject\\Music Lover\\client\\static\\audio\\674grr.mp3');
+INSERT INTO `song` VALUES (13, '01 I Don_t Wanna Live Forever (Fifty.', 'D:\\myProject\\Music-Lover\\client\\static\\audio\\5xodjy.m4a');
+
+-- ----------------------------
+-- Table structure for topic
+-- ----------------------------
+DROP TABLE IF EXISTS `topic`;
+CREATE TABLE `topic`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `introduce` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '专栏介绍',
+  `label` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '类别标签，不同的标签用:隔开，最多5个',
+  `url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '专栏的封面',
+  `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '状态， 0为审核中，1为通过， 2为异常违规',
+  `create_time` datetime(0) NOT NULL,
+  `is_delete` int(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名字',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of topic
+-- ----------------------------
+INSERT INTO `topic` VALUES (1, 17, '属于我的抓兰', '', '', 0, '2020-02-12 18:03:31', 0, ' liangwei');
+INSERT INTO `topic` VALUES (2, 16, '知道我的心', '', '', 0, '2020-02-13 11:29:56', 0, '没有一个人');
 
 -- ----------------------------
 -- Table structure for user
@@ -158,17 +361,47 @@ INSERT INTO `song` VALUES (10, 'Taylor Swift - You Are In Love.', 'D:\\myProject
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `salt` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `username` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `salt` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (16, 'test', '872acb223a4ce507a554af4017eeb3d3', 'ceTfs1y38FrRLBnG+9VncA==');
 INSERT INTO `user` VALUES (17, 'lw', '1555b4eb5206e6671d7fbc1fcd3d1ae5', 'AGcMRcFu8un5BYlkIpj8Cw==');
+INSERT INTO `user` VALUES (18, '赵今麦', '0b5ceee92901cf3b342c728717c9b68e', 'FsKVfKPVhPx3BLWw9qqxUQ==');
+INSERT INTO `user` VALUES (19, '梁威', 'ba8f7d7651bd1454ea79e4599ec8d670', 'lOfZUH9eve6kBiELYFUnYg==');
+INSERT INTO `user` VALUES (20, '梁毅', '0dd0594fae6411e60fda76e34cebb9c5', '249MS2CX5/rIvMXmKy8aKQ==');
+INSERT INTO `user` VALUES (21, '张子枫', 'bbc16b02a814ca50cf5a74c088e2b23f', 'hqUT4GAYXvPjxsVCxoigdg==');
+
+-- ----------------------------
+-- Table structure for user_info
+-- ----------------------------
+DROP TABLE IF EXISTS `user_info`;
+CREATE TABLE `user_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sex` tinyint(4) NULL DEFAULT NULL,
+  `age` int(11) NULL DEFAULT NULL,
+  `introduce` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '个人介绍',
+  `create_time` datetime(0) NOT NULL,
+  `is_delete` int(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `user_id` int(11) NOT NULL,
+  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户头像的图片url',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_info
+-- ----------------------------
+INSERT INTO `user_info` VALUES (1, 1, 12, '得分', '2020-02-07 11:59:13', 0, 19, NULL);
+INSERT INTO `user_info` VALUES (2, NULL, NULL, NULL, '2020-02-14 14:00:41', 0, 16, NULL);
+INSERT INTO `user_info` VALUES (3, 0, 12, NULL, '2020-02-05 14:00:55', 0, 17, NULL);
+INSERT INTO `user_info` VALUES (4, 1, 17, '美', '2020-02-10 14:01:07', 0, 18, NULL);
+INSERT INTO `user_info` VALUES (5, 0, 12, '好帅', '2020-02-12 12:07:10', 0, 20, NULL);
+INSERT INTO `user_info` VALUES (6, 1, 18, '我最爱的女神', '2020-02-13 15:43:01', 0, 21, NULL);
 
 -- ----------------------------
 -- Table structure for user_pick
@@ -183,6 +416,21 @@ CREATE TABLE `user_pick`  (
   `is_delete` int(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
   `status` tinyint(4) NOT NULL COMMENT '状态，1为点赞，0为取消点赞',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_pick
+-- ----------------------------
+INSERT INTO `user_pick` VALUES (1, 17, 10, 2, '2020-02-04 15:40:22', 0, 0);
+INSERT INTO `user_pick` VALUES (2, 17, 36, 3, '2020-02-04 15:40:22', 0, 0);
+INSERT INTO `user_pick` VALUES (16, 19, 10, 2, '2020-02-07 18:00:00', 0, 1);
+INSERT INTO `user_pick` VALUES (17, 19, 36, 3, '2020-02-07 18:00:00', 0, 1);
+INSERT INTO `user_pick` VALUES (18, 16, 10, 2, '2020-02-10 12:00:00', 0, 1);
+INSERT INTO `user_pick` VALUES (19, 17, 11, 2, '2020-02-10 12:00:00', 0, 1);
+INSERT INTO `user_pick` VALUES (20, 20, 12, 2, '2020-02-12 15:00:00', 0, 1);
+INSERT INTO `user_pick` VALUES (21, 20, 39, 3, '2020-02-12 15:00:00', 0, 0);
+INSERT INTO `user_pick` VALUES (22, 21, 11, 2, '2020-02-14 18:00:01', 0, 1);
+INSERT INTO `user_pick` VALUES (23, 21, 10, 2, '2020-02-14 18:00:01', 0, 1);
+INSERT INTO `user_pick` VALUES (24, 21, 40, 3, '2020-02-14 18:00:01', 0, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

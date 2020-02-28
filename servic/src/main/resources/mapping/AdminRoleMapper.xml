@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.AdminRoleMapper">
+  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.AdminRole">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="name_zh" jdbcType="VARCHAR" property="nameZh" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.blingwei.musicService.pojo.AdminRole">
+    insert into admin_role ( `name`, name_zh)
+    values ( #{name,jdbcType=VARCHAR}, #{nameZh,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.AdminRole">
+    update admin_role
+    set `name` = #{name,jdbcType=VARCHAR},
+      name_zh = #{nameZh,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, `name`, name_zh, enabled
+    from admin_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, `name`, name_zh, enabled
+    from admin_role
+  </select>
+  <update id="changeAdminRoleByUserId" parameterType="com.blingwei.musicService.pojo.AdminRole">
+    update admin_user_role
+    set rid = #{roleId}
+    where uid = #{userId}
+  </update>
+
+  <delete id="deleteAllRoleWithMenu" parameterType="java.lang.Integer">
+    delete from admin_role_menu
+    where rid = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteAllRoleWithPerm" parameterType="java.lang.Integer">
+    delete from admin_role_permission
+    where rid = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="addRoleWithMenus" >
+    insert into  admin_role_menu(rid, mid) values
+    <foreach collection="list" separator=","  item="item">
+      (#{roleId}, #{item})
+    </foreach>
+  </insert>
+
+  <insert id="addRoleWithPerms" >
+    insert into  admin_role_permission(rid, pid) values
+    <foreach collection="list" separator=","  item="item">
+      (#{roleId}, #{item})
+    </foreach>
+  </insert>
+</mapper>

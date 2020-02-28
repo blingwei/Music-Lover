@@ -1,5 +1,6 @@
 package com.blingwei.musicService.dao;
 
+import com.blingwei.musicService.bean.commanBean.PublishVerifyBean;
 import com.blingwei.musicService.bean.commanBean.TopicInfoBean;
 import com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse;
 import com.blingwei.musicService.pojo.Topic;
@@ -29,4 +30,9 @@ public interface TopicMapper {
     void contributeForTopic(@Param("topicId") Integer id, @Param("ids") List<Integer> ids);
 
     int findPublishNumById(Integer id);
+
+    List<PublishVerifyBean> getTopicsWithoutVerify(@Param("start") Integer start, @Param("size") Integer size);//用户未审核，刚发表的作品
+    int getAllTopicNums();
+
+    void AdminVerifyTopic(@Param("id") Integer id, @Param("status") Integer status);
 }

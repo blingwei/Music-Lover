@@ -15,7 +15,8 @@ export default new Vuex.Store({
       personal: {
         personalUsername: window.sessionStorage.getItem('personal' || '[]') == null ? 0 : JSON.parse(window.sessionStorage.getItem('personal' || '[]')).personalUsername,
         identity: window.sessionStorage.getItem('personal' || '[]') == null ? 0 : JSON.parse(window.sessionStorage.getItem('personal' || '[]')).identity //是否为本人
-      }
+      },
+      adminMenus: []
   },
   mutations: {
     login (state, data) {
@@ -40,7 +41,11 @@ export default new Vuex.Store({
     setTopicId: (state, topicId) => {
       state.topicId = topicId;
       window.sessionStorage.setItem('topicId', JSON.stringify(topicId))
-    }
+    },
+
+    initAdminMenu (state, menus) {
+      state.adminMenus = menus
+    },
 
   }
 })

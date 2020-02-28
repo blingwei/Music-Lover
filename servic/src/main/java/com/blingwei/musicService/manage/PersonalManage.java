@@ -69,7 +69,7 @@ public class PersonalManage {
         }
         return res;
     }
-    public int addTopic(AddTopicRequest addTopicRequest){
+    public int addTopic( AddTopicRequest addTopicRequest){
         Topic topic = new Topic();
         topic.setUserId(userService.getCurrentUser().getId());
         topic.setName(addTopicRequest.getName());

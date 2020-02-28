@@ -1,6 +1,10 @@
 package com.blingwei.musicService.service;
 
+import com.blingwei.musicService.bean.commanBean.PublishManageBean;
+import com.blingwei.musicService.bean.responseBean.AdminViewPublishResponse;
 import com.blingwei.musicService.bean.responseBean.PublishInfoResponse;
+import com.blingwei.musicService.bean.commanBean.PublishVerifyBean;
+import com.blingwei.musicService.bean.responseBean.PublishManageResponse;
 import com.blingwei.musicService.pojo.Essay;
 import com.blingwei.musicService.pojo.EssayWithSong;
 import com.blingwei.musicService.pojo.Song;
@@ -28,6 +32,14 @@ public interface EssayWithSongService {
     int getEssayWithSongNumByUserId(Integer userId);
 
     List<PublishInfoResponse> getPublicInfosByUserName(String userName);
+    List<PublishVerifyBean> getPublishesWithoutVerify(Integer start, Integer size);
+    List<PublishManageBean> getPublishesWithRestrict(Integer start, Integer size, String input, Integer status);
 
+    AdminViewPublishResponse getPublishView(Integer id);
+    void AdminVerifyPublish(Integer id, Integer status);
 
+    int getAllPublishNums();
+    int getPublishesWithRestrictNums(Integer start, Integer size, String input, Integer status);
+
+    void  deletePublish(int id);
 }

@@ -1,5 +1,6 @@
 package com.blingwei.musicService.dao;
 
+import com.blingwei.musicService.bean.responseBean.AdminUserInfoResponse;
 import com.blingwei.musicService.pojo.UserInfo;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,6 @@ public interface UserInfoMapper {
     UserInfo selectByUserId(Integer userId);
 
     int updateByUserId(UserInfo record);
+
+    List<AdminUserInfoResponse> getAdminUserInfos();
 }

@@ -1,5 +1,6 @@
 package com.blingwei.musicService.service.Impl;
 
+import com.blingwei.musicService.bean.commanBean.PublishVerifyBean;
 import com.blingwei.musicService.bean.commanBean.TopicInfoBean;
 import com.blingwei.musicService.bean.requestBaen.ContributeForTopicRequest;
 import com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse;
@@ -63,5 +64,20 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public int findPublishNumById(Integer id) {
         return topicMapper.findPublishNumById(id);
+    }
+
+    @Override
+    public List<PublishVerifyBean> getTopicsWithoutVerify(Integer start, Integer size) {
+        return topicMapper.getTopicsWithoutVerify(start, size);
+    }
+
+    @Override
+    public int getAllTopicNums() {
+        return topicMapper.getAllTopicNums();
+    }
+
+    @Override
+    public void AdminVerifyTopic(Integer id, Integer status) {
+        topicMapper.AdminVerifyTopic(id, status);
     }
 }

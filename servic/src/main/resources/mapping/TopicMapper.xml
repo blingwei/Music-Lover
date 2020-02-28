@@ -87,5 +87,24 @@
       (#{topicId}, #{item}, now())
     </foreach>
   </insert>
+  <select id="getTopicsWithoutVerify" resultType="com.blingwei.musicService.bean.commanBean.PublishVerifyBean">
+    select topic.id as publishId, topic.`name` as publishName, u.username as authorName
+    from topic,`user` u
+    where topic.user_id = u.id
+    and topic.`status` = 0
+    ORDER BY create_time desc
+    limit #{start}, #{size}
+  </select>
+  <select id="getAllTopicNums" resultType="int">
+    select count(*)
+    from topic
+    where `status` = 0
+  </select>
+  <update id="AdminVerifyTopic">
+    update topic
+    set status = #{status}
+    where id = #{id}
+  </update>
+
 
 </mapper>

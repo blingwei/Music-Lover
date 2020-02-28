@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.AdminMenuMapper">
+  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.AdminMenu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="name_zh" jdbcType="VARCHAR" property="nameZh" />
+    <result column="icon_cls" jdbcType="VARCHAR" property="iconCls" />
+    <result column="component" jdbcType="VARCHAR" property="component" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.blingwei.musicService.pojo.AdminMenu">
+    insert into admin_menu (id, `path`, `name`,
+      name_zh, icon_cls, component,
+      parent_id)
+    values (#{id,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{nameZh,jdbcType=VARCHAR}, #{iconCls,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR},
+      #{parentId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.AdminMenu">
+    update admin_menu
+    set `path` = #{path,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      name_zh = #{nameZh,jdbcType=VARCHAR},
+      icon_cls = #{iconCls,jdbcType=VARCHAR},
+      component = #{component,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, `path`, `name`, name_zh, icon_cls, component, parent_id
+    from admin_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, `path`, `name`, name_zh, icon_cls, component, parent_id
+    from admin_menu
+  </select>
+
+  <select id="findMenuByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select am.id, am.`path`, am.`name`, am.name_zh, am.icon_cls, am.component, am.parent_id
+    from admin_menu am, admin_user_role aur, admin_role_menu arm
+    where arm.mid = am.id
+      and aur.rid = arm.rid
+      and aur.uid = #{userId}
+  </select>
+
+  <select id="findMenuByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select am.id
+    from admin_menu am, admin_role_menu arm
+    where arm.mid = am.id
+      and arm.rid = #{roleId}
+  </select>
+
+</mapper>

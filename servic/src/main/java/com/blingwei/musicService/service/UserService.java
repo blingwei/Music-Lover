@@ -1,5 +1,6 @@
 package com.blingwei.musicService.service;
 
+import com.blingwei.musicService.bean.responseBean.AdminUserInfoResponse;
 import com.blingwei.musicService.pojo.User;
 import com.blingwei.musicService.pojo.UserInfo;
 
@@ -16,5 +17,5 @@ public interface UserService {
     UserInfo getCurrentUserInfo();
     UserInfo getUserInoByUserName(String userName);
     void editUser(UserInfo userInfo);
-
+    List<AdminUserInfoResponse> getAdminUserInfos();
 }

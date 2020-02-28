@@ -1,6 +1,9 @@
 package com.blingwei.musicService.service.Impl;
 
+import com.blingwei.musicService.bean.commanBean.PublishManageBean;
+import com.blingwei.musicService.bean.responseBean.AdminViewPublishResponse;
 import com.blingwei.musicService.bean.responseBean.PublishInfoResponse;
+import com.blingwei.musicService.bean.commanBean.PublishVerifyBean;
 import com.blingwei.musicService.dao.*;
 import com.blingwei.musicService.enums.OperateEnum;
 import com.blingwei.musicService.enums.TypeEnum;
@@ -93,5 +96,41 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
         return essayWithSongMapper.getPublicInfosByUserName(userName);
     }
 
+    @Override
+    public List<PublishVerifyBean> getPublishesWithoutVerify(Integer start, Integer size) {
+        return essayWithSongMapper.getPublishesWithoutVerify(start, size);
+    }
 
+    @Override
+    public List<PublishManageBean> getPublishesWithRestrict(Integer start, Integer size, String input, Integer status) {
+        return essayWithSongMapper.getPublishesWithRestrict(start, size, input, status);
+    }
+
+    @Override
+    public AdminViewPublishResponse getPublishView(Integer id) {
+        AdminViewPublishResponse adminViewPublishResponse = essayWithSongMapper.getPublishView(id);
+        Song song = songMapper.findById(adminViewPublishResponse.getSongId());
+        adminViewPublishResponse.setSong(song);
+        return adminViewPublishResponse;
+    }
+
+    @Override
+    public void AdminVerifyPublish(Integer id, Integer status) {
+        essayWithSongMapper.AdminVerifyPublish(id, status);
+    }
+
+    @Override
+    public int getAllPublishNums() {
+        return essayWithSongMapper.getAllPublishNums();
+    }
+
+
+    public int getPublishesWithRestrictNums(Integer start, Integer size, String input, Integer status) {
+        return essayWithSongMapper.getPublishesWithRestrictNums(start, size, input, status);
+    }
+
+    @Override
+    public void deletePublish(int id) {
+        essayWithSongMapper.deltePublish(id);
+    }
 }

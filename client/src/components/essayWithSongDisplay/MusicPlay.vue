@@ -74,7 +74,6 @@
         },
         methods:{
             initMusic(value){
-
                 let urls = value.url.split("\\");
                 let srcs = urls[urls.length-1];
                 this.song = value;
@@ -102,6 +101,9 @@
                 this.$nextTick(()=>{
                     document.getElementById('play').blur()
                 })
+            },
+            pause(){
+                this.$refs.music.pause()
             },
             changeTime(time){
                 this.$refs.music.currentTime = time

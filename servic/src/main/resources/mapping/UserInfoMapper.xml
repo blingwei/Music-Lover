@@ -57,4 +57,11 @@
     from user_info
   </select>
 
+  <select id="getAdminUserInfos" resultType="com.blingwei.musicService.bean.responseBean.AdminUserInfoResponse">
+    select u.username as username, ui.name as name, ui.sex as sex, ui.age as age, ui.introduce as introduce, aur.rid as roleId, u.enabled as enabled
+    from user u
+           left join user_info ui on u.id = ui.user_id
+           left join admin_user_role aur on u.id = aur.uid
+  </select>
+
 </mapper>

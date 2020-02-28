@@ -53,4 +53,63 @@
     </select>
 
 
+    <select id="getPublishesWithoutVerify" resultType="com.blingwei.musicService.bean.commanBean.PublishVerifyBean">
+        SELECT es.id as publishId, e.title as publishName, u.username as authorName
+        from essay_song es, essay e, `user` u
+        where es.essay_id = e.id
+        and es.user_id = u.id
+        and es.`status` = 0
+        ORDER BY create_time desc
+        limit #{start}, #{size}
+    </select>
+
+    <select id="getPublishView" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.AdminViewPublishResponse">
+        select essay.content as content, essay_song.song_id as songId
+        from essay, essay_song
+        where essay.id = essay_song.essay_id
+        and essay_song.id = #{id}
+    </select>
+    <update id="AdminVerifyPublish">
+        update essay_song
+        set status = #{status}
+        where id = #{id}
+    </update>
+    <select id="getAllPublishNums" resultType="java.lang.Integer">
+        select count(*)
+        from essay_song
+        where essay_song.`status` = 0
+    </select>
+    <select id="getPublishesWithRestrict" resultType="com.blingwei.musicService.bean.commanBean.PublishManageBean">
+        SELECT es.id as publishId, e.title as publishName, u.username as authorName, es.`status` as status
+        from essay_song es, essay e, `user` u
+        where es.essay_id = e.id
+        and es.user_id = u.id
+        <if test="input != ''">
+            and e.title rlike #{input}
+        </if>
+        <if test="status != -1 ">
+            and es.`status` = #{status}
+        </if>
+        ORDER BY create_time desc
+        limit #{start}, #{size}
+
+    </select>
+
+    <select id="getPublishesWithRestrictNums" resultType="java.lang.Integer">
+        SELECT count(*)
+        from essay_song es, essay e, `user` u
+        where es.essay_id = e.id
+        and es.user_id = u.id
+        <if test="input != ''">
+            and e.title rlike #{input}
+        </if>
+        <if test="status != -1 ">
+            and es.`status` = #{status}
+        </if>
+
+    </select>
+    <delete id="deltePublish">
+        delete from essay_song where id = #{id}
+    </delete>
+
 </mapper>
