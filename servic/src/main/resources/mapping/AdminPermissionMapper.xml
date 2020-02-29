@@ -42,4 +42,14 @@
     and arp.rid = #{id}
 
   </select>
+    <select id="findPermsByUserName" resultMap="BaseResultMap" parameterType="string">
+      select ap.*
+      from admin_permission ap
+      LEFT JOIN admin_role_permission arp on ap.id = arp.pid
+      LEFT JOIN admin_role ar on arp.rid = ar.id
+      LEFT JOIN admin_user_role aur on ar.id = aur.rid
+      LEFT JOIN `user` u on aur.uid = u.id
+      where u.username = #{username}
+
+    </select>
 </mapper>

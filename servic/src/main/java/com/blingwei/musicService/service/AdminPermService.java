@@ -12,4 +12,8 @@ public interface AdminPermService {
 
     List<Integer> findPermsByRoleId(Integer Id);
 
+    List<AdminPermission> findPermsByUserName(String username);
+
+    boolean needFilter(String requestAPI);
+
 }

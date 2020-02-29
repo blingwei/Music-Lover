@@ -18,4 +18,6 @@ public interface AdminPermissionMapper {
     int updateByPrimaryKey(AdminPermission record);
 
     List<Integer> findPermsByRoleId(Integer Id);
+
+    List<AdminPermission> findPermsByUserName(String username);
 }
