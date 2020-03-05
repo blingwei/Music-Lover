@@ -34,6 +34,8 @@ public class UserPickManage {
             num = likeRedisService.getPickEssayWithSongNum(matterId + "");
         }else{
             num = userPickService.getEssayWithSongPickNum(matterId);
+            //把数量写进redis中去
+            //..............
         }
         response.setNum(num);
 
@@ -49,7 +51,7 @@ public class UserPickManage {
         return response;
     }
 
-    public PickResponse getCommentResponse(Integer matterId, Integer userId) { //先从数据库中取，若没有则从redis中取
+    public PickResponse getCommentResponse(Integer matterId, Integer userId) { //先从redis中取，// 若没有则从数据库中取
         PickResponse response = new PickResponse();
 
         int num;

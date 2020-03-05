@@ -57,8 +57,8 @@ public class CommentController {
     @RequestMapping("/findEssayWithSongComment")
     public Result findEssayWithSongComment(@Param("id") Integer id){
         try{
-            Integer matterId = essayWithSongService.findEssayWithSongByEssayId(id).getId();
-            List<Comment> comments = commentService.findEssayWithSongCommentByMatterId(matterId);
+
+            List<Comment> comments = commentService.findEssayWithSongCommentByMatterId(id);
             List<CommentInfo> commentInfoList = convertUtil.showComment(comments);
             return ResultFactory.buildSuccessResult("", commentInfoList);
         }catch (Exception e){

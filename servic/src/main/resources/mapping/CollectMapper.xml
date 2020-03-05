@@ -57,7 +57,7 @@
   </select>
 
   <select id="findCollectInfos" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
-    select e.title as title, e.content as content, e.id as essayId, u.username as userName
+    select e.title as title, e.content as content,  es.id as id, u.username as userName
     from collect c
            left join
          essay_song es on (c.matter_id = es.id)

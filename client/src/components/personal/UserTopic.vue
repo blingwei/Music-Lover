@@ -37,7 +37,7 @@
         </el-dialog>
         <div v-if="displayList.length === 0 " >
             <div class="none">
-                还没有创建专栏 <span @click="dialogFormVisible = true" class="click" v-if="this.$store.state.personal.identity">点击申请创建</span>
+                还没有创建专栏 <span @click="dialogFormVisible = true" class="click" v-if="this.$route.query.identity">点击申请创建</span>
             </div>
 
 
@@ -45,9 +45,9 @@
 
         <div v-else>
             <div class="top">
-                <span v-if="this.$store.state.personal.identity">我 的 专 栏</span>
+                <span v-if="this.$route.query.identity">我 的 专 栏</span>
                 <span v-else>他 的 专 栏</span>
-                <span style="margin-left: 75%; font-size: 12px; font-weight: normal" @click="dialogFormVisible = true" class="click" v-if="this.$store.state.personal.identity && displayList.length>0">点击申请创建</span>
+                <span style="margin-left: 75%; font-size: 12px; font-weight: normal" @click="dialogFormVisible = true" class="click" v-if="this.$route.query.identity && displayList.length>0">点击申请创建</span>
             </div>
             <div class="info" v-for="item in displayList">
                 <el-row :gutter="20">
@@ -96,7 +96,7 @@
                 let obj = this;
                 obj.$axios.get("getTopics", {
                     params: {
-                        userName: this.$store.state.personal.personalUsername
+                        userName: this.$route.query.personalUsername
                     }
                 }).then(res => {
                     if (res.data.code === 200) {
@@ -159,8 +159,10 @@
                 })
             },
             displayTopicInfo(id){
-                this.$store.commit('setTopicId', id);
-                let routeData = this.$router.resolve({ path: '/topic' });
+                let routeData = this.$router.resolve({
+                    path: '/topic' ,
+                    query:{id: id}
+                });
                 window.open(routeData.href, '_blank');
             }
         },

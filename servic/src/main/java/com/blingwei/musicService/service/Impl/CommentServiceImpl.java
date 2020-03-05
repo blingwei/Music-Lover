@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
         //增加动态  发表评论
         Condition condition = new Condition();
         condition.setUserId(comment.getUserId());
-        condition.setMatterId(comment.getMatterId());
+        condition.setMatterId(comment.getId());
         condition.setType(TypeEnum.COMMENT);
         condition.setOperate(OperateEnum.PUBLISH);
         conditionMapper.insert(condition);

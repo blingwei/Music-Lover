@@ -63,7 +63,7 @@
 
   </select>
   <select id="findPublishByTopicId" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
-    select  e.title as title, u.username as userName, e.content as content, e.id as essayId
+    select  e.title as title, u.username as userName, e.content as content, es.id as id
     from
       relation_topic_publish rtb
         LEFT JOIN topic t on rtb.topic_id = t.id

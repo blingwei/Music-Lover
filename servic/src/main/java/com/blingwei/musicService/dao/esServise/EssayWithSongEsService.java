@@ -62,7 +62,7 @@ public class EssayWithSongEsService {
 
     }
 
-    public static List<EssayForElastic> find(String message){//不完全，需要优化,只是匹配的文章内容
+    public static List<EssayForElastic> find(String message){
         SearchRequest searchRequest = new SearchRequest(index);
         searchRequest.types(type);
 
@@ -100,7 +100,7 @@ public class EssayWithSongEsService {
                 //设置高亮字段
                 if (hit.getHighlightFields() != null)  {
                     for( HighlightField field: hit.getHighlightFields().values()){
-                       switch (field.name()){
+                       switch (field.name()){//加入自定义的样式
                            case "title": result.setTitle(field.fragments()[0].string()); break;
                            case "songName": result.setSongName(field.fragments()[0].string()); break;
                            case "intor": result.setIntor(field.fragments()[0].string()); break;
@@ -115,6 +115,12 @@ public class EssayWithSongEsService {
             return null;
         }
     }
+
+    public static void delete(){
+
+    }
+
+
 
 
 }

@@ -54,7 +54,7 @@ public class UserCollectManage {
 
     public CollectResponse getCollectResponse(Integer matterId){
         Collect collect = new Collect();
-        collect.setMatterId(essayWithSongService.findEssayWithSongByEssayId(matterId).getId());
+        collect.setMatterId(matterId);
         collect.setUserId(userService.getCurrentUser().getId());
         collect.setType(TypeEnum.ESSAY_WITH_SONG);
         CollectResponse collectResponse = new CollectResponse();

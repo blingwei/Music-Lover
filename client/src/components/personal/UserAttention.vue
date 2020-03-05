@@ -95,7 +95,7 @@
                 let obj = this;
                 obj.$axios.get("getMyAttention", {
                     params: {
-                        userName: this.$store.state.personal.personalUsername
+                        userName: this.$route.query.personalUsername
                     }
                 }).then(res => {
                     if (res.data.code === 200) {
@@ -104,19 +104,21 @@
                 })
             },
             displayUserInfo(userName){
-                let identity = this.$route.params.userName === userName;
-                let data = {
-                    personalUsername: userName,
-                    identity : identity
-                };
-                this.$store.commit('setPersonal', data);
-                this.$router.go(0)//刷新页面
+                let identity = this.$route.query.personalUsername === userName;
+                let routeData = this.$router.resolve({
+                    path:'/personal',
+                    query:{
+                        personalUsername: userName,
+                        identity : identity
+                    }
+                });
+                window.open(routeData.href, '_blank');
             },
             getAttentionMe() {
                 let obj = this;
                 obj.$axios.get("getAttentionMe", {
                     params: {
-                        userName: this.$store.state.personal.personalUsername
+                        userName: this.$route.query.personalUsername
                     }
                 }).then(res => {
                     if (res.data.code === 200) {
@@ -128,7 +130,7 @@
                 let obj = this;
                 obj.$axios.get("getAttentionTopic", {
                     params: {
-                        userName: this.$store.state.personal.personalUsername
+                        userName: this.$route.query.personalUsername
                     }
                 }).then(res => {
                     if (res.data.code === 200) {
@@ -214,8 +216,10 @@
                 })
             },
             displayTopicInfo(id){
-                this.$store.commit('setTopicId', id);
-                let routeData = this.$router.resolve({ path: '/topic' });
+                let routeData = this.$router.resolve({
+                    path: '/topic' ,
+                    query:{id: id}
+                });
                 window.open(routeData.href, '_blank');
             }
 

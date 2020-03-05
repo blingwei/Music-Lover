@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Message">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="send_user_id" jdbcType="INTEGER" property="sendUserId" />
+    <result column="receive_user_id" jdbcType="INTEGER" property="receiveUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="is_read" jdbcType="INTEGER" property="isRead" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.blingwei.musicService.pojo.Message">
+    insert into message (send_user_id, receive_user_id,
+      create_time, content)
+    values (#{sendUserId,jdbcType=INTEGER}, #{receiveUserId,jdbcType=INTEGER},
+      now(), #{content,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Message">
+    update message
+    set send_user_id = #{sendUserId,jdbcType=INTEGER},
+      receive_user_id = #{receiveUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      is_read = #{isRead,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, send_user_id, receive_user_id, create_time, content, is_delete, is_read
+    from message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, send_user_id, receive_user_id, create_time, content, is_delete, is_read
+    from message
+  </select>
+
+  <select id="selectByReceiveUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select m.id, m.send_user_id, m.receive_user_id, m.create_time, m.content, m.is_delete, m.is_read, u.username as sendUserName
+    from message m, user u
+    where receive_user_id = #{id,jdbcType=INTEGER}
+    and m.send_user_id = u.id
+    ORDER by create_time DESC
+  </select>
+</mapper>

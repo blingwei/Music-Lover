@@ -51,7 +51,7 @@
   </select>
 
   <select id="findConditionMessageByEssayWithSongId" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
-    select e.title as title, u.username as userName, e.content as content, e.id as essayId
+    select e.title as title, u.username as userName, e.content as content, es.id as id
     from essay_song es
            LEFT JOIN essay e on es.essay_id = e.id
            left JOIN `user` u on es.user_id = u.id
@@ -59,7 +59,7 @@
   </select>
 
   <select id="findConditionMessageByCommentId" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
-    select e.title as title, u.username as userName, e.content as content, e.id as essayId
+    select e.title as title, u.username as userName, e.content as content, es.id as id
     from comment c
            left join essay_song es on c.matter_id = es.id
            LEFT JOIN essay e on es.essay_id = e.id

@@ -43,7 +43,7 @@
             return {
                 comment:{
                     username: this.$store.state.user.username,
-                    matterId: this.$store.state.essayId,
+                    matterId: this.$route.query.id,
                     pid: '0',
                     replyId: '0',
                     type: "2",
@@ -70,7 +70,7 @@
               if(obj.collectStatus){
                 this.$axios.get("cancelCollectEssayWithSong", {
                   params: {
-                    matterId: obj.$store.state.essayId
+                    matterId: obj.$route.query.id
                   }
                 }).then(res => {
                   obj.collectStatus = false;
@@ -82,7 +82,7 @@
               }else{
                 this.$axios.get("collectEssayWithSong", {
                   params: {
-                    matterId: obj.$store.state.essayId
+                    matterId: this.$route.query.id
                   }
                 }).then(res => {
                   obj.collectStatus = true;
@@ -97,7 +97,7 @@
               let obj = this;
               obj.$axios.get("getEssayWithSongCollectNumAndStatus", {
                 params: {
-                  matterId: obj.$store.state.essayId
+                  matterId: this.$route.query.id
                 }
               }).then(res => {
                 obj.collectNum = res.data.data.num;
@@ -123,7 +123,7 @@
                 let obj = this;
                 obj.$axios.get("getEssayWithSongPickNumAndStatus", {
                     params: {
-                        matterId: obj.$store.state.essayId
+                        matterId: obj.$route.query.id
                     }
                 }).then(res => {
                     obj.pickNum = res.data.data.num;
@@ -136,7 +136,7 @@
                 if(obj.pickStatus){
                     this.$axios.get("cancelPickEssayWithSong", {
                         params: {
-                            matterId: obj.$store.state.essayId
+                            matterId: obj.$route.query.id
                         }
                     }).then(res => {
                         obj.pickStatus = false;
@@ -146,7 +146,7 @@
                 }else{
                     this.$axios.get("pickEssayWithSong", {
                         params: {
-                            matterId: obj.$store.state.essayId
+                            matterId: obj.$route.query.id
                         }
                     }).then(res => {
                         obj.pickStatus = true;

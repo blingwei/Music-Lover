@@ -24,7 +24,7 @@
                 <div class="information">简介: {{userInfo.introduce}}</div>
             </el-col>
             <el-col :span="4">
-                <el-button @click="editUserInfo" style="margin-top: 140px" v-if="this.$store.state.personal.identity">编
+                <el-button @click="editUserInfo" style="margin-top: 140px" v-if="this.$route.query.identity">编
                     辑 资 料
                 </el-button>
                 <div v-else>
@@ -99,7 +99,7 @@
             init() {
                 this.$axios.get("getUserInfo", {
                     params: {
-                        userName: this.$store.state.personal.personalUsername
+                        userName: this.$route.query.personalUsername
                     }
                 }).then(res => {
                     if (res.data.code === 200) {
@@ -142,7 +142,7 @@
             attention() {
                 this.$axios.get("collectAttention", {
                     params: {
-                        userName: this.$store.state.personal.personalUsername
+                        userName: this.$route.query.personalUsername
                     }
                 }).then(res =>{
                     if (res.data.code === 200) {
@@ -153,7 +153,7 @@
             cancelAttention() {
                 this.$axios.get("cancelCollectAttention", {
                     params: {
-                        userName: this.$store.state.personal.personalUsername
+                        userName: this.$route.query.personalUsername
                     }
                 }).then(res =>{
                     if (res.data.code === 200) {

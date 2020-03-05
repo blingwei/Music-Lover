@@ -25,40 +25,38 @@ router.beforeEach((to, from, next) => {
         })
     }
 
-        if(store.state.user.username){
-            axios.get('/authentication').then(resp => {
-                if(resp.data){
-                    console.log("then" + resp.data)
-                    next({
-                        query: {time: from.path}
-                    })
-                }else{
-                    store.commit('logout')
-                    next({
-                        path: '/login',
-                        query: {redirect: to.fullPath}
-                    })
-                }
-            }).catch(resp=>{
+    if (store.state.user.username) {
+        axios.get('/authentication').then(resp => {
+            if (resp.data) {
+                console.log("then" + resp.data)
+                next({
+                    query: {time: from.path}
+                })
+            } else {
                 store.commit('logout')
                 next({
                     path: '/login',
                     query: {redirect: to.fullPath}
                 })
-            })
-
-        }else{
-            if(to.path == "/login"){
-                next();
-            }else{
-                next({
-                    path: '/login',
-                    query: {redirect: to.fullPath}
-                })
             }
+        }).catch(resp => {
+            store.commit('logout')
+            next({
+                path: '/login',
+                query: {redirect: to.fullPath}
+            })
+        })
+
+    } else {
+        if (to.path == "/login") {
+            next();
+        } else {
+            next({
+                path: '/login',
+                query: {redirect: to.fullPath}
+            })
         }
-
-
+    }
 
 
 });
@@ -106,9 +104,9 @@ const formatRoutes = (routes) => {
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    router,
+    store,
+    components: {App},
+    template: '<App/>'
 })

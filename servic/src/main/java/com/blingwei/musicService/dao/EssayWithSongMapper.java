@@ -4,6 +4,7 @@ import com.blingwei.musicService.bean.commanBean.PublishManageBean;
 import com.blingwei.musicService.bean.responseBean.AdminViewPublishResponse;
 import com.blingwei.musicService.bean.responseBean.PublishInfoResponse;
 import com.blingwei.musicService.bean.commanBean.PublishVerifyBean;
+import com.blingwei.musicService.pojo.EssayForElastic;
 import com.blingwei.musicService.pojo.EssayWithSong;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -37,4 +38,6 @@ public interface EssayWithSongMapper {
     int getPublishesWithRestrictNums(@Param("start") Integer start, @Param("size") Integer size, @Param("input") String input, @Param("status") Integer status);
 
     void deltePublish(int id);
+
+    EssayForElastic findEssayForElasticById(Integer id);
 }

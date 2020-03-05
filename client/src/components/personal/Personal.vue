@@ -36,19 +36,12 @@
         },
         methods:{
             init() {
-              if(this.$route.params.userName != null){
-                let personalUsername = this.$route.params.userName;
-                let identity = this.$route.params.userName === personalUsername;
-                let data = {
-                  personalUsername: personalUsername,
-                  identity : identity
-                };
-                this.$store.commit('setPersonal', data)
-              }
+                console.log(this.$route.query.personalUsername);
+                console.log(this.$route.query.identity);
 
             },
             handleClick(tab, event) {
-                console.log(tab, event);
+
             },
 
 

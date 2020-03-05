@@ -10,7 +10,7 @@ public class EssayWithSongCardResponse extends ConditionMessageBean {
     private String title;
     private String userName;
     private String content;
-    private Integer essayId;
+    private Integer id;
 
     public String getTitle() {
         return title;
@@ -36,11 +36,11 @@ public class EssayWithSongCardResponse extends ConditionMessageBean {
         this.content = content;
     }
 
-    public Integer getEssayId() {
-        return essayId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setEssayId(Integer essayId) {
-        this.essayId = essayId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -2,13 +2,13 @@ package com.blingwei.musicService.manage;
 
 import com.blingwei.musicService.bean.commanBean.PublishManageBean;
 import com.blingwei.musicService.bean.responseBean.*;
+import com.blingwei.musicService.dao.esServise.EssayWithSongEsService;
 import com.blingwei.musicService.enums.SexEnum;
 import com.blingwei.musicService.enums.StatusEnum;
-import com.blingwei.musicService.pojo.AdminMenu;
-import com.blingwei.musicService.pojo.AdminPermission;
-import com.blingwei.musicService.pojo.AdminRole;
-import com.blingwei.musicService.pojo.UserInfo;
+import com.blingwei.musicService.enums.TypeEnum;
+import com.blingwei.musicService.pojo.*;
 import com.blingwei.musicService.service.*;
+import com.blingwei.musicService.utils.WebSocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -37,6 +37,9 @@ public class AdminManage {
     @Autowired
     private TopicService topicService;
 
+
+    @Autowired
+    private MessageManage messageManage;
 
 
     public List<AdminMenu> getCurrentUserMenu(){
@@ -155,13 +158,21 @@ public class AdminManage {
         return essayWithSongService.getPublishView(id);
     }
 
-    public void verifyPublish(Integer id, Integer status, int type){
+    public void verifyPublish(Integer id, Integer status, int type, String userName, String publishName){
         if(type == 1){
             essayWithSongService.AdminVerifyPublish(id, status);
+            if(status == 1){//审核通过
+                EssayWithSongEsService.add(essayWithSongService.findEssayForElasticById(id));//存入es便于搜索
+            }
         }else{
             topicService.AdminVerifyTopic(id, status);
         }
-
+        Message message = new Message();
+        message.setSendUserId(1);//系统管理员
+        message.setReceiveUserId(userService.getUserInoByUserName(userName).getUserId());
+        String content = "您的"+ TypeEnum.valueOf(type).getMessage()+ " '"+ publishName+ "' 审核"+ StatusEnum.valueOf(status).getMessage();
+        message.setContent(content);
+        messageManage.sendOneMessage(userName, message);
     }
 
     public PublishManageResponse getPublishesWithRestrict(Integer start, Integer size, String input, Integer status) {

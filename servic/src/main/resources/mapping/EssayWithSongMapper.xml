@@ -111,5 +111,13 @@
     <delete id="deltePublish">
         delete from essay_song where id = #{id}
     </delete>
+    <select id="findEssayForElasticById" resultType="com.blingwei.musicService.pojo.EssayForElastic" parameterType="java.lang.Integer">
+        select es.id as id, e.title as title, e.intor as intor ,e.content as content, s.`name` as songName, u.username as userName
+        from essay_song es, essay e, song s, `user` u
+        where es.essay_id = e.id
+        and es.song_id = s.id
+        and es.user_id = u.id
+        and es.id = #{id}
+    </select>
 
 </mapper>

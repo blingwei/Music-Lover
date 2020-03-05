@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="top">
-            <span v-if="this.$store.state.personal.identity">我 的 动 态</span>
+            <span v-if="this.$route.query.identity">我 的 动 态</span>
             <span v-else>他 的 动 态</span>
         </div>
 
@@ -11,10 +11,10 @@
             {{item.operate}}{{item.type}}{{item.matterName}}
             </div>
             <div class="message" v-if="item.type === '音乐文章'|| item.type === '评论'">
-                    <div style="font-size: 14px; font-weight: bold; color: #78b6f7; margin-bottom: 5px">{{item.conditionMessage.name}}</div>
+                    <div style="font-size: 14px; font-weight: bold; color: #78b6f7; margin-bottom: 5px">{{item.conditionMessage.title}}</div>
                     <div v-html="item.conditionMessage.content" class="content"></div>
                     <span class="click"  @click="displayUserInfo(item.conditionMessage.userName)"> 来自 {{item.conditionMessage.userName}}</span>
-                    <span @click="display(item.conditionMessage.essayId)" style="margin-left: 10%" class="click">前往文章</span>
+                    <span @click="display(item.conditionMessage.id)" style="margin-left: 10%" class="click">前往文章</span>
 
             </div>
             <div class="message" v-if="item.type === '用户'|| item.type === '专栏'">
@@ -25,7 +25,7 @@
                                 :src="'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'"/>
                         </el-col>
                         <el-col :span="19">
-                            <div style="margin-top: 5px; font-size: 14px" @click="displayUserInfo(item.name)" v-if="item.type === '用户'">{{item.conditionMessage.name}}</div>
+                            <div style="margin-top: 5px; font-size: 14px" @click="displayUserInfo(item.conditionMessage.name)" v-if="item.type === '用户'">{{item.conditionMessage.name}}</div>
                             <div style="margin-top: 5px; font-size: 14px" @click="displayTopicInfo(item.conditionMessage.id)" v-if="item.type === '专栏'">{{item.conditionMessage.name}}</div>
                             <div style="margin-top: 5px; font-size: 12px">{{item.conditionMessage.introduce}}</div>
                             <div style="margin-top: 20px; font-size: 10px; color: #969696"><span>{{item.conditionMessage.productionNum}}作品 </span> <span style="margin-left: 15px"> {{item.conditionMessage.attentionNum}}人关注</span></div>
@@ -55,27 +55,33 @@
             init(){
                 this.$axios.get("/getConditions",{
                     params: {
-                        userName: this.$store.state.personal.personalUsername
+                        userName: this.$route.query.personalUsername
                     }
                 }).then(res =>{
                     if(res.data.code === 200){
                         this.conditionList= res.data.data
+                        console.log("动态")
+                        console.log(this.conditionList)
                     }
                 })
             },
             display(id){
-                this.$store.commit('setEssayId', id)
-                window.sessionStorage.setItem('essayId', JSON.stringify(id));
-                this.$router.push({name: "EssayWithSongDisplay"})
+                let routeData = this.$router.resolve({
+                    path:'/essayDisplay',
+                    query:{id: id}
+                });
+                window.open(routeData.href, '_blank');
             },
             displayUserInfo(userName){
-                let identity = this.$route.params.userName === userName;
-                let data = {
-                    personalUsername: userName,
-                    identity : identity
-                };
-                this.$store.commit('setPersonal', data);
-                this.$router.go(0)//刷新页面
+                let identity = this.$route.query.personalUsername === userName;
+                let routeData = this.$router.resolve({
+                    path:'/personal',
+                    query:{
+                        personalUsername: userName,
+                        identity : identity
+                    }
+                });
+                window.open(routeData.href, '_blank');
             },
             attention(name) {
                 this.$axios.get("collectAttention", {
@@ -142,8 +148,10 @@
                 })
             },
             displayTopicInfo(id){
-                this.$store.commit('setTopicId', id);
-                let routeData = this.$router.resolve({ path: '/topic' });
+                let routeData = this.$router.resolve({
+                    path: '/topic' ,
+                    query:{id: id}
+                });
                 window.open(routeData.href, '_blank');
             }
         },

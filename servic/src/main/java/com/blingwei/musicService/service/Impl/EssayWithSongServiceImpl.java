@@ -133,4 +133,9 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
     public void deletePublish(int id) {
         essayWithSongMapper.deltePublish(id);
     }
+
+    @Override
+    public EssayForElastic findEssayForElasticById(Integer id) {
+        return essayWithSongMapper.findEssayForElasticById(id);
+    }
 }

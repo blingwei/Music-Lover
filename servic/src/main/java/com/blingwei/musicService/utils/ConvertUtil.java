@@ -51,12 +51,6 @@ public class ConvertUtil {
         TypeEnum typeEnum = TypeEnum.valueOf(Integer.parseInt(commentInfo.getType()));
         comment.setType(typeEnum);
         Integer matterId = commentInfo.getMatterId();
-        switch (typeEnum){
-            case ESSAY_WITH_SONG:
-                matterId = essayWithSongMapper.findEssayWithSongByEssayId(commentInfo.getMatterId()).getId();
-                break;
-            default: break;
-        }
         comment.setMatterId(matterId);
         if(commentInfo.getPid() != null){
             comment.setPid(commentInfo.getPid());

@@ -1,7 +1,7 @@
 package com.blingwei.musicService.pojo;
 
 public class EssayForElastic {
-    private Integer id;
+    private Integer id;//文章id
     private String title;
     private String intor;
     private String content;

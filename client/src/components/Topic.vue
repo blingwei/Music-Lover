@@ -42,7 +42,7 @@
                     <div style="font-size: 14px; font-weight: bold; color: #78b6f7; margin-bottom: 5px">{{item.title}}</div>
                     <div v-html="item.content" class="content"></div>
                     <span class="click"  @click="displayUserInfo(item.userName)"> 来自 {{item.userName}}</span>
-                    <span @click="display(item.essayId)" style="margin-left: 10%" class="click">前往文章</span>
+                    <span @click="display(item.id)" style="margin-left: 10%" class="click">前往文章</span>
                 </el-card>
             </div>
             <div style="height: 200px; font-size: 20px; line-height: 200px; text-align: center; color: #909399" v-else>
@@ -78,7 +78,7 @@
                 let obj = this;
                 obj.$axios.get("getTopicInfo", {
                     params: {
-                        topicId: this.$store.state.topicId
+                        topicId: this.$route.query.id
                     }
                 }).then(res => {
                     if(res.data.code === 200){
@@ -88,20 +88,22 @@
                 })
             },
             displayUserInfo(userName){
-                let identity = this.$route.params.userName === userName;
-                let data = {
-                    personalUsername: userName,
-                    identity : identity
-                };
-                this.$store.commit('setPersonal', data);
-                this.$router.push({name:"Personal"})
+                let identity = this.$route.query.personalUsername === userName;
+                let routeData = this.$router.resolve({
+                    path:'/personal',
+                    query:{
+                        personalUsername: userName,
+                        identity : identity
+                    }
+                });
+                window.open(routeData.href, '_blank');
             },
             display(id){
-                this.$store.commit('setEssayId', id);
-                console.log(id)
-                window.sessionStorage.setItem('essayId', JSON.stringify(id));
-                console.log(this.$store.state.essayId)
-                this.$router.push({name: "EssayWithSongDisplay"})
+                let routeData = this.$router.resolve({
+                    path:'/essayDisplay',
+                    query:{id: id}
+                });
+                window.open(routeData.href, '_blank');
             },
             getPublish(){
                 this.$axios.get("/getPublicInfos",{

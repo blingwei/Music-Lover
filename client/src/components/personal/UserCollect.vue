@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="top">
-      <span v-if="this.$store.state.personal.identity">我 的 收 藏</span>
+      <span v-if="this.$route.query.identity">我 的 收 藏</span>
       <span v-else>他 的 收 藏</span>
     </div>
     <div class="display" v-for="item in displayList">
@@ -9,7 +9,7 @@
         <div style="font-size: 14px; font-weight: bold; color: #78b6f7; margin-bottom: 5px">{{item.title}}</div>
         <div v-html="item.content" class="content"></div>
         <span class="click"  @click="displayUserInfo(item.userName)"> 来自 {{item.userName}}</span>
-        <span @click="display(item.essayId)" style="margin-left: 10%" class="click">前往文章</span>
+        <span @click="display(item.id)" style="margin-left: 10%" class="click">前往文章</span>
       </el-card>
 
     </div>
@@ -30,7 +30,7 @@
           init(){
             this.$axios.get("/getCollectInfos",{
               params: {
-                userName: this.$store.state.personal.personalUsername
+                userName: this.$route.query.personalUsername
               }
             }).then(res =>{
               if(res.data.code === 200){
@@ -39,18 +39,23 @@
             })
           },
           display(id){
-            this.$store.commit('setEssayId', id)
-            window.sessionStorage.setItem('essayId', JSON.stringify(id));
-            this.$router.push({name: "EssayWithSongDisplay"})
+            let routeData = this.$router.resolve({
+                    path:'/essayDisplay',
+                    query:{id: id}
+                });
+                window.open(routeData.href, '_blank');
           },
           displayUserInfo(userName){
-            let identity = this.$route.params.userName === userName;
-            let data = {
-              personalUsername: userName,
-              identity : identity
-            };
-            this.$store.commit('setPersonal', data);
-            this.$router.go(0)//刷新页面
+            let identity = this.$route.query.personalUsername === userName;
+
+              let routeData = this.$router.resolve({
+                  path:'/personal',
+                  query:{
+                      personalUsername: userName,
+                      identity : identity
+                  }
+              });
+              window.open(routeData.href, '_blank');
           }
       },
       filters: {

@@ -46,7 +46,7 @@
                 firstComments: [], //第一层的评论
                 comment:{
                     username: this.$store.state.user.username,
-                    matterId: this.$store.state.essayId,
+                    matterId: this.$route.query.id,
                     pid: '0',
                     replyId: '0',
                     type: "2",
@@ -63,7 +63,7 @@
             initComment(){
               this.$axios.get("comment/findEssayWithSongComment", {
                   params: {
-                      id: this.$store.state.essayId
+                      id: this.$route.query.id
                   }
               }).then(res => {
                   if(res.data.code === 200){

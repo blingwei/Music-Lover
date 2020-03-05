@@ -40,9 +40,9 @@
         },
         methods: {
             init() {
-                this.$axios.get("musicSea/findEssayWithSongByEssayId", {
+                this.$axios.get("musicSea/findEssayWithSongById", {
                     params: {
-                        id: this.$store.state.essayId
+                        id: this.$route.query.id
                     }
                 }).then(res =>{
                     if(res.data.code === 200){

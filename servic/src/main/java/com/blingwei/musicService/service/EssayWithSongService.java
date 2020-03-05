@@ -6,6 +6,7 @@ import com.blingwei.musicService.bean.responseBean.PublishInfoResponse;
 import com.blingwei.musicService.bean.commanBean.PublishVerifyBean;
 import com.blingwei.musicService.bean.responseBean.PublishManageResponse;
 import com.blingwei.musicService.pojo.Essay;
+import com.blingwei.musicService.pojo.EssayForElastic;
 import com.blingwei.musicService.pojo.EssayWithSong;
 import com.blingwei.musicService.pojo.Song;
 
@@ -42,4 +43,5 @@ public interface EssayWithSongService {
     int getPublishesWithRestrictNums(Integer start, Integer size, String input, Integer status);
 
     void  deletePublish(int id);
+    EssayForElastic findEssayForElasticById(Integer id);
 }

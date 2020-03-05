@@ -10,6 +10,7 @@ import com.blingwei.musicService.pojo.AdminRole;
 import com.blingwei.musicService.result.Result;
 import com.blingwei.musicService.utils.ResultFactory;
 import org.apache.ibatis.annotations.Param;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,8 @@ public class AdminController {
 
     @Autowired
     private AdminManage adminManage;
+
+
 
     @GetMapping("/menu")
     public Result getCurrentUserMenu(){
@@ -105,13 +108,13 @@ public class AdminController {
     }
 
     @PostMapping("/admin/assessor/verifyPublish")
-    public Result verifyPublish(@RequestBody VerifyPublishRequest verifyPublishRequest){
-        adminManage.verifyPublish(verifyPublishRequest.getId(), verifyPublishRequest.getStatus(), verifyPublishRequest.getType());
+    public Result verifyPublish(@NotNull @RequestBody VerifyPublishRequest verifyPublishRequest){
+        adminManage.verifyPublish(verifyPublishRequest.getId(), verifyPublishRequest.getStatus(), verifyPublishRequest.getType(), verifyPublishRequest.getUserName(), verifyPublishRequest.getPublishName());
         return ResultFactory.buildSuccessResult("", null);
     }
 
     @PostMapping("/admin/content/publish/delete")
-    public Result deletePublish(@RequestBody OperateBean deleteRequest){
+    public Result deletePublish(@NotNull @RequestBody OperateBean deleteRequest){
         adminManage.deletePublish(deleteRequest.getId());
         return ResultFactory.buildSuccessResult("删除成功", null);
     }

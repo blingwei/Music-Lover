@@ -4,6 +4,8 @@ public class VerifyPublishRequest {
     private Integer id;
     private Integer status;
     private Integer type;
+    private String userName;
+    private String publishName;
 
     public Integer getId() {
         return id;
@@ -27,5 +29,21 @@ public class VerifyPublishRequest {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPublishName() {
+        return publishName;
+    }
+
+    public void setPublishName(String publishName) {
+        this.publishName = publishName;
     }
 }

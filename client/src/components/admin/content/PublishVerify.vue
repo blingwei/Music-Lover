@@ -49,7 +49,7 @@
                                 <el-button
                                     type="text"
                                     size="small"
-                                    @click="verify(scope.row.publishId, 1)"
+                                    @click="verify(scope.row.publishId, 2, scope.row.authorName, scope.row.publishName)"
                                 >
                                     审核
                                 </el-button>
@@ -97,7 +97,7 @@
                                 <el-button
                                     type="text"
                                     size="small"
-                                    @click="verify(scope.row.publishId, 2)"
+                                    @click="verify(scope.row.publishId, 4, scope.row.authorName, scope.row.publishName)"
                                 >
                                     审核
                                 </el-button>
@@ -176,7 +176,7 @@
             view(id){
                 this.$root.$emit('initView', id);
             },
-            verify(id, type){
+            verify(id, type, username, publishName){
                 this.$confirm('请确认后操作', '审核', {
                     distinguishCancelAndClose: true,
                     confirmButtonText: '通过',
@@ -186,7 +186,9 @@
                         this.$axios.post("/admin/assessor/verifyPublish", {
                             id: id,
                             status: 1,
-                            type: type
+                            type: type,
+                            userName: username,
+                            publishName: publishName
                         }).then(res => {
                             if(res && res.status === 200){
                                 this.$message({
@@ -208,7 +210,9 @@
                             this.$axios.post("/admin/assessor/verifyPublish", {
                                 id: id,
                                 status: 2,
-                                type: type
+                                type: type,
+                                userName: username,
+                                publishName: publishName
                             }).then(res => {
                                 if(res && res.status === 200){
                                     this.$message({
@@ -220,7 +224,7 @@
                             }).catch(res => {
                                 this.$message({
                                     type: 'error',
-                                    message: '出现异常'
+                                    message: '出现异常 '
                                 });
                             });
                         }

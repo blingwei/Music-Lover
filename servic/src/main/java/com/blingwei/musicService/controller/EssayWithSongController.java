@@ -43,6 +43,7 @@ public class EssayWithSongController {
 
     @Autowired
     private UserCollectManage userCollectManage;
+    private Integer heat;
 
 
     @RequestMapping("creation/uploadSong")
@@ -101,8 +102,8 @@ public class EssayWithSongController {
         essayWithSong.setUserId(user.getId());
         try {
             essayWithSongService.addEssayWithSong(essayWithSong, essay);
-            EssayForElastic essayForElastic = new EssayForElastic(essay.getId(), essay.getTitle(), essay.getIntor(), essay.getContent(), essayWithSongService.findSongById(songId).getName(), user.getUsername());
-            EssayWithSongEsService.add(essayForElastic);
+//            EssayForElastic essayForElastic = new EssayForElastic(essay.getId(), essay.getTitle(), essay.getIntor(), essay.getContent(), essayWithSongService.findSongById(songId).getName(), user.getUsername());
+//            EssayWithSongEsService.add(essayForElastic);
             return ResultFactory.buildSuccessResult("上传成功", null);
         }catch (Exception e){
             e.printStackTrace();
@@ -118,8 +119,8 @@ public class EssayWithSongController {
             for(EssayForElastic essayForElastic: essays){
                 Map<String, Object> resultMap = new HashMap<>();
                 resultMap.put("essay", essayForElastic);
-                EssayWithSong essayWithSong = essayWithSongService.findEssayWithSongByEssayId(essayForElastic.getId());
-                Integer heat = essayWithSong.getHeat();
+                EssayWithSong essayWithSong = essayWithSongService.findEssayWithSongById(essayForElastic.getId());
+//                Integer heat = 0;
                 resultMap.put("heat", heat);
                 resultList.add(resultMap);
             }
@@ -130,18 +131,18 @@ public class EssayWithSongController {
         }
     }
 
-    @RequestMapping("musicSea/findEssayWithSongByEssayId")
+    @RequestMapping("musicSea/findEssayWithSongById")
     public Result findEssayWithSongByEssayId(@Param("id") Integer id){
         try {
-            EssayWithSong essayWithSong = essayWithSongService.findEssayWithSongByEssayId(id);
-            Essay essay = essayWithSongService.findEssayById(id);
+            EssayWithSong essayWithSong = essayWithSongService.findEssayWithSongById(id);
+            Essay essay = essayWithSongService.findEssayById(essayWithSong.getEssayId());
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("essay", essay);
             resultMap.put("essayWithSong" , essayWithSong);
             Song song = essayWithSongService.findSongById(essayWithSong.getSongId());
             resultMap.put("song", song);
-            String pickNum = likeRedisService.getPickEssayWithSongNum(id+"")+"";
-            resultMap.put("pickNum", pickNum);
+//            String pickNum = likeRedisService.getPickEssayWithSongNum(id+"")+"";
+//            resultMap.put("pickNum", pickNum);
             return ResultFactory.buildSuccessResult(null, resultMap);
         }catch (Exception e){
             return ResultFactory.buildFailResult(null);
@@ -151,7 +152,7 @@ public class EssayWithSongController {
 
     @RequestMapping("pickEssayWithSong")
     public Result pickEssayWithSong(@Param("matterId") String matterId){
-        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
+        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + "" ;
         likeRedisService.pickEssayWithSong(userId, matterId);
         String pickNum = likeRedisService.getPickEssayWithSongNum(matterId) + "";
         return ResultFactory.buildSuccessResult(null, pickNum);
@@ -173,15 +174,13 @@ public class EssayWithSongController {
 
     @RequestMapping("collectEssayWithSong")
     public Result collectEssayWithSong(@Param("matterId") Integer matterId){
-        Integer id = essayWithSongService.findEssayWithSongByEssayId(matterId).getId();
-        int collectNum = userCollectManage.collect(id, TypeEnum.ESSAY_WITH_SONG);
+        int collectNum = userCollectManage.collect(matterId, TypeEnum.ESSAY_WITH_SONG);
         return ResultFactory.buildSuccessResult(null, collectNum);
     }
 
     @RequestMapping("cancelCollectEssayWithSong")
     public Result cancelCollectEssayWithSong(@Param("matterId") Integer matterId){
-        Integer id = essayWithSongService.findEssayWithSongByEssayId(matterId).getId();
-        int collectNum = userCollectManage.cancelCollect(id, TypeEnum.ESSAY_WITH_SONG);
+        int collectNum = userCollectManage.cancelCollect(matterId, TypeEnum.ESSAY_WITH_SONG);
         return ResultFactory.buildSuccessResult(null, collectNum);
     }
 

@@ -61,7 +61,6 @@
                         message: this.search
                     }
                 }).then(res => {
-                    console.log(res)
                     if(res.data.code === 200){
                         this.list = res.data.data
                     }
@@ -75,10 +74,11 @@
 
             },
             display(id){
-                this.$store.commit('setEssayId', id)
-                window.sessionStorage.setItem('essayId', JSON.stringify(id))
-                this.$router.push({name: "EssayWithSongDisplay"})
-
+                let routeData = this.$router.resolve({
+                    path:'/essayDisplay',
+                    query:{id: id}
+                });
+                window.open(routeData.href, '_blank');
             }
         },
         mounted() {
