@@ -4,7 +4,7 @@ import org.omg.CORBA.INTERNAL;
 
 import java.util.Date;
 
-public class EssayWithSong {
+public class EssayWithSong extends Song {
     private Integer id;
     private Integer essayId;
     private Integer songId;

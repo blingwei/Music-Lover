@@ -10,15 +10,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BaseEnumTypeHandler<E extends BaseEnum>  extends BaseTypeHandler<E> {
+public class BaseEnumTypeHandler<E extends BaseEnum> extends BaseTypeHandler<E> {
 
     private Class<E> type;
 
     private E[] enums;
 
-    public BaseEnumTypeHandler(){};
+    public BaseEnumTypeHandler() {
+    }
 
-    public BaseEnumTypeHandler(Class<E> type){
+    ;
+
+    public BaseEnumTypeHandler(Class<E> type) {
         if (type == null) {
             throw new IllegalArgumentException("Type argument cannot be null");
         }
@@ -37,7 +40,7 @@ public class BaseEnumTypeHandler<E extends BaseEnum>  extends BaseTypeHandler<E>
     @Override
     public E getNullableResult(ResultSet rs, String columnName) throws SQLException {
         Object code = rs.getObject(columnName);
-        if(rs.wasNull()){
+        if (rs.wasNull()) {
             return null;
         }
         return getEnmByCode(code);

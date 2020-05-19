@@ -2,10 +2,17 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+    <settings>
+        <setting name="logImpl" value="slf4j"/>
+    </settings>
     <typeHandlers>
-        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"  javaType="com.blingwei.musicService.enums.TypeEnum"/>
-        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"  javaType="com.blingwei.musicService.enums.PickStatusEnum"/>
-        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"  javaType="com.blingwei.musicService.enums.SexEnum" />
-        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"  javaType="com.blingwei.musicService.enums.OperateEnum"/>
+        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"
+                     javaType="com.blingwei.musicService.enums.TypeEnum"/>
+        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"
+                     javaType="com.blingwei.musicService.enums.PickStatusEnum"/>
+        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"
+                     javaType="com.blingwei.musicService.enums.SexEnum"/>
+        <typeHandler handler="com.blingwei.musicService.handle.BaseEnumTypeHandler"
+                     javaType="com.blingwei.musicService.enums.OperateEnum"/>
     </typeHandlers>
 </configuration>

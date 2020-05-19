@@ -17,7 +17,8 @@
                     auto-complete="off" placeholder="角色描述"></el-input>
         </el-form-item>
         <el-form-item style="width: 100%">
-          <el-button type="primary" style="width: 40%;background: #505458;border: none" v-on:click="createRole">添加</el-button>
+          <el-button type="primary" style="width: 40%;background: #505458;border: none" v-on:click="createRole">添加
+          </el-button>
         </el-form-item>
         <el-form-item prop="username">
           <el-tag>初始权限：无</el-tag>
@@ -30,7 +31,7 @@
 <script>
   export default {
     name: 'RoleCreate',
-    data () {
+    data() {
       return {
         dialogFormVisible: false,
         rules: {
@@ -45,13 +46,13 @@
       }
     },
     methods: {
-      clear () {
+      clear() {
         this.roleForm = {
           name: '',
           nameZh: ''
         }
       },
-      createRole () {
+      createRole() {
         this.$axios
           .post('/admin/role', {
             name: this.roleForm.name,
@@ -70,7 +71,8 @@
               })
             }
           })
-          .catch(failResponse => {})
+          .catch(failResponse => {
+          })
         this.dialogFormVisible = false
       }
     }

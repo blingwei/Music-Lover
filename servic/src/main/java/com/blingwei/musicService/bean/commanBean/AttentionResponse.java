@@ -3,7 +3,7 @@ package com.blingwei.musicService.bean.commanBean;
 /**
  * @author 86187
  */
-public class AttentionResponse extends ConditionMessageBean{
+public class AttentionResponse extends ConditionMessageBean {
     private Integer id;//关注的对象的id
     private String name;
     private String url;

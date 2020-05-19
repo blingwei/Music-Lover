@@ -5,9 +5,9 @@
 <mapper namespace="com.blingwei.musicService.dao.EssayMapper">
     <resultMap id="baseResultMap" type="com.blingwei.musicService.pojo.Essay">
         <id column="id" property="id"/>
-        <result column="title" property="title" />
-        <result column="intor" property="intor" />
-        <result column="content" property="content" />
+        <result column="title" property="title"/>
+        <result column="intor" property="intor"/>
+        <result column="content" property="content"/>
     </resultMap>
     <insert id="addEssay" useGeneratedKeys="true" keyProperty="id" parameterType="Essay">
         insert into essay (title, intor, content) values (#{title}, #{intor}, #{content} )

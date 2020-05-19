@@ -1,5 +1,6 @@
 package com.blingwei.musicService.service;
 
+import com.blingwei.musicService.bean.responseBean.ChatMessageResponse;
 import com.blingwei.musicService.pojo.Message;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +16,13 @@ public interface MessageService {
 
     List<Message> selectByReceiveUserId(Integer id);
 
-    void deleteMessage(int id);
+    void deleteMessages(int receiveId, int sendId);
+
+    List<Message> selectContactByUserId(Integer id);
+
+    void deleteContact(Integer id, Integer contactId);
+
+    void addContact(Integer id, Integer contactId);
+
+    List<ChatMessageResponse> getChatMessages(Integer id, Integer contactId);
 }

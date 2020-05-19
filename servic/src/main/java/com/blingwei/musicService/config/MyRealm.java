@@ -24,12 +24,13 @@ public class MyRealm extends AuthorizingRealm {
 
         return new SimpleAuthorizationInfo();
     }
+
     //获取认证信息,根据token中的用户名从数据库中获取密码等
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String userName = token.getPrincipal().toString();
         User user = userService.findUserByName(userName);
-        if(user == null){
+        if (user == null) {
             return null;
         }
         String passInDB = user.getPassword();

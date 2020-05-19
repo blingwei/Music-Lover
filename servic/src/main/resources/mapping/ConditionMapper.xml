@@ -1,87 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blingwei.musicService.dao.ConditionMapper">
-  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Condition">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="operate" jdbcType="TINYINT" property="operate" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="matter_id" jdbcType="INTEGER" property="matterId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from `condition`
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.blingwei.musicService.pojo.Condition">
-    insert into `condition` ( user_id, operate,
-      type, matter_id, create_time
-      )
-    values ( #{userId,jdbcType=INTEGER}, #{operate,jdbcType=TINYINT},
-      #{type,jdbcType=TINYINT}, #{matterId,jdbcType=INTEGER}, now()
-    )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Condition">
-    update `condition`
-    set user_id = #{userId,jdbcType=INTEGER},
-      operate = #{operate,jdbcType=TINYINT},
-      `type` = #{type,jdbcType=TINYINT},
-      matter_id = #{matterId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      is_delete = #{isDelete,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, user_id, operate, `type`, matter_id, create_time, is_delete
-    from `condition`
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+    <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Condition">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="operate" jdbcType="TINYINT" property="operate"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="matter_id" jdbcType="INTEGER" property="matterId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from `condition`
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.blingwei.musicService.pojo.Condition">
+        insert into `condition` ( user_id, operate,
+        type, matter_id, create_time
+        )
+        values ( #{userId,jdbcType=INTEGER}, #{operate,jdbcType=TINYINT},
+        #{type,jdbcType=TINYINT}, #{matterId,jdbcType=INTEGER}, now()
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Condition">
+        update `condition`
+        set user_id = #{userId,jdbcType=INTEGER},
+        operate = #{operate,jdbcType=TINYINT},
+        `type` = #{type,jdbcType=TINYINT},
+        matter_id = #{matterId,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        is_delete = #{isDelete,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select id, user_id, operate, `type`, matter_id, create_time, is_delete
+        from `condition`
+        where id = #{id,jdbcType=INTEGER}
+    </select>
 
-  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, user_id, operate, type, matter_id, create_time
-    from `condition`
-    where user_id = #{userId,jdbcType=INTEGER}
-    and is_delete = 0
-  </select>
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select id, user_id, operate, type, matter_id, create_time
+        from `condition`
+        where user_id = #{userId,jdbcType=INTEGER}
+        and is_delete = 0
+        order by create_time DESC
+    </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, operate, `type`, matter_id, create_time, is_delete
-    from `condition`
-  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, user_id, operate, `type`, matter_id, create_time, is_delete
+        from `condition`
+    </select>
 
-  <select id="findConditionMessageByEssayWithSongId" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
-    select e.title as title, u.username as userName, e.content as content, es.id as id
-    from essay_song es
-           LEFT JOIN essay e on es.essay_id = e.id
-           left JOIN `user` u on es.user_id = u.id
-    where es.id = #{id}
-  </select>
+    <select id="findConditionMessageByEssayWithSongId" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
+        select e.title as title, u.username as userName, e.content as content, es.id as id
+        from essay_song es
+        LEFT JOIN essay e on es.essay_id = e.id
+        left JOIN `user` u on es.user_id = u.id
+        where es.id = #{id}
+    </select>
 
-  <select id="findConditionMessageByCommentId" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
-    select e.title as title, u.username as userName, e.content as content, es.id as id
-    from comment c
-           left join essay_song es on c.matter_id = es.id
-           LEFT JOIN essay e on es.essay_id = e.id
-           left JOIN `user` u on es.user_id = u.id
-    where c.type = 2
-      and c.is_delete = 0
-    and c.id = #{id}
-  </select>
+    <select id="findConditionMessageByCommentId" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
+        select e.title as title, u.username as userName, e.content as content, es.id as id
+        from comment c
+        left join essay_song es on c.matter_id = es.id
+        LEFT JOIN essay e on es.essay_id = e.id
+        left JOIN `user` u on es.user_id = u.id
+        where c.type = 2
+        and c.is_delete = 0
+        and c.id = #{id}
+    </select>
 
-  <select id="findConditionMessageByUserId" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
-    select user.username as name, user_info.url as url, user_info.introduce as introduce
-    from user, user_info
-    where user.id = user_info.user_id
-      and user.id = #{id}
-  </select>
+    <select id="findConditionMessageByUserId" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+        select user.username as name, user_info.url as url, user_info.introduce as introduce
+        from user, user_info
+        where user.id = user_info.user_id
+        and user.id = #{id}
+    </select>
 
-  <select id="findConditionMessageByTopicId" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
-    SELECT t.`name` as name, t.url as url, t.introduce as introduce
-    from topic t
-    where t.is_delete = 0
-      and t.id = #{id}
-  </select>
+    <select id="findConditionMessageByTopicId" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+        SELECT t.`name` as name, t.url as url, t.introduce as introduce
+        from topic t
+        where t.is_delete = 0
+        and t.id = #{id}
+    </select>
 
 
 </mapper>

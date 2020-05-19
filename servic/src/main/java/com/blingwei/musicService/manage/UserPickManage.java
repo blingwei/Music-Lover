@@ -32,18 +32,19 @@ public class UserPickManage {
         int num;
         if (likeRedisService.getPickEssayWithSongNum(matterId + "") != null) {
             num = likeRedisService.getPickEssayWithSongNum(matterId + "");
-        }else{
+        } else {
             num = userPickService.getEssayWithSongPickNum(matterId);
             //把数量写进redis中去
-            //..............
+            likeRedisService.setEssayWithSongLikeNum(matterId + "", num);
+
         }
         response.setNum(num);
 
         boolean pickStatus = false;
-        if(likeRedisService.getPickEssayWithSongStatus(userId+"", matterId+"") != null){
-            pickStatus = likeRedisService.getPickEssayWithSongStatus(userId+"", matterId+"") != 0;
-        }else{
-            if(userPickService.getEssayWithSongPickByUserIdAndMatterId(userId, matterId) != null){
+        if (likeRedisService.getPickEssayWithSongStatus(userId + "", matterId + "") != null) {
+            pickStatus = likeRedisService.getPickEssayWithSongStatus(userId + "", matterId + "") != 0;
+        } else {
+            if (userPickService.getEssayWithSongPickByUserIdAndMatterId(userId, matterId) != null) {
                 pickStatus = userPickService.getEssayWithSongPickByUserIdAndMatterId(userId, matterId).getStatus().getValue() != 0;
             }
         }
@@ -58,16 +59,17 @@ public class UserPickManage {
 
         if (likeRedisService.getPickCommentNum(matterId + "") != null) {
             num = likeRedisService.getPickCommentNum(matterId + "");
-        }else{
+        } else {
             num = userPickService.getCommentPickNum(matterId);
+            likeRedisService.setCommentLikeNum(matterId + "", num);
         }
         response.setNum(num);
 
         boolean pickStatus = false;
-        if(likeRedisService.getPickCommentStatus(userId+"", matterId+"") != null){
-            pickStatus = likeRedisService.getPickCommentStatus(userId+"", matterId+"") != 0;
-        }else{
-            if(userPickService.getCommentPickByUserIdAndMatterId(userId, matterId)!=null){
+        if (likeRedisService.getPickCommentStatus(userId + "", matterId + "") != null) {
+            pickStatus = likeRedisService.getPickCommentStatus(userId + "", matterId + "") != 0;
+        } else {
+            if (userPickService.getCommentPickByUserIdAndMatterId(userId, matterId) != null) {
                 pickStatus = userPickService.getCommentPickByUserIdAndMatterId(userId, matterId).getStatus().getValue() != 0;
             }
 
@@ -76,26 +78,26 @@ public class UserPickManage {
         return response;
     }
 
-    public void insertUserPicks(List<UserPick> userPicks){
+    public void insertUserPicks(List<UserPick> userPicks) {
         //后期分批处理
         userPickService.insertUserPicks(userPicks);
 
     }
 
-    public void insertExistUserPicks(List<UserPick> userPicks){
+    public void insertExistUserPicks(List<UserPick> userPicks) {
         //后期分批处理
         userPickService.insertExistUserPicks(userPicks);
 
     }
 
-    public boolean isExist(UserPick userPick){
-        if( userPickService.getEssayWithSongPickByUserIdAndMatterId(userPick.getUserId(), userPick.getMatterId())!=null){
+    public boolean isExist(UserPick userPick) {
+        if (userPickService.getEssayWithSongPickByUserIdAndMatterId(userPick.getUserId(), userPick.getMatterId()) != null) {
             userPick.setId(userPickService.getEssayWithSongPickByUserIdAndMatterId(userPick.getUserId(), userPick.getMatterId()).getId());
             return true;
-        }else if(userPickService.getCommentPickByUserIdAndMatterId(userPick.getUserId(), userPick.getMatterId())!=null){
+        } else if (userPickService.getCommentPickByUserIdAndMatterId(userPick.getUserId(), userPick.getMatterId()) != null) {
             userPick.setId(userPickService.getCommentPickByUserIdAndMatterId(userPick.getUserId(), userPick.getMatterId()).getId());
             return true;
-        }else{
+        } else {
             return false;
         }
     }

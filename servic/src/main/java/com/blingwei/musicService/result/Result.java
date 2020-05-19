@@ -5,15 +5,16 @@ public class Result {
     private Integer code;
     private Object data;
 
-    public Result(){
+    public Result() {
 
     }
 
-    public Result(Integer code, String message, Object data){
+    public Result(Integer code, String message, Object data) {
         this.code = code;
         this.message = message;
         this.data = data;
     }
+
     public String getMessage() {
         return message;
     }

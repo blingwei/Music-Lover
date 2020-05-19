@@ -1,9 +1,10 @@
 package com.blingwei.musicService.pojo;
 
-public class Admin extends Person{
+public class Admin extends Person {
     private String name;
     private String password;
     private String salt;
+
 
     public String getName() {
         return name;

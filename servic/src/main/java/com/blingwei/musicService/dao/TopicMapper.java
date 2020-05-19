@@ -32,6 +32,7 @@ public interface TopicMapper {
     int findPublishNumById(Integer id);
 
     List<PublishVerifyBean> getTopicsWithoutVerify(@Param("start") Integer start, @Param("size") Integer size);//用户未审核，刚发表的作品
+
     int getAllTopicNums();
 
     void AdminVerifyTopic(@Param("id") Integer id, @Param("status") Integer status);

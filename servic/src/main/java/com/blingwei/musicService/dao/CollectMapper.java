@@ -18,15 +18,15 @@ public interface CollectMapper {
 
     int insert(Collect record);
 
-    Collect selectByPrimaryKey(@Param("userId") Integer userId, @Param("matterId") Integer matterId, @Param("type")TypeEnum type);//is_delete = 0的
+    Collect selectByPrimaryKey(@Param("userId") Integer userId, @Param("matterId") Integer matterId, @Param("type") TypeEnum type);//is_delete = 0的
 
-    Collect selectAllByPrimaryKey(@Param("userId") Integer userId, @Param("matterId") Integer matterId, @Param("type")TypeEnum type);//包括is_delete = 1的
+    Collect selectAllByPrimaryKey(@Param("userId") Integer userId, @Param("matterId") Integer matterId, @Param("type") TypeEnum type);//包括is_delete = 1的
 
     List<Collect> selectAll();
 
     int updateByPrimaryKey(Collect record);
 
-    int getCollectNumByMatterIdAndType(@Param("matterId") Integer matterId, @Param("type")TypeEnum type);
+    int getCollectNumByMatterIdAndType(@Param("matterId") Integer matterId, @Param("type") TypeEnum type);
 
     boolean getCollectStatus(Collect record);
 

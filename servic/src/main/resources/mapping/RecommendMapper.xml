@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blingwei.musicService.dao.RecommendMapper">
+    <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Recommend">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="essay_song_id" jdbcType="INTEGER" property="essaySongId"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from recommend
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.blingwei.musicService.pojo.Recommend">
+        insert into recommend (id, essay_song_id, url
+        )
+        values (#{id,jdbcType=INTEGER}, #{essaySongId,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Recommend">
+        update recommend
+        set essay_song_id = #{essaySongId,jdbcType=INTEGER},
+        url = #{url,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select id, essay_song_id, url
+        from recommend
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, essay_song_id, url
+        from recommend
+    </select>
+</mapper>

@@ -23,13 +23,13 @@ public class TopicManage {
     @Autowired
     private UserService userService;
 
-    public TopicInfoResponse getTopicInfo(Integer id){
+    public TopicInfoResponse getTopicInfo(Integer id) {
         TopicInfoResponse topicInfoResponse = new TopicInfoResponse();
         TopicInfoBean topicInfoBean = topicService.findTopicInfoById(id);
         topicInfoBean.setStatus(userCollectManage.meIsAttentionUser(id, TypeEnum.TOPIC));
-        if(topicInfoBean.getUserId().equals(userService.getCurrentUser().getId())){
+        if (topicInfoBean.getUserId().equals(userService.getCurrentUser().getId())) {
             topicInfoBean.setIdentity(true);
-        }else{
+        } else {
             topicInfoBean.setIdentity(false);
         }
         List<EssayWithSongCardResponse> publishList = topicService.findPublishByTopicId(id);
@@ -38,7 +38,7 @@ public class TopicManage {
         return topicInfoResponse;
     }
 
-    public void contributeForTopic(ContributeForTopicRequest contributeForTopicRequest){
+    public void contributeForTopic(ContributeForTopicRequest contributeForTopicRequest) {
         topicService.contributeForTopic(contributeForTopicRequest);
     }
 

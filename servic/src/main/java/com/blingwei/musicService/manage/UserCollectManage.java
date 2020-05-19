@@ -33,8 +33,7 @@ public class UserCollectManage {
     private TopicService topicService;
 
 
-
-    public int collect(Integer matterId, TypeEnum type){
+    public int collect(Integer matterId, TypeEnum type) {
         Collect collect = new Collect();
         collect.setMatterId(matterId);
         collect.setUserId(userService.getCurrentUser().getId());
@@ -43,7 +42,7 @@ public class UserCollectManage {
         return userCollectService.getCollectNumByMatterIdAndType(collect);
     }
 
-    public int  cancelCollect(Integer matterId, TypeEnum type){
+    public int cancelCollect(Integer matterId, TypeEnum type) {
         Collect collect = new Collect();
         collect.setMatterId(matterId);
         collect.setUserId(userService.getCurrentUser().getId());
@@ -52,33 +51,33 @@ public class UserCollectManage {
         return userCollectService.getCollectNumByMatterIdAndType(collect);
     }
 
-    public CollectResponse getCollectResponse(Integer matterId){
+    public CollectResponse getCollectResponse(Integer matterId) {
         Collect collect = new Collect();
         collect.setMatterId(matterId);
         collect.setUserId(userService.getCurrentUser().getId());
         collect.setType(TypeEnum.ESSAY_WITH_SONG);
         CollectResponse collectResponse = new CollectResponse();
         collectResponse.setNum(userCollectService.getCollectNumByMatterIdAndType(collect));
-        if(userCollectService.getCollect(collect) != null){
+        if (userCollectService.getCollect(collect) != null) {
             collectResponse.setCollectStatus(true);
-        }else{
+        } else {
             collectResponse.setCollectStatus(false);
         }
         return collectResponse;
     }
 
-    public boolean meIsAttentionUser(Integer matterId, TypeEnum type){
+    public boolean meIsAttentionUser(Integer matterId, TypeEnum type) {
         Collect collect = new Collect();
         collect.setMatterId(matterId);
         collect.setType(type);
         collect.setUserId(userService.getCurrentUser().getId());
-        if(userCollectService.getCollect(collect) != null){
+        if (userCollectService.getCollect(collect) != null) {
             return true;
         }
         return false;
     }
 
-    public List<EssayWithSongCardResponse> getCollectsByUserName(String userName){
+    public List<EssayWithSongCardResponse> getCollectsByUserName(String userName) {
         Integer userId = userService.findUserByName(userName).getId();
         return userCollectService.findCollectInfos(userId);
     }
@@ -86,7 +85,7 @@ public class UserCollectManage {
     public List<AttentionResponse> getMyAttention(String userName) {
         Integer userId = userService.findUserByName(userName).getId();
         List<AttentionResponse> res = userCollectService.findMyAttentions(userId);
-        for(AttentionResponse attentionResponse: res){
+        for (AttentionResponse attentionResponse : res) {
             attentionResponse.setProductionNum(essayWithSongService.getEssayWithSongNumByUserId(attentionResponse.getId()));
             attentionResponse.setAttentionNum(userCollectService.getAttentionNumByUserId(attentionResponse.getId()));
             attentionResponse.setStatus(meIsAttentionUser(attentionResponse.getId(), TypeEnum.USER));
@@ -97,7 +96,7 @@ public class UserCollectManage {
     public List<AttentionResponse> getAttentionMe(String userName) {
         Integer userId = userService.findUserByName(userName).getId();
         List<AttentionResponse> res = userCollectService.findAttentionMes(userId);
-        for(AttentionResponse attentionResponse: res){
+        for (AttentionResponse attentionResponse : res) {
             attentionResponse.setProductionNum(essayWithSongService.getEssayWithSongNumByUserId(attentionResponse.getId()));
             attentionResponse.setAttentionNum(userCollectService.getAttentionNumByUserId(attentionResponse.getId()));
             attentionResponse.setStatus(meIsAttentionUser(attentionResponse.getId(), TypeEnum.USER));
@@ -108,7 +107,7 @@ public class UserCollectManage {
     public List<AttentionResponse> getAttentionTopic(String userName) {
         Integer userId = userService.findUserByName(userName).getId();
         List<AttentionResponse> res = userCollectService.findAttentionTopics(userId);
-        for(AttentionResponse attentionResponse: res){
+        for (AttentionResponse attentionResponse : res) {
             attentionResponse.setProductionNum(topicService.findPublishNumById(attentionResponse.getId()));
             attentionResponse.setAttentionNum(userCollectService.getAttentionNumByTopicId(attentionResponse.getId()));
             attentionResponse.setStatus(meIsAttentionUser(attentionResponse.getId(), TypeEnum.TOPIC));

@@ -1,115 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blingwei.musicService.dao.CollectMapper">
-  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Collect">
-    <id column="user_id" jdbcType="INTEGER" property="userId" />
-    <id column="matter_id" jdbcType="INTEGER" property="matterId" />
-    <id column="type" jdbcType="TINYINT" property="type" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
-  </resultMap>
-  <update id="deleteByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Collect">
-    update collect set is_delete = 1
-    where user_id = #{userId,jdbcType=INTEGER}
-      and matter_id = #{matterId,jdbcType=INTEGER}
-      and type = #{type,jdbcType=TINYINT}
-  </update>
+    <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Collect">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <id column="matter_id" jdbcType="INTEGER" property="matterId"/>
+        <id column="type" jdbcType="TINYINT" property="type"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+    </resultMap>
+    <update id="deleteByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Collect">
+        update collect set is_delete = 1
+        where user_id = #{userId,jdbcType=INTEGER}
+        and matter_id = #{matterId,jdbcType=INTEGER}
+        and type = #{type,jdbcType=TINYINT}
+    </update>
 
-  <insert id="insert" parameterType="com.blingwei.musicService.pojo.Collect">
-    insert into collect (user_id, matter_id, type,create_time)
-    values (#{userId,jdbcType=INTEGER}, #{matterId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, now())
-  </insert>
+    <insert id="insert" parameterType="com.blingwei.musicService.pojo.Collect">
+        insert into collect (user_id, matter_id, type,create_time)
+        values (#{userId,jdbcType=INTEGER}, #{matterId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, now())
+    </insert>
 
-  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Collect">
-    update collect
-    set is_delete = 0
-    where user_id = #{userId,jdbcType=INTEGER}
-    and matter_id = #{matterId,jdbcType=INTEGER}
-    and type = #{type,jdbcType=TINYINT}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
-    select user_id, matter_id, type, create_time
-    from collect
-    where user_id = #{userId,jdbcType=INTEGER}
-    and matter_id = #{matterId,jdbcType=INTEGER}
-    and type = #{type,jdbcType=TINYINT}
-    and is_delete = 0
+    <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Collect">
+        update collect
+        set is_delete = 0
+        where user_id = #{userId,jdbcType=INTEGER}
+        and matter_id = #{matterId,jdbcType=INTEGER}
+        and type = #{type,jdbcType=TINYINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select user_id, matter_id, type, create_time
+        from collect
+        where user_id = #{userId,jdbcType=INTEGER}
+        and matter_id = #{matterId,jdbcType=INTEGER}
+        and type = #{type,jdbcType=TINYINT}
+        and is_delete = 0
 
-  </select>
-  <select id="selectAllByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
-    select user_id, matter_id, type, create_time
-    from collect
-    where user_id = #{userId,jdbcType=INTEGER}
-      and matter_id = #{matterId,jdbcType=INTEGER}
-      and type = #{type,jdbcType=TINYINT}
-  </select>
+    </select>
+    <select id="selectAllByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select user_id, matter_id, type, create_time
+        from collect
+        where user_id = #{userId,jdbcType=INTEGER}
+        and matter_id = #{matterId,jdbcType=INTEGER}
+        and type = #{type,jdbcType=TINYINT}
+    </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select user_id, matter_id, type, create_time
-    from collect
-  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select user_id, matter_id, type, create_time
+        from collect
+    </select>
 
-  <select id="getCollectNumByMatterIdAndType" resultType="java.lang.Integer">
-    select count(*) from collect
-    where matter_id = #{matterId,jdbcType=INTEGER}
-    and type = #{type,jdbcType=TINYINT}
-    and is_delete = 0
-  </select>
+    <select id="getCollectNumByMatterIdAndType" resultType="java.lang.Integer">
+        select count(*) from collect
+        where matter_id = #{matterId,jdbcType=INTEGER}
+        and type = #{type,jdbcType=TINYINT}
+        and is_delete = 0
+    </select>
 
-  <select id="findCollectInfos" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
-    select e.title as title, e.content as content,  es.id as id, u.username as userName
-    from collect c
-           left join
-         essay_song es on (c.matter_id = es.id)
-           left join
-         essay e on(es.essay_id = e.id)
-           left join
-         user u on (es.user_id = u.id)
-    where c.user_id = #{userId}
-      and  c.type = 2
-      and c.is_delete = 0
-  </select>
+    <select id="findCollectInfos" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.responseBean.EssayWithSongCardResponse">
+        select e.title as title, e.content as content, es.id as id, u.username as userName
+        from collect c
+        left join
+        essay_song es on (c.matter_id = es.id)
+        left join
+        essay e on(es.essay_id = e.id)
+        left join
+        user u on (es.user_id = u.id)
+        where c.user_id = #{userId}
+        and c.type = 2
+        and c.is_delete = 0
+    </select>
 
-  <select id="findMyAttentions" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
-    SELECT u.id as id, ANY_VALUE(u.username) as name, ANY_VALUE(ui.url) as url, ANY_VALUE(ui.introduce) as introduce
-    from collect c left join
-         user u on c.matter_id = u.id
-                   left join user_info ui
-                             on u.id = ui.user_id
-    where c.is_delete = 0
-      and c.type = 0
-      and c.user_id = #{userId}
-  </select>
-  <select id="getAttentionNumByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select count(*) from collect where matter_id = #{userId} and type = 0 and is_delete = 0
-  </select>
+    <select id="findMyAttentions" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+        SELECT u.id as id, ANY_VALUE(u.username) as name, ANY_VALUE(ui.url) as url, ANY_VALUE(ui.introduce) as introduce
+        from collect c left join
+        user u on c.matter_id = u.id
+        left join user_info ui
+        on u.id = ui.user_id
+        where c.is_delete = 0
+        and c.type = 0
+        and c.user_id = #{userId}
+    </select>
+    <select id="getAttentionNumByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from collect where matter_id = #{userId} and type = 0 and is_delete = 0
+    </select>
 
-  <select id="getAttentionNumByTopicId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select count(*) from collect where matter_id = #{topicId} and type = 4 and is_delete = 0
-  </select>
+    <select id="getAttentionNumByTopicId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from collect where matter_id = #{topicId} and type = 4 and is_delete = 0
+    </select>
 
 
-  <select id="findAttentionMes" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
-    SELECT u.id as id, u.username as name, ui.url as url, ui.introduce as introduce
-    from collect c left join
-         user u on c.user_id = u.id
-                   left join user_info ui
-                             on u.id = ui.user_id
-    where c.is_delete = 0
-      and c.type = 0
-      and c.matter_id = #{userId}
+    <select id="findAttentionMes" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+        SELECT u.id as id, u.username as name, ui.url as url, ui.introduce as introduce
+        from collect c left join
+        user u on c.user_id = u.id
+        left join user_info ui
+        on u.id = ui.user_id
+        where c.is_delete = 0
+        and c.type = 0
+        and c.matter_id = #{userId}
 
-  </select>
+    </select>
 
-  <select id="findAttentionTopics" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
-    SELECT t.id as id, t.name as name, t.url as url, t.introduce as introduce
-    from collect c
-         left join topic t
-                   on c.matter_id = t.id
-    where c.is_delete = 0
-      and c.type = 4
-      and c.user_id = #{userId}
-  </select>
+    <select id="findAttentionTopics" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+        SELECT t.id as id, t.name as name, t.url as url, t.introduce as introduce
+        from collect c
+        left join topic t
+        on c.matter_id = t.id
+        where c.is_delete = 0
+        and c.type = 4
+        and c.user_id = #{userId}
+    </select>
 
 
 </mapper>

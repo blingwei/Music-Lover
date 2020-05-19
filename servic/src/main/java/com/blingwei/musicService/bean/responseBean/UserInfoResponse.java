@@ -5,6 +5,7 @@ public class UserInfoResponse {
     private Integer age;
     private String sex;
     private String introduce;
+    private String url;
     private boolean status;//你是否关注了这个用户
 
 
@@ -46,5 +47,13 @@ public class UserInfoResponse {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

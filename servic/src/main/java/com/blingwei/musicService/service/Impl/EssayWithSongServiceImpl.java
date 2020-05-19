@@ -34,6 +34,9 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
     @Autowired
     private ConditionMapper conditionMapper;
 
+    @Autowired
+    private RecommendMapper recommendMapper;
+
 
     @Override
     public int addSong(Song song) {
@@ -42,8 +45,8 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
     }
 
     @Override
-    public int addEssay(Essay essay)  {
-        int res =  essayMapper.addEssay(essay);
+    public int addEssay(Essay essay) {
+        int res = essayMapper.addEssay(essay);
         return res;
     }
 
@@ -137,5 +140,15 @@ public class EssayWithSongServiceImpl implements EssayWithSongService {
     @Override
     public EssayForElastic findEssayForElasticById(Integer id) {
         return essayWithSongMapper.findEssayForElasticById(id);
+    }
+
+    @Override
+    public List<Recommend> getAllRecommends() {
+        return recommendMapper.selectAll();
+    }
+
+    @Override
+    public void recommendEs(Recommend recommend) {
+        recommendMapper.updateByPrimaryKey(recommend);
     }
 }

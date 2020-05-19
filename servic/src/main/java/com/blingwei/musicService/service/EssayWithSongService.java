@@ -5,10 +5,7 @@ import com.blingwei.musicService.bean.responseBean.AdminViewPublishResponse;
 import com.blingwei.musicService.bean.responseBean.PublishInfoResponse;
 import com.blingwei.musicService.bean.commanBean.PublishVerifyBean;
 import com.blingwei.musicService.bean.responseBean.PublishManageResponse;
-import com.blingwei.musicService.pojo.Essay;
-import com.blingwei.musicService.pojo.EssayForElastic;
-import com.blingwei.musicService.pojo.EssayWithSong;
-import com.blingwei.musicService.pojo.Song;
+import com.blingwei.musicService.pojo.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +15,9 @@ import java.util.List;
  */
 public interface EssayWithSongService {
     int addSong(Song song);
+
     int addEssay(Essay essay) throws IOException;
+
     int addEssayWithSong(EssayWithSong essayWithSong, Essay essay);
 
 
@@ -26,22 +25,34 @@ public interface EssayWithSongService {
 
 
     EssayWithSong findEssayWithSongById(Integer id);
+
     EssayWithSong findEssayWithSongByEssayId(Integer id);
+
     String findEssayNameById(Integer id);
 
     Essay findEssayById(Integer id);
+
     int getEssayWithSongNumByUserId(Integer userId);
 
     List<PublishInfoResponse> getPublicInfosByUserName(String userName);
+
     List<PublishVerifyBean> getPublishesWithoutVerify(Integer start, Integer size);
+
     List<PublishManageBean> getPublishesWithRestrict(Integer start, Integer size, String input, Integer status);
 
     AdminViewPublishResponse getPublishView(Integer id);
+
     void AdminVerifyPublish(Integer id, Integer status);
 
     int getAllPublishNums();
+
     int getPublishesWithRestrictNums(Integer start, Integer size, String input, Integer status);
 
-    void  deletePublish(int id);
+    void deletePublish(int id);
+
     EssayForElastic findEssayForElasticById(Integer id);
+
+    List<Recommend> getAllRecommends();//获取所有的推荐
+
+    void recommendEs(Recommend recommend);// 推荐作品
 }

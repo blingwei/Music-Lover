@@ -26,7 +26,8 @@ public interface TopicService {
 
     int findPublishNumById(Integer id);
 
-    List<PublishVerifyBean> getTopicsWithoutVerify( Integer start, Integer size);
+    List<PublishVerifyBean> getTopicsWithoutVerify(Integer start, Integer size);
+
     int getAllTopicNums();
 
     void AdminVerifyTopic(Integer id, Integer status);

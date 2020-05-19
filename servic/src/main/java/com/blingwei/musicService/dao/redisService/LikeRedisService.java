@@ -15,6 +15,7 @@ public interface LikeRedisService {
 
     /**
      * 给音乐文章点赞
+     *
      * @param userId
      * @param matterId
      */
@@ -22,6 +23,7 @@ public interface LikeRedisService {
 
     /**
      * 给评论点赞
+     *
      * @param userId
      * @param matterId
      */
@@ -29,6 +31,7 @@ public interface LikeRedisService {
 
     /**
      * 获取该音乐文章获取的点赞数
+     *
      * @param matterId
      * @return
      */
@@ -36,6 +39,7 @@ public interface LikeRedisService {
 
     /**
      * 获取该评论获取的点赞数
+     *
      * @param matterId
      * @return
      */
@@ -43,26 +47,33 @@ public interface LikeRedisService {
 
     /**
      * 获取该用户给该文章的点赞状态
+     *
      * @param userId
      * @param matterId
      * @return
      */
-    Integer  getPickEssayWithSongStatus(String userId, String matterId);
+    Integer getPickEssayWithSongStatus(String userId, String matterId);
+
     /**
      * 获取该用户给该评论的点赞状态
+     *
      * @param userId
      * @param matterId
      * @return
      */
-    Integer  getPickCommentStatus(String userId, String matterId);
+    Integer getPickCommentStatus(String userId, String matterId);
+
     /**
      * 取消给音乐文章点赞
+     *
      * @param userId
      * @param matterId
      */
     void cancelPickEssayWithSong(String userId, String matterId);
+
     /**
      * 取消给评论点赞
+     *
      * @param userId
      * @param matterId
      */
@@ -70,15 +81,21 @@ public interface LikeRedisService {
 
     /**
      * 获取所有的音乐文章点赞信息
-     * @return map<userID:matterId:2  ,  status>
+     *
+     * @return map<userID:matterId:2, status>
      */
     Map getAllEssayWithSongPick();
 
     /**
      * 获取所有的评论点赞信息
-     * @return map<userID:matterId:3  ,  status>
+     *
+     * @return map<userID:matterId:3, status>
      */
     Map getAllCommentPick();
+
+    void setEssayWithSongLikeNum(String matterId, int num);
+
+    void setCommentLikeNum(String matterId, int num);
 
     void clean();
 

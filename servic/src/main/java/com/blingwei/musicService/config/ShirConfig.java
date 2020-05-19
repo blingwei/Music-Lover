@@ -88,7 +88,8 @@ public class ShirConfig {
         hashedCredentialsMatcher.setHashIterations(2);
         return hashedCredentialsMatcher;
     }
-//
+
+    //
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();

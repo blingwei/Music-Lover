@@ -44,7 +44,7 @@ public class UserPickServiceImpl implements UserPickService {
     @Override
     public int insertUserPicks(List<UserPick> userPicks) {
         return userPickMapper.insertUserPicks(userPicks);
-}
+    }
 
     @Override
     public int insertExistUserPicks(List<UserPick> userPicks) {

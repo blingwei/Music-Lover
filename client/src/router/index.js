@@ -8,6 +8,7 @@ import MusicSea from "../components/musicSea/MusicSea";
 import Creation from "../components/creation/Creation";
 import EssayWithSongDisplay from "../components/essayWithSongDisplay/EssayWithSongDisplay";
 import Topic from "../components/Topic";
+import Message from "../components/message/Message";
 
 Vue.use(Router);
 
@@ -37,7 +38,7 @@ export default new Router({
         {
           path: '/musicSea',
           name: 'MusicSea',
-          component: MusicSea ,
+          component: MusicSea,
         },
         {
           path: '/creation',
@@ -54,6 +55,11 @@ export default new Router({
           name: 'Topic',
           component: Topic
         },
+        {
+          path: '/message',
+          name: 'Message',
+          component: Message
+        }
       ]
     },
     {
@@ -61,12 +67,10 @@ export default new Router({
       name: 'Login',
       component: Login
     },
-
-
   ]
 })
 
 const routerPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch(error=> error)
+  return routerPush.call(this, location).catch(error => error)
 };

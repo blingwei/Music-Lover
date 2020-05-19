@@ -1,108 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blingwei.musicService.dao.UserPickMapper">
-  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.UserPick">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="matter_id" jdbcType="INTEGER" property="matterId" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user_pick
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.blingwei.musicService.pojo.UserPick">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into user_pick (user_id, matter_id, type,
-      create_time, is_delete, status
-      )
-    values (#{userId,jdbcType=INTEGER}, #{matterId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}
-      )
-  </insert>
+    <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.UserPick">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="matter_id" jdbcType="INTEGER" property="matterId"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from user_pick
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.blingwei.musicService.pojo.UserPick">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into user_pick (user_id, matter_id, type,
+        create_time, is_delete, status
+        )
+        values (#{userId,jdbcType=INTEGER}, #{matterId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT},
+        #{createTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}
+        )
+    </insert>
 
-  <insert id="insertUserPicks" parameterType="java.util.List">
-    insert into user_pick (user_id,matter_id, type,create_time, status)
-    values
-   <foreach collection="list" item="pick" separator=",">
-     (#{pick.userId,jdbcType=INTEGER}, #{pick.matterId,jdbcType=INTEGER}, #{pick.type,jdbcType=TINYINT},
-     now(), #{pick.status,jdbcType=TINYINT}
-     )
-   </foreach>
-  </insert>
+    <insert id="insertUserPicks" parameterType="java.util.List">
+        insert into user_pick (user_id,matter_id, type,create_time, status)
+        values
+        <foreach collection="list" item="pick" separator=",">
+            (#{pick.userId,jdbcType=INTEGER}, #{pick.matterId,jdbcType=INTEGER}, #{pick.type,jdbcType=TINYINT},
+            now(), #{pick.status,jdbcType=TINYINT}
+            )
+        </foreach>
+    </insert>
 
-  <update id="insertExistUserPicks" parameterType="java.util.List">
-    update user_pick set status =
-    <foreach collection= "list" item= "item" index= "index" open= "case ID"  close= "end" separator= " " >
-          when #{item.id} then  #{item.status}
-    </foreach>
+    <update id="insertExistUserPicks" parameterType="java.util.List">
+        update user_pick set status =
+        <foreach collection="list" item="item" index="index" open="case ID" close="end" separator=" ">
+            when #{item.id} then #{item.status}
+        </foreach>
 
-    where id in
-    <foreach collection= "list" item= "item" index= "index" open= "(" close= ")" separator= ",">
-      #{item.id}
-    </foreach>
+        where id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
 
-  </update>
-
-
-  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.UserPick">
-    update user_pick
-    set user_id = #{userId,jdbcType=INTEGER},
-      matter_id = #{matterId,jdbcType=INTEGER},
-      type = #{type,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      is_delete = #{isDelete,jdbcType=INTEGER},
-      status = #{status,jdbcType=TINYINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, user_id, matter_id, type, create_time, is_delete, status
-    from user_pick
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, matter_id, type, create_time, is_delete, status
-    from user_pick
-  </select>
-
-  <select id="getEssayWithSongPickNumByMatterId" resultType="java.lang.Integer">
-    select count(*) from user_pick
-    where matter_id = #{matterId}
-    and type = 2
-    and is_delete = 0
-    and status = 1
-  </select>
-
-  <select id="getEssayWithSongPickByUserIdAndMatterId" resultType="com.blingwei.musicService.pojo.UserPick">
-    select * from user_pick
-    where user_id = #{userId}
-    and matter_id = #{matterId}
-    and type = 2
-    and is_delete = 0
-  </select>
-
-  <select id="getCommentPickNumByMatterId" resultType="java.lang.Integer">
-    select count(*) from user_pick
-    where matter_id = #{matterId}
-    and type = 3
-    and is_delete = 0
-    and status = 1
-  </select>
-
-  <select id="getCommentPickByUserIdAndMatterId" resultType="com.blingwei.musicService.pojo.UserPick">
-    select * from user_pick
-    where user_id = #{userId}
-    and matter_id = #{matterId}
-    and type = 3
-    and is_delete = 0
-  </select>
+    </update>
 
 
+    <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.UserPick">
+        update user_pick
+        set user_id = #{userId,jdbcType=INTEGER},
+        matter_id = #{matterId,jdbcType=INTEGER},
+        type = #{type,jdbcType=TINYINT},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        is_delete = #{isDelete,jdbcType=INTEGER},
+        status = #{status,jdbcType=TINYINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select id, user_id, matter_id, type, create_time, is_delete, status
+        from user_pick
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, user_id, matter_id, type, create_time, is_delete, status
+        from user_pick
+    </select>
+
+    <select id="getEssayWithSongPickNumByMatterId" resultType="java.lang.Integer">
+        select count(*) from user_pick
+        where matter_id = #{matterId}
+        and type = 2
+        and is_delete = 0
+        and status = 1
+    </select>
+
+    <select id="getEssayWithSongPickByUserIdAndMatterId" resultType="com.blingwei.musicService.pojo.UserPick">
+        select * from user_pick
+        where user_id = #{userId}
+        and matter_id = #{matterId}
+        and type = 2
+        and is_delete = 0
+    </select>
+
+    <select id="getCommentPickNumByMatterId" resultType="java.lang.Integer">
+        select count(*) from user_pick
+        where matter_id = #{matterId}
+        and type = 3
+        and is_delete = 0
+        and status = 1
+    </select>
+
+    <select id="getCommentPickByUserIdAndMatterId" resultType="com.blingwei.musicService.pojo.UserPick">
+        select * from user_pick
+        where user_id = #{userId}
+        and matter_id = #{matterId}
+        and type = 3
+        and is_delete = 0
+    </select>
 
 
 </mapper>

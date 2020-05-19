@@ -40,26 +40,26 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         return adminRoleMapper.insert(adminRole);
     }
 
-    public void updateRoleInfo(AdminRole adminRole){
+    public void updateRoleInfo(AdminRole adminRole) {
         adminRoleMapper.updateByPrimaryKey(adminRole);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateRoleWithMenus(Integer roleId, List<Integer> menus){
+    public void updateRoleWithMenus(Integer roleId, List<Integer> menus) {
         adminRoleMapper.deleteAllRoleWithMenu(roleId);
-        if(!CollectionUtils.isEmpty(menus)){
+        if (!CollectionUtils.isEmpty(menus)) {
             adminRoleMapper.addRoleWithMenus(roleId, menus);
         }
     }
+
     @Transactional(rollbackFor = Exception.class)
-    public void updateRoleWithPerms(Integer roleId, List<Integer> perms){
+    public void updateRoleWithPerms(Integer roleId, List<Integer> perms) {
         adminRoleMapper.deleteAllRoleWithPerm(roleId);
-        if(!CollectionUtils.isEmpty(perms)){
+        if (!CollectionUtils.isEmpty(perms)) {
             adminRoleMapper.addRoleWithPerms(roleId, perms);
         }
 
     }
-
 
 
 }

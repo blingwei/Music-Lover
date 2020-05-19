@@ -5,25 +5,25 @@ Vue.use(Vuex)
 
 
 export default new Vuex.Store({
-  state:{
-      user:{
-        username: window.localStorage.getItem('user' || '[]') == null ? '' : JSON.parse(window.localStorage.getItem('user' || '[]')).username
-      },
-      essayId: window.sessionStorage.getItem("essayId") == null ? 0 : JSON.parse(window.sessionStorage.getItem("essayId")),
-      topicId: window.sessionStorage.getItem("topicId") == null ? 0 : JSON.parse(window.sessionStorage.getItem("topicId")),
-      //访问个人主页时的用户信息
-      personal: {
-        personalUsername: window.sessionStorage.getItem('personal' || '[]') == null ? 0 : JSON.parse(window.sessionStorage.getItem('personal' || '[]')).personalUsername,
-        identity: window.sessionStorage.getItem('personal' || '[]') == null ? 0 : JSON.parse(window.sessionStorage.getItem('personal' || '[]')).identity //是否为本人
-      },
-      adminMenus: []
+  state: {
+    user: {
+      username: window.localStorage.getItem('user' || '[]') == null ? '' : JSON.parse(window.localStorage.getItem('user' || '[]')).username
+    },
+    essayId: window.sessionStorage.getItem("essayId") == null ? 0 : JSON.parse(window.sessionStorage.getItem("essayId")),
+    topicId: window.sessionStorage.getItem("topicId") == null ? 0 : JSON.parse(window.sessionStorage.getItem("topicId")),
+    //访问个人主页时的用户信息
+    personal: {
+      personalUsername: window.sessionStorage.getItem('personal' || '[]') == null ? 0 : JSON.parse(window.sessionStorage.getItem('personal' || '[]')).personalUsername,
+      identity: window.sessionStorage.getItem('personal' || '[]') == null ? 0 : JSON.parse(window.sessionStorage.getItem('personal' || '[]')).identity //是否为本人
+    },
+    adminMenus: []
   },
   mutations: {
-    login (state, data) {
+    login(state, data) {
       state.user = data;
       window.localStorage.setItem('user', JSON.stringify(data))
     },
-    logout (state){
+    logout(state) {
       state.user = [];
       window.localStorage.removeItem('user')
     },
@@ -43,7 +43,7 @@ export default new Vuex.Store({
       window.sessionStorage.setItem('topicId', JSON.stringify(topicId))
     },
 
-    initAdminMenu (state, menus) {
+    initAdminMenu(state, menus) {
       state.adminMenus = menus
     },
 

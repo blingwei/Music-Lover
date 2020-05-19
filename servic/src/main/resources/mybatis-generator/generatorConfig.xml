@@ -8,7 +8,7 @@
     <!-- 引入配置文件 -->
     <properties resource="mybatis-generator/datasourse.properties"/>
     <!--classPathEntry:数据库的JDBC驱动,换成你自己的驱动位置 可选 -->
-    <classPathEntry location="D:\maven\maven-jar\mysql\mysql-connector-java\8.0.18\mysql-connector-java-8.0.18.jar" />
+    <classPathEntry location="D:\maven\maven-jar\mysql\mysql-connector-java\8.0.18\mysql-connector-java-8.0.18.jar"/>
 
     <!-- 一个数据库一个context -->
     <!--defaultModelType="flat" 大数据字段，不分表 -->
@@ -63,25 +63,8 @@
 
         <!-- table可以有多个,每个数据库中的表都可以写一个table，tableName表示要匹配的数据库表,也可以在tableName属性中通过使用%通配符来匹配所有数据库表,只有匹配的表才会自动生成文件 -->
 
-        <table tableName="admin_role" domainObjectName="AdminRole"
-               enableSelectByPrimaryKey="true"
-               enableInsert="true"
-               enableUpdateByPrimaryKey="true">
-<!--            <property name="user_pick" value="false"/>-->
-            <!-- 数据库表主键 -->
 
-        </table>
-
-        <table tableName="admin_permission" domainObjectName="AdminPermission"
-               enableSelectByPrimaryKey="true"
-               enableInsert="true"
-               enableUpdateByPrimaryKey="true">
-            <!--            <property name="user_pick" value="false"/>-->
-            <!-- 数据库表主键 -->
-
-        </table>
-
-        <table tableName="admin_menu" domainObjectName="AdminMenu"
+        <table tableName="recommend" domainObjectName="Recommend"
                enableSelectByPrimaryKey="true"
                enableInsert="true"
                enableUpdateByPrimaryKey="true">

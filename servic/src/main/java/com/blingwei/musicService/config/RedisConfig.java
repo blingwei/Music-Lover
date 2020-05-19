@@ -20,8 +20,8 @@ public class RedisConfig {
     @Bean
     @ConditionalOnMissingBean(name = "redisTemplate")
     public RedisTemplate<String, Object> redisTemplate(
-            RedisConnectionFactory redisConnectionFactory)
-            throws UnknownHostException {
+        RedisConnectionFactory redisConnectionFactory)
+        throws UnknownHostException {
 
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
         ObjectMapper om = new ObjectMapper();
@@ -43,8 +43,8 @@ public class RedisConfig {
     @Bean
     @ConditionalOnMissingBean(StringRedisTemplate.class)
     public StringRedisTemplate stringRedisTemplate(
-            RedisConnectionFactory redisConnectionFactory)
-            throws UnknownHostException {
+        RedisConnectionFactory redisConnectionFactory)
+        throws UnknownHostException {
         StringRedisTemplate template = new StringRedisTemplate();
         template.setConnectionFactory(redisConnectionFactory);
         return template;

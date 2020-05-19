@@ -1,8 +1,10 @@
 package com.blingwei.musicService.service.Impl;
 
+import com.blingwei.musicService.bean.commanBean.AttentionResponse;
 import com.blingwei.musicService.bean.responseBean.AdminUserInfoResponse;
 import com.blingwei.musicService.dao.UserInfoMapper;
 import com.blingwei.musicService.dao.UserMapper;
+import com.blingwei.musicService.pojo.AdminRole;
 import com.blingwei.musicService.pojo.User;
 import com.blingwei.musicService.pojo.UserInfo;
 import com.blingwei.musicService.service.UserService;
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
-       return findUserByName(SecurityUtils.getSubject().getPrincipal()+ "");
+        return findUserByName(SecurityUtils.getSubject().getPrincipal() + "");
     }
 
     @Override
@@ -81,6 +83,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AdminUserInfoResponse> getAdminUserInfos() {
         return userInfoMapper.getAdminUserInfos();
+    }
+
+    @Override
+    public List<User> findUserByNameLikely(String name) {
+        return userMapper.findUserByNameLikely(name);
+    }
+
+    @Override
+    public List<AttentionResponse> findAllUserByPage(String message, Integer start, Integer size) {
+        return userMapper.findAllUserByPage(message, start, size);
+    }
+
+    @Override
+    public int findAllUserByPageNum(String message) {
+        return userMapper.findAllUserByPageNum(message);
+    }
+
+    @Override
+    public void setUserUrl(Integer id, String url) {
+        userMapper.setUserUrl(id, url);
+    }
+
+    @Override
+    public AdminRole getRole(Integer id) {
+        return userMapper.getRoleByUserId(id);
     }
 
 

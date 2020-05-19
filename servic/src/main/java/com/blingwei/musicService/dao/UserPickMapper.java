@@ -1,9 +1,7 @@
 package com.blingwei.musicService.dao;
 
-import com.blingwei.musicService.enums.TypeEnum;
 import com.blingwei.musicService.pojo.UserPick;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

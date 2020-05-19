@@ -5,12 +5,12 @@
 <mapper namespace="com.blingwei.musicService.dao.EssayWithSongMapper">
     <resultMap id="baseResultMap" type="com.blingwei.musicService.pojo.EssayWithSong">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="song_id" property="songId" jdbcType="INTEGER" />
+        <result column="song_id" property="songId" jdbcType="INTEGER"/>
         <result column="essay_id" property="essayId" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="heat" property="heat" jdbcType="INTEGER"/>
-        <result column="pick_num" property="pickNum"  jdbcType="INTEGER"/>
+        <result column="pick_num" property="pickNum" jdbcType="INTEGER"/>
         <result column="reward" property="reward" jdbcType="INTEGER"/>
         <result column="commit_num" property="commitNum" jdbcType="INTEGER"/>
         <result column="collect_num" property="collectNum" jdbcType="INTEGER"/>
@@ -22,7 +22,8 @@
     </sql>
 
     <insert id="addEssayWithSong" parameterType="EssayWithSong" useGeneratedKeys="true" keyProperty="id">
-        insert into essay_song (song_id, essay_id, user_id, create_time) values (#{songId}, #{essayId}, #{userId}, now())
+        insert into essay_song (song_id, essay_id, user_id, create_time) values (#{songId}, #{essayId}, #{userId},
+        now())
     </insert>
 
     <select id="findEssayWithSongById" parameterType="java.lang.Integer" resultMap="baseResultMap">
@@ -37,11 +38,12 @@
         select count(*) from essay_song where user_id = #{userId}
     </select>
 
-    <select id="getPublicInfosByUserName" parameterType="java.lang.String" resultType="com.blingwei.musicService.bean.responseBean.PublishInfoResponse">
+    <select id="getPublicInfosByUserName" parameterType="java.lang.String"
+            resultType="com.blingwei.musicService.bean.responseBean.PublishInfoResponse">
         SELECT e.title as title, e.content as content, e.id as essayId, es.id as id
         from essay_song es
-                 LEFT JOIN essay e on es.essay_id = e.id
-                 LEFT JOIN user u on es.user_id = u.id
+        LEFT JOIN essay e on es.essay_id = e.id
+        LEFT JOIN user u on es.user_id = u.id
         where u.userName = #{userName}
     </select>
 
@@ -49,7 +51,7 @@
         SELECT essay.title
         from essay, essay_song
         where essay.id = essay_song.essay_id
-          and essay_song.id = #{id}
+        and essay_song.id = #{id}
     </select>
 
 
@@ -63,7 +65,8 @@
         limit #{start}, #{size}
     </select>
 
-    <select id="getPublishView" parameterType="java.lang.Integer" resultType="com.blingwei.musicService.bean.responseBean.AdminViewPublishResponse">
+    <select id="getPublishView" parameterType="java.lang.Integer"
+            resultType="com.blingwei.musicService.bean.responseBean.AdminViewPublishResponse">
         select essay.content as content, essay_song.song_id as songId
         from essay, essay_song
         where essay.id = essay_song.essay_id
@@ -111,8 +114,10 @@
     <delete id="deltePublish">
         delete from essay_song where id = #{id}
     </delete>
-    <select id="findEssayForElasticById" resultType="com.blingwei.musicService.pojo.EssayForElastic" parameterType="java.lang.Integer">
-        select es.id as id, e.title as title, e.intor as intor ,e.content as content, s.`name` as songName, u.username as userName
+    <select id="findEssayForElasticById" resultType="com.blingwei.musicService.pojo.EssayForElastic"
+            parameterType="java.lang.Integer">
+        select es.id as id, e.title as title, e.intor as intor ,e.content as content, s.`name` as songName, u.username
+        as userName
         from essay_song es, essay e, song s, `user` u
         where es.essay_id = e.id
         and es.song_id = s.id

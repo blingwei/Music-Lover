@@ -17,12 +17,12 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.ClassUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -43,33 +43,66 @@ public class EssayWithSongController {
 
     @Autowired
     private UserCollectManage userCollectManage;
-    private Integer heat;
 
+
+    @PostMapping("/uploadImage")
+    public Result uploadImage(MultipartFile file) {
+        StringBuilder folder = new StringBuilder();
+        String path = System.getProperty("user.dir");
+        String[] paths = path.split("\\\\");
+        for (int i = 0; i < paths.length - 1; i++) {
+            folder.append(paths[i]).append("\\");
+        }
+        folder.append("client\\static\\image");
+        File imageFolder = new File(folder.toString());
+        String filename = file.getOriginalFilename();
+        String suffix = ".jpg";
+        if (filename.split("\\.").length > 1) {
+            suffix = filename.split("\\.")[filename.split("\\.").length - 1];
+        }
+        String url = getRandomString(6) + file.getOriginalFilename().substring(file.getOriginalFilename().length() - suffix.length() - 1);
+        File f = new File(imageFolder, url);
+        if (!f.getParentFile().exists()) {
+            f.getParentFile().mkdirs();
+        }
+        try {
+            file.transferTo(f);
+            return ResultFactory.buildSuccessResult("图片上传成功", "static/image/" + url);
+        } catch (Exception e) {
+            return ResultFactory.buildFailResult("发生未知错误");
+        }
+    }
 
     @RequestMapping("creation/uploadSong")
-    public Result uploadSong(@RequestBody MultipartFile file){
+    public Result uploadSong(@RequestBody MultipartFile file) {
 
-        String folder = "D:\\myProject\\Music-Lover\\client\\static\\audio";
-        File imageFolder = new File(folder);
+        StringBuilder folder = new StringBuilder();
+        String path = System.getProperty("user.dir");
+        String[] paths = path.split("\\\\");
+        for (int i = 0; i < paths.length - 1; i++) {
+            folder.append(paths[i]).append("\\");
+        }
+        folder.append("client\\static\\audio");
+        File imageFolder = new File(folder.toString());
         String filename = file.getOriginalFilename();
         String suffix = ".mp3";
-        if( filename.split("\\.").length>1) {
+        if (filename.split("\\.").length > 1) {
             suffix = filename.split("\\.")[filename.split("\\.").length - 1];
         }
         File f = new File(imageFolder, getRandomString(6) + file.getOriginalFilename()
-                .substring(file.getOriginalFilename().length() - 4));
-        if (!f.getParentFile().exists()){
+            .substring(file.getOriginalFilename().length() - 4));
+        if (!f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
         }
-        try{
+        try {
             file.transferTo(f);
             Song song = new Song();
-            String songName = filename.substring(0, filename.length()-suffix.length());
+            String songName = filename.substring(0, filename.length() - suffix.length());
             song.setName(songName);
             song.setUrl(f.getAbsolutePath());
-            int songId =  essayWithSongService.addSong(song);
-            return ResultFactory.buildSuccessResult("上传成功", song.getId());
-        }catch (Exception e){
+            essayWithSongService.addSong(song);
+            return ResultFactory.buildSuccessResult("歌曲上传成功", song.getId());
+        } catch (Exception e) {
             return ResultFactory.buildFailResult("发生未知错误");
         }
     }
@@ -86,8 +119,8 @@ public class EssayWithSongController {
     }
 
     @RequestMapping("creation/upload")
-    public Result upload(@RequestBody Map<String, String> data){
-        int songId = Integer.parseInt(data.get("songId")) ;
+    public Result upload(@RequestBody Map<String, String> data) {
+        int songId = Integer.parseInt(data.get("songId"));
         String title = data.get("title");
         String intor = data.get("intor");
         String content = data.get("content");
@@ -98,98 +131,102 @@ public class EssayWithSongController {
         EssayWithSong essayWithSong = new EssayWithSong();
         essayWithSong.setSongId(songId);
         Subject subject = SecurityUtils.getSubject();
-        User user = userService.findUserByName((String)subject.getPrincipal());
+        User user = userService.findUserByName((String) subject.getPrincipal());
         essayWithSong.setUserId(user.getId());
         try {
             essayWithSongService.addEssayWithSong(essayWithSong, essay);
-//            EssayForElastic essayForElastic = new EssayForElastic(essay.getId(), essay.getTitle(), essay.getIntor(), essay.getContent(), essayWithSongService.findSongById(songId).getName(), user.getUsername());
-//            EssayWithSongEsService.add(essayForElastic);
             return ResultFactory.buildSuccessResult("上传成功", null);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultFactory.buildFailResult("发生未知错误");
         }
     }
 
     @RequestMapping("musicSea/findAllEssayWithSong")
-    public Result findAllEssayWithSong(@Param("message") String message){
+    public Result findAllEssayWithSong(@Param("message") String message, @Param("start") Integer start, @Param("size") Integer size) {
         try {
+            Map<String, Object> result = new HashMap<>();
             List<Map<String, Object>> resultList = new ArrayList<>();
-            List<EssayForElastic> essays = EssayWithSongEsService.find(message);
-            for(EssayForElastic essayForElastic: essays){
+            List<EssayForElastic> essays = EssayWithSongEsService.find(message, start, size);
+            for (EssayForElastic essayForElastic : essays) {
                 Map<String, Object> resultMap = new HashMap<>();
                 resultMap.put("essay", essayForElastic);
                 EssayWithSong essayWithSong = essayWithSongService.findEssayWithSongById(essayForElastic.getId());
 //                Integer heat = 0;
-                resultMap.put("heat", heat);
+//                resultMap.put("heat", heat);
                 resultList.add(resultMap);
             }
-            return ResultFactory.buildSuccessResult(null, resultList);
-        }catch (Exception e){
+            result.put("list", resultList);
+            result.put("nums", EssayWithSongEsService.findNums(message));
+            return ResultFactory.buildSuccessResult(null, result);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultFactory.buildFailResult("发生未知错误");
         }
     }
 
     @RequestMapping("musicSea/findEssayWithSongById")
-    public Result findEssayWithSongByEssayId(@Param("id") Integer id){
+    public Result findEssayWithSongByEssayId(@Param("id") Integer id) {
         try {
             EssayWithSong essayWithSong = essayWithSongService.findEssayWithSongById(id);
             Essay essay = essayWithSongService.findEssayById(essayWithSong.getEssayId());
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("essay", essay);
-            resultMap.put("essayWithSong" , essayWithSong);
+            resultMap.put("essayWithSong", essayWithSong);
             Song song = essayWithSongService.findSongById(essayWithSong.getSongId());
             resultMap.put("song", song);
-//            String pickNum = likeRedisService.getPickEssayWithSongNum(id+"")+"";
-//            resultMap.put("pickNum", pickNum);
             return ResultFactory.buildSuccessResult(null, resultMap);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResultFactory.buildFailResult(null);
         }
 
     }
 
     @RequestMapping("pickEssayWithSong")
-    public Result pickEssayWithSong(@Param("matterId") String matterId){
-        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + "" ;
+    public Result pickEssayWithSong(@Param("matterId") String matterId) {
+        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal() + "").getId() + "";
         likeRedisService.pickEssayWithSong(userId, matterId);
         String pickNum = likeRedisService.getPickEssayWithSongNum(matterId) + "";
         return ResultFactory.buildSuccessResult(null, pickNum);
     }
 
     @RequestMapping("cancelPickEssayWithSong")
-    public Result cancelPickEssayWithSong(@Param("matterId") String matterId){
-        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal()+ "").getId() + ""  ;
+    public Result cancelPickEssayWithSong(@Param("matterId") String matterId) {
+        String userId = userService.findUserByName(SecurityUtils.getSubject().getPrincipal() + "").getId() + "";
         likeRedisService.cancelPickEssayWithSong(userId, matterId);
         String pickNum = likeRedisService.getPickEssayWithSongNum(matterId) + "";
         return ResultFactory.buildSuccessResult(null, pickNum);
     }
 
     @RequestMapping("getEssayWithSongPickNumAndStatus")
-    public Result getEssayWithSongPickNumAndStatus(@Param("matterId") Integer matterId){
+    public Result getEssayWithSongPickNumAndStatus(@Param("matterId") Integer matterId) {
         PickResponse pickResponse = userPickManage.getEssayWithSongPickResponse(matterId);
         return ResultFactory.buildSuccessResult("", pickResponse);
     }
 
     @RequestMapping("collectEssayWithSong")
-    public Result collectEssayWithSong(@Param("matterId") Integer matterId){
+    public Result collectEssayWithSong(@Param("matterId") Integer matterId) {
         int collectNum = userCollectManage.collect(matterId, TypeEnum.ESSAY_WITH_SONG);
         return ResultFactory.buildSuccessResult(null, collectNum);
     }
 
     @RequestMapping("cancelCollectEssayWithSong")
-    public Result cancelCollectEssayWithSong(@Param("matterId") Integer matterId){
+    public Result cancelCollectEssayWithSong(@Param("matterId") Integer matterId) {
         int collectNum = userCollectManage.cancelCollect(matterId, TypeEnum.ESSAY_WITH_SONG);
         return ResultFactory.buildSuccessResult(null, collectNum);
     }
 
     @RequestMapping("getEssayWithSongCollectNumAndStatus")
-    public Result getEssayWithSongCollectNumAndStatus(@Param("matterId") Integer matterId){
+    public Result getEssayWithSongCollectNumAndStatus(@Param("matterId") Integer matterId) {
         CollectResponse collectResponse = userCollectManage.getCollectResponse(matterId);
         return ResultFactory.buildSuccessResult("", collectResponse);
     }
 
+
+    @GetMapping("getAllRecommend")
+    public Result getAllRecommend() {
+        return ResultFactory.buildSuccessResult("", essayWithSongService.getAllRecommends());
+    }
 
 
 }

@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CommentService {
     void addCommit(Comment comment);
+
     List<Comment> findEssayWithSongCommentByMatterId(Integer matterId);
+
     Comment findCommentById(Integer id);
 }

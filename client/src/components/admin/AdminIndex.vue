@@ -22,12 +22,12 @@
   export default {
     name: 'AdminIndex',
     components: {AdminMenu, Header},
-    data () {
+    data() {
       return {
         dialogVisible: false
       }
     },
-    mounted () {
+    mounted() {
       this.$router.replace('/admin/dashboard')
     }
   }
@@ -35,6 +35,6 @@
 
 <style scoped>
   #admin-body {
-  height: 95vh;
-}
+    height: 95vh;
+  }
 </style>

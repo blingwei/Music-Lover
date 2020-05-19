@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blingwei.musicService.dao.LabelMapper">
-  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Label">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="pid" jdbcType="INTEGER" property="pid" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from label
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.blingwei.musicService.pojo.Label">
-    insert into label (id, pid, user_id,
-                       create_time, is_delete, `name`
-    )
-    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
-            #{createTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}
-           )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Label">
-    update label
-    set pid = #{pid,jdbcType=INTEGER},
+    <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.Label">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from label
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.blingwei.musicService.pojo.Label">
+        insert into label (id, pid, user_id,
+        create_time, is_delete, `name`
+        )
+        values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.Label">
+        update label
+        set pid = #{pid,jdbcType=INTEGER},
         user_id = #{userId,jdbcType=INTEGER},
         create_time = #{createTime,jdbcType=TIMESTAMP},
         is_delete = #{isDelete,jdbcType=INTEGER},
-      `name` = #{name,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, pid, user_id, create_time, is_delete, `name`
-    from label
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, pid, user_id, create_time, is_delete, `name`
-    from label
-  </select>
+        `name` = #{name,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select id, pid, user_id, create_time, is_delete, `name`
+        from label
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, pid, user_id, create_time, is_delete, `name`
+        from label
+    </select>
 </mapper>

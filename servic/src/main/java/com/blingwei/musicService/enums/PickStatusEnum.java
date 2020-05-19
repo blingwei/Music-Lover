@@ -4,7 +4,7 @@ package com.blingwei.musicService.enums;
  * @author liangwei
  */
 
-public enum PickStatusEnum implements BaseEnum<PickStatusEnum, Integer>{
+public enum PickStatusEnum implements BaseEnum<PickStatusEnum, Integer> {
     /**
      * 未知的类型
      */
@@ -12,19 +12,18 @@ public enum PickStatusEnum implements BaseEnum<PickStatusEnum, Integer>{
     /**
      * 点赞状态
      */
-    PICK(1,"点赞"),
+    PICK(1, "点赞"),
     /**
      * 取消点赞状态
      */
     CANCEL_PICK(0, "取消点赞");
 
 
-
     private final Integer value;
     private final String message;
 
 
-    private PickStatusEnum(Integer value, String message){
+    private PickStatusEnum(Integer value, String message) {
         this.value = value;
         this.message = message;
     }
@@ -40,19 +39,19 @@ public enum PickStatusEnum implements BaseEnum<PickStatusEnum, Integer>{
         return message;
     }
 
-    public static PickStatusEnum valueOf(Integer value){
-        for(PickStatusEnum typeEnum:PickStatusEnum.values()){
+    public static PickStatusEnum valueOf(Integer value) {
+        for (PickStatusEnum typeEnum : PickStatusEnum.values()) {
 
-            if(typeEnum.getValue().equals(value)){
+            if (typeEnum.getValue().equals(value)) {
                 return typeEnum;
             }
         }
         return UN_KNOW;
     }
 
-    public static String getName(Integer value){
-        for(PickStatusEnum typeEnum:PickStatusEnum.values()){
-            if(typeEnum.getValue().equals(value)){
+    public static String getName(Integer value) {
+        for (PickStatusEnum typeEnum : PickStatusEnum.values()) {
+            if (typeEnum.getValue().equals(value)) {
                 return typeEnum.getMessage();
             }
         }

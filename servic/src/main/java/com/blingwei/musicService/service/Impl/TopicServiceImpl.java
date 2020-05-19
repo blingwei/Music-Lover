@@ -13,6 +13,7 @@ import com.blingwei.musicService.pojo.Topic;
 import com.blingwei.musicService.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     private ConditionMapper conditionMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int addTopic(Topic topic) {
         topicMapper.insert(topic);

@@ -8,7 +8,7 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    配置上传的文件大小限制
+  #    配置上传的文件大小限制
   servlet:
     multipart:
       enabled: true
@@ -22,6 +22,7 @@ mybatis:
   config-location: classpath:configs/mybatis-config.xml
 
 
+
 elasticsearch:
   host: 127.0.0.1
   port: 9300
@@ -31,3 +32,12 @@ elasticsearch:
   connectionRequestTimeOut: 500
   maxConnectNum: 100
   maxConnectPerRoute: 100
+
+
+logging:
+  config: classpath:configs/logback-spring.xml
+log:
+  file: D:/log
+
+
+

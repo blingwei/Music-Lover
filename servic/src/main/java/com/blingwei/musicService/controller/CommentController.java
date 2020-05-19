@@ -31,7 +31,7 @@ public class CommentController {
     private CommentService commentService;
 
     @Autowired
-    private  ConvertUtil convertUtil;
+    private ConvertUtil convertUtil;
 
     @Autowired
     private EssayWithSongService essayWithSongService;
@@ -43,47 +43,45 @@ public class CommentController {
     private LikeRedisServiceImpl likeRedisService;
 
     @RequestMapping("/addComment")
-    public Result addComment(@RequestBody CommentInfo commentInfo){
-        try{
+    public Result addComment(@RequestBody CommentInfo commentInfo) {
+        try {
             Comment comment = convertUtil.covertComment(commentInfo);
             commentService.addCommit(comment);
             return ResultFactory.buildSuccessResult("评论成功", null);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultFactory.buildFailResult("发生未知错误，添加失败");
         }
     }
 
     @RequestMapping("/findEssayWithSongComment")
-    public Result findEssayWithSongComment(@Param("id") Integer id){
-        try{
+    public Result findEssayWithSongComment(@Param("id") Integer id) {
+        try {
 
             List<Comment> comments = commentService.findEssayWithSongCommentByMatterId(id);
             List<CommentInfo> commentInfoList = convertUtil.showComment(comments);
             return ResultFactory.buildSuccessResult("", commentInfoList);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultFactory.buildFailResult("发生未知错误");
         }
     }
 
     @RequestMapping("pickComment")
-    public Result pickComment(@Param("matterId") String matterId){
-        String userId = userService.getCurrentUser().getId() + ""  ;
+    public Result pickComment(@Param("matterId") String matterId) {
+        String userId = userService.getCurrentUser().getId() + "";
         likeRedisService.pickComment(userId, matterId);
         String pickNum = likeRedisService.getPickCommentNum(matterId) + "";
         return ResultFactory.buildSuccessResult(null, pickNum);
     }
 
     @RequestMapping("cancelPickComment")
-    public Result cancelPickComment(@Param("matterId") String matterId){
-        String userId = userService.getCurrentUser().getId() + ""  ;
+    public Result cancelPickComment(@Param("matterId") String matterId) {
+        String userId = userService.getCurrentUser().getId() + "";
         likeRedisService.cancelPickComment(userId, matterId);
         String pickNum = likeRedisService.getPickCommentNum(matterId) + "";
         return ResultFactory.buildSuccessResult(null, pickNum);
     }
-
-
 
 
 }

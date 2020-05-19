@@ -31,13 +31,13 @@ public class UserCollectServiceImpl implements UserCollectService {
         condition.setUserId(collect.getUserId());
         condition.setMatterId(collect.getMatterId());
         condition.setType(collect.getType());
-        if(collect.getType() == TypeEnum.ESSAY_WITH_SONG){
+        if (collect.getType() == TypeEnum.ESSAY_WITH_SONG) {
             condition.setOperate(OperateEnum.COLLECT);
-        }else{
+        } else {
             condition.setOperate(OperateEnum.ATTENTION);
         }
         conditionMapper.insert(condition);
-        if(getCollectWithoutIsDelete(collect)!=null){
+        if (getCollectWithoutIsDelete(collect) != null) {
             return collectMapper.updateByPrimaryKey(collect);
         }
         return collectMapper.insert(collect);
@@ -55,12 +55,12 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     @Override
     public Collect getCollect(Collect collect) {
-        return collectMapper.selectByPrimaryKey(collect.getUserId(),collect.getMatterId(),collect.getType());
+        return collectMapper.selectByPrimaryKey(collect.getUserId(), collect.getMatterId(), collect.getType());
     }
 
     @Override
     public Collect getCollectWithoutIsDelete(Collect collect) {
-        return collectMapper.selectAllByPrimaryKey(collect.getUserId(),collect.getMatterId(),collect.getType());
+        return collectMapper.selectAllByPrimaryKey(collect.getUserId(), collect.getMatterId(), collect.getType());
     }
 
     @Override

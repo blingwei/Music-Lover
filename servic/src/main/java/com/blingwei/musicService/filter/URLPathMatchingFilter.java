@@ -41,13 +41,13 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
             System.out.println("需要登录");
             return false;
         }
-        if(!adminPermService.needFilter(requestAPI)){
+        if (!adminPermService.needFilter(requestAPI)) {
             System.out.println("接口：" + requestAPI + "无需权限");
             return true;
-        }else{
+        } else {
             boolean hasPermission = false;
             List<AdminPermission> permissions = adminPermService.findPermsByUserName(subject.getPrincipal().toString());
-            for(AdminPermission adminPermission: permissions){
+            for (AdminPermission adminPermission : permissions) {
                 if (requestAPI.startsWith(adminPermission.getUrl())) {
                     hasPermission = true;
                     break;

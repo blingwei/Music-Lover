@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blingwei.musicService.dao.AdminPermissionMapper">
-  <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.AdminPermission">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="desc_" jdbcType="VARCHAR" property="desc" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from admin_permission
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.blingwei.musicService.pojo.AdminPermission">
-    insert into admin_permission (id, `name`, desc_,
-      url)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
-      #{url,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.AdminPermission">
-    update admin_permission
-    set `name` = #{name,jdbcType=VARCHAR},
-      desc_ = #{desc,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, `name`, desc_, url
-    from admin_permission
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, `name`, desc_, url
-    from admin_permission
-  </select>
+    <resultMap id="BaseResultMap" type="com.blingwei.musicService.pojo.AdminPermission">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="desc_" jdbcType="VARCHAR" property="desc"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from admin_permission
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.blingwei.musicService.pojo.AdminPermission">
+        insert into admin_permission (id, `name`, desc_,
+        url)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
+        #{url,jdbcType=VARCHAR})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.blingwei.musicService.pojo.AdminPermission">
+        update admin_permission
+        set `name` = #{name,jdbcType=VARCHAR},
+        desc_ = #{desc,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select id, `name`, desc_, url
+        from admin_permission
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, `name`, desc_, url
+        from admin_permission
+    </select>
 
 
-  <select id="findPermsByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
-    select ap.id
-    from admin_permission ap, admin_role_permission arp
-    where ap.id = arp.pid
-    and arp.rid = #{id}
+    <select id="findPermsByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select ap.id
+        from admin_permission ap, admin_role_permission arp
+        where ap.id = arp.pid
+        and arp.rid = #{id}
 
-  </select>
+    </select>
     <select id="findPermsByUserName" resultMap="BaseResultMap" parameterType="string">
-      select ap.*
-      from admin_permission ap
-      LEFT JOIN admin_role_permission arp on ap.id = arp.pid
-      LEFT JOIN admin_role ar on arp.rid = ar.id
-      LEFT JOIN admin_user_role aur on ar.id = aur.rid
-      LEFT JOIN `user` u on aur.uid = u.id
-      where u.username = #{username}
+        select ap.*
+        from admin_permission ap
+        LEFT JOIN admin_role_permission arp on ap.id = arp.pid
+        LEFT JOIN admin_role ar on arp.rid = ar.id
+        LEFT JOIN admin_user_role aur on ar.id = aur.rid
+        LEFT JOIN `user` u on aur.uid = u.id
+        where u.username = #{username}
 
     </select>
 </mapper>

@@ -16,34 +16,34 @@
 </template>
 
 <script>
-    export default {
-        name: "Upload",
-        data() {
-            return {
-                fileList: [],
-                url: ''
-            };
-        },
-        methods: {
-            submitUpload() {
-                this.$refs.upload.submit();
-            },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
-            },
-            handleSuccess(response) {
-                this.url = response.data;
-                this.$message.success(response.message);
-                this.$emit('onUpload', {message: response.data})
-            },
-            handleError(response) {
-                this.$message.error(response.message)
-            }
-        }
+  export default {
+    name: "Upload",
+    data() {
+      return {
+        fileList: [],
+        url: ''
+      };
+    },
+    methods: {
+      submitUpload() {
+        this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleSuccess(response) {
+        this.url = response.data;
+        this.$message.success(response.message);
+        this.$emit('onUpload', {message: response.data})
+      },
+      handleError(response) {
+        this.$message.error(response.message)
+      }
     }
+  }
 </script>
 
 <style scoped>

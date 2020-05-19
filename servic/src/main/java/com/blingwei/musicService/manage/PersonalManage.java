@@ -41,22 +41,22 @@ public class PersonalManage {
     private UserCollectService userCollectService;
 
 
-    public List<EssayWithSongCardResponse> getCollects(String userName){
+    public List<EssayWithSongCardResponse> getCollects(String userName) {
         return userCollectManage.getCollectsByUserName(userName);
     }
 
-    public int getUserPublishNum(Integer userId){
+    public int getUserPublishNum(Integer userId) {
         return essayWithSongService.getEssayWithSongNumByUserId(userId);
     }
 
-    public List<PublishInfoResponse> getPublics(String userName){
+    public List<PublishInfoResponse> getPublics(String userName) {
         return essayWithSongService.getPublicInfosByUserName(userName);
     }
 
-    public List<AttentionResponse> getTopics(String userName){
+    public List<AttentionResponse> getTopics(String userName) {
         List<Topic> topics = topicService.findTopicByUserId(userService.findUserByName(userName).getId());
         List<AttentionResponse> res = new ArrayList<>();
-        for(Topic topic: topics){
+        for (Topic topic : topics) {
             AttentionResponse attentionResponse = new AttentionResponse();
             attentionResponse.setName(topic.getName());
             attentionResponse.setUrl(topic.getUrl());
@@ -69,7 +69,8 @@ public class PersonalManage {
         }
         return res;
     }
-    public int addTopic( AddTopicRequest addTopicRequest){
+
+    public int addTopic(AddTopicRequest addTopicRequest) {
         Topic topic = new Topic();
         topic.setUserId(userService.getCurrentUser().getId());
         topic.setName(addTopicRequest.getName());
@@ -79,34 +80,31 @@ public class PersonalManage {
         return topicService.addTopic(topic);
     }
 
-    public List<ConditionResponse> getConditions(Integer userId){
+    public List<ConditionResponse> getConditions(Integer userId) {
         List<Condition> conditions = conditionMapper.selectByUserId(userId);
         List<ConditionResponse> res = new ArrayList<>();
-        for(Condition condition : conditions){
+        for (Condition condition : conditions) {
             Integer matterId = condition.getMatterId();
             ConditionResponse conditionResponse = new ConditionResponse();
             conditionResponse.setMatterId(matterId);
             conditionResponse.setOperate(condition.getOperate().getMessage());
             conditionResponse.setType(condition.getType().getMessage());
             String matterName = "";
-            switch (condition.getType()){
-                case ESSAY_WITH_SONG:
-                {
+            switch (condition.getType()) {
+                case ESSAY_WITH_SONG: {
                     matterName = essayWithSongService.findEssayNameById(matterId);
                     EssayWithSongCardResponse essayWithSongCardResponse = conditionMapper.findConditionMessageByEssayWithSongId(matterId);
                     conditionResponse.setConditionMessage(essayWithSongCardResponse);
                     break;
                 }
 
-                case COMMENT:
-                {
+                case COMMENT: {
                     matterName = commentService.findCommentById(matterId).getContent();
                     EssayWithSongCardResponse essayWithSongCardResponse = conditionMapper.findConditionMessageByCommentId(matterId);
                     conditionResponse.setConditionMessage(essayWithSongCardResponse);
                     break;
                 }
-                case USER:
-                {
+                case USER: {
                     matterName = userService.findUserById(matterId).getUsername();
                     AttentionResponse attentionResponse = conditionMapper.findConditionMessageByUserId(matterId);
                     attentionResponse.setId(matterId);
@@ -117,7 +115,7 @@ public class PersonalManage {
                     break;
                 }
 
-                case TOPIC:{
+                case TOPIC: {
                     matterName = topicService.findTopicById(matterId).getName();
                     AttentionResponse attentionResponse = conditionMapper.findConditionMessageByTopicId(matterId);
                     attentionResponse.setId(matterId);
@@ -127,7 +125,8 @@ public class PersonalManage {
                     conditionResponse.setConditionMessage(attentionResponse);
                     break;
                 }
-                default: break;
+                default:
+                    break;
             }
             conditionResponse.setMatterName(matterName);
             res.add(conditionResponse);

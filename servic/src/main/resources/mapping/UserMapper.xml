@@ -7,7 +7,7 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
-        <result column="salt" property="salt" />
+        <result column="salt" property="salt"/>
     </resultMap>
     <select id="findByName" resultMap="baseResultMap" parameterType="java.lang.String">
         select * from user where username = #{name};
@@ -31,5 +31,37 @@
     <update id="updateUser" parameterType="com.blingwei.musicService.pojo.User">
         update user set username = #{userName}, password = #{password} where id = #{id}
     </update>
+    <select id="findUserByNameLikely" resultMap="baseResultMap">
+        select * from user where username rlike #{name};
+    </select>
+    <select id="findAllUserByPage" resultType="com.blingwei.musicService.bean.commanBean.AttentionResponse">
+        select u.username as name, ui.introduce as introduce, u.id as id
+        from user u LEFT JOIN
+        user_info ui on u.id = ui.user_id
+        <if test="message != ''">
+            where u.username rlike #{message}
+        </if>
+        LIMIT #{start}, #{size}
+
+    </select>
+
+    <select id="findAllUserByPageNum" resultType="java.lang.Integer">
+        select count(*)
+        from user u LEFT JOIN
+        user_info ui on u.id = ui.user_id
+        <if test="message != ''">
+            where u.username rlike #{message}
+        </if>
+
+    </select>
+    <update id="setUserUrl">
+        update user_info set url = #{url}
+        where user_id = #{id}
+    </update>
+    <select id="getRoleByUserId" resultType="com.blingwei.musicService.pojo.AdminRole">
+        select admin_role.* from admin_role, admin_user_role
+        where admin_user_role.uid = #{id}
+        and admin_user_role.rid = admin_role.id
+    </select>
 
 </mapper>

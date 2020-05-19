@@ -1,6 +1,6 @@
 package com.blingwei.musicService.pojo;
 
-public class User extends Person{
+public class User extends Person {
     private String username;
     private String password;
     private String salt;

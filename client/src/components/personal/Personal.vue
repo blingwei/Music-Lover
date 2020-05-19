@@ -1,14 +1,24 @@
 <template>
   <div class="display">
-    <div class="top" >
+    <div class="top">
       <UserInfo class="userMain" ref="userInfo"/>
     </div>
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="sideMenu">
-      <el-tab-pane label="动态" name="userState"><UserCondition /></el-tab-pane>
-      <el-tab-pane label="收藏" name="userCollect"><UserCollect /></el-tab-pane>
-      <el-tab-pane label="关注" name="userAttention"><UserAttention /></el-tab-pane>
-      <el-tab-pane label="创作" name="userPublic"><UserPublic /></el-tab-pane>
-      <el-tab-pane label="专栏" name="userTopic"><UserTopic /></el-tab-pane>
+      <el-tab-pane label="动态" name="userState">
+        <UserCondition/>
+      </el-tab-pane>
+      <el-tab-pane label="收藏" name="userCollect">
+        <UserCollect/>
+      </el-tab-pane>
+      <el-tab-pane label="关注" name="userAttention">
+        <UserAttention/>
+      </el-tab-pane>
+      <el-tab-pane label="创作" name="userPublic">
+        <UserPublic/>
+      </el-tab-pane>
+      <el-tab-pane label="专栏" name="userTopic">
+        <UserTopic/>
+      </el-tab-pane>
     </el-tabs>
 
   </div>
@@ -18,37 +28,36 @@
 
 <script>
   import UserInfo from "./UserInfo";
-  import UserCollect  from "./UserCollect";
+  import UserCollect from "./UserCollect";
   import UserAttention from "./UserAttention";
   import UserPublic from "./UserPublic";
   import UserTopic from "./UserTopic";
   import UserCondition from "./UserCondition"
 
 
-
   export default {
-        name: "Personal",
-        components: {UserInfo, UserCollect, UserAttention, UserPublic, UserTopic, UserCondition},
-        data() {
-            return {
-              activeName: 'userState',
-            }
-        },
-        methods:{
-            init() {
-                console.log(this.$route.query.personalUsername);
-                console.log(this.$route.query.identity);
+    name: "Personal",
+    components: {UserInfo, UserCollect, UserAttention, UserPublic, UserTopic, UserCondition},
+    data() {
+      return {
+        activeName: 'userState',
+      }
+    },
+    methods: {
+      init() {
+        console.log(this.$route.query.personalUsername);
+        console.log(this.$route.query.identity);
 
-            },
-            handleClick(tab, event) {
+      },
+      handleClick(tab, event) {
 
-            },
+      },
 
 
-        },
-        beforeMount(){
-          this.init();
-        },
+    },
+    beforeMount() {
+      this.init();
+    },
 
   }
 </script>
@@ -58,11 +67,13 @@
     margin-top: 20px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   }
+
   .display {
 
     margin-left: 20%;
     width: 60%;
   }
+
   .top {
     text-align: left;
     margin-top: 50px;
@@ -71,7 +82,8 @@
     height: 200px;
     top: 50px;
   }
-  .userMain{
+
+  .userMain {
     width: 100%;
     height: 100%;
   }

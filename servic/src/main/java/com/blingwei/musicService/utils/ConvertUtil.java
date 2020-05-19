@@ -44,7 +44,7 @@ public class ConvertUtil {
     @Autowired
     private UserCollectManage collectManage;
 
-    public Comment covertComment(CommentInfo commentInfo){
+    public Comment covertComment(CommentInfo commentInfo) {
         Comment comment = new Comment();
         Integer userId = userMapper.findByName(commentInfo.getUsername()).getId();
         comment.setUserId(userId);
@@ -52,19 +52,19 @@ public class ConvertUtil {
         comment.setType(typeEnum);
         Integer matterId = commentInfo.getMatterId();
         comment.setMatterId(matterId);
-        if(commentInfo.getPid() != null){
+        if (commentInfo.getPid() != null) {
             comment.setPid(commentInfo.getPid());
         }
-        if(commentInfo.getReplyId() != null){
+        if (commentInfo.getReplyId() != null) {
             comment.setReplyId(commentInfo.getReplyId());
         }
         comment.setContent(commentInfo.getContent());
         return comment;
     }
 
-    public List<CommentInfo> showComment(List<Comment> comments){
+    public List<CommentInfo> showComment(List<Comment> comments) {
         List<CommentInfo> commentInfoList = new ArrayList();
-        for(Comment comment: comments){
+        for (Comment comment : comments) {
             CommentInfo commentInfo = new CommentInfo();
             commentInfo.setUserId(comment.getUserId());
             String username = userMapper.findUserById(comment.getUserId()).getUsername();
@@ -73,12 +73,12 @@ public class ConvertUtil {
             commentInfo.setCreateDate(CommonUtil.DateToString(comment.getCreateDate(), "yyyy/MM//dd HH:mm"));
             commentInfo.setContent(comment.getContent());
             commentInfo.setPid(comment.getPid());
-            if(comment.getReplyId() != 0){
+            if (comment.getReplyId() != 0) {
                 String replayName = userMapper.findUserById(comment.getReplyId()).getUsername();
                 commentInfo.setReplayName(replayName);
                 commentInfo.setReplyId(comment.getReplyId());
             }
-            PickResponse pickResponse = userPickManage.getCommentResponse(comment.getId(), comment.getUserId());
+            PickResponse pickResponse = userPickManage.getCommentResponse(comment.getId(), userService.getCurrentUser().getId());
             commentInfo.setPickNum(pickResponse.getNum());
             commentInfo.setPickStatus(pickResponse.getPickStatus());
             commentInfoList.add(commentInfo);
@@ -86,26 +86,27 @@ public class ConvertUtil {
         return commentInfoList;
     }
 
-    public UserInfo convertUserInfo(EditUserInfoRequest userInfoRequest){
+    public UserInfo convertUserInfo(EditUserInfoRequest userInfoRequest) {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(userInfoRequest.getUserId());
         userInfo.setAge(userInfoRequest.getAge());
-        if(!userInfoRequest.getSex().equals(SexEnum.UN_KNOW)){
+        if (!userInfoRequest.getSex().equals(SexEnum.UN_KNOW)) {
             userInfo.setSex(SexEnum.valueOf(userInfoRequest.getSex()));
         }
         userInfo.setIntroduce(userInfoRequest.getIntroduce());
         return userInfo;
     }
 
-    public UserInfoResponse showUserInfo(UserInfo userInfo){
+    public UserInfoResponse showUserInfo(UserInfo userInfo) {
         UserInfoResponse userInfoResponse = new UserInfoResponse();
         userInfoResponse.setName(userMapper.findUserById(userInfo.getUserId()).getUsername());
         userInfoResponse.setAge(userInfo.getAge());
-        if(userInfo.getSex()!=null){
+        if (userInfo.getSex() != null) {
             userInfoResponse.setSex(userInfo.getSex().getMessage());
         }
         userInfoResponse.setIntroduce(userInfo.getIntroduce());
         userInfoResponse.setStatus(collectManage.meIsAttentionUser(userInfo.getUserId(), TypeEnum.USER));
+        userInfoResponse.setUrl(userInfo.getUrl());
         return userInfoResponse;
     }
 

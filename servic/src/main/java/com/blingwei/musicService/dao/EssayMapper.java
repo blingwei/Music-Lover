@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EssayMapper {
     int addEssay(Essay essay);
+
     Essay findEssayById(Integer id);
 }

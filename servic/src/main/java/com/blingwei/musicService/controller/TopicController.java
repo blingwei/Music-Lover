@@ -19,8 +19,8 @@ public class TopicController {
 
 
     @GetMapping("getTopicInfo")
-    public Result getTopicInfo(@Param("topicId") Integer topicId){
-        if(topicId!=null){
+    public Result getTopicInfo(@Param("topicId") Integer topicId) {
+        if (topicId != null) {
             TopicInfoResponse topicInfoResponse = topicManage.getTopicInfo(topicId);
             return ResultFactory.buildSuccessResult("", topicInfoResponse);
         }
@@ -28,18 +28,17 @@ public class TopicController {
     }
 
     @PostMapping("contributeForTopic")
-    public Result contributeForTopic(@RequestBody ContributeForTopicRequest contributeForTopicRequest){
-        try{
+    public Result contributeForTopic(@RequestBody ContributeForTopicRequest contributeForTopicRequest) {
+        try {
             topicManage.contributeForTopic(contributeForTopicRequest);
             return ResultFactory.buildSuccessResult("", null);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultFactory.buildFailResult(e.getMessage());
         }
 
 
     }
-
 
 
 }

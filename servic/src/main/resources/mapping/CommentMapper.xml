@@ -5,14 +5,14 @@
 <mapper namespace="com.blingwei.musicService.dao.CommentMapper">
     <resultMap id="baseResultMap" type="com.blingwei.musicService.pojo.Comment">
         <id column="id" property="id"/>
-        <result column="user_id" property="userId" />
-        <result column="matter_id" property="matterId" />
-        <result column="type" property="type" />
-        <result column="pid" property="pid" />
-        <result column="reply_id" property="replyId" />
-        <result column="create_time" property="createDate" />
-        <result column="content" property="content" />
-        <result column="pick_num" property="pickNum" />
+        <result column="user_id" property="userId"/>
+        <result column="matter_id" property="matterId"/>
+        <result column="type" property="type"/>
+        <result column="pid" property="pid"/>
+        <result column="reply_id" property="replyId"/>
+        <result column="create_time" property="createDate"/>
+        <result column="content" property="content"/>
+        <result column="pick_num" property="pickNum"/>
     </resultMap>
 
 
@@ -28,29 +28,26 @@
         <if test="pid != null">
             pid,
         </if>
-         create_time, content) values (#{userId}, #{matterId}, #{type},
+        create_time, content) values (#{userId}, #{matterId}, #{type},
         <if test="replyId != null">
             #{replyId},
         </if>
         <if test="pid != null">
             #{pid},
         </if>
-          now(), #{content})
+        now(), #{content})
     </insert>
 
     <select id="findEssayWithSongCommentByMatterId" parameterType="java.lang.Integer" resultMap="baseResultMap">
         select id, user_id, matter_id, type, pid, reply_id, create_time, content, pick_num
         from comment where matter_id = #{id} and type = 2
-                       and is_delete = 0
+        and is_delete = 0
     </select>
 
     <select id="findCommentById" parameterType="java.lang.Integer" resultMap="baseResultMap">
         select id, user_id, matter_id, type, pid, reply_id, create_time, content, pick_num
         from comment where id = #{id} and is_delete = 0
     </select>
-
-
-
 
 
 </mapper>

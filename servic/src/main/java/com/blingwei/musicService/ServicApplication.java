@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("com.blingwei.musicService.dao")
 @EnableTransactionManagement //开启事务管理
 @EnableCaching
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })//禁用spring security
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})//禁用spring security
 public class ServicApplication {
 
     public static void main(String[] args) {

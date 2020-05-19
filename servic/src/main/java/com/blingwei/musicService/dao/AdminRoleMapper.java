@@ -18,13 +18,13 @@ public interface AdminRoleMapper {
 
     int updateByPrimaryKey(AdminRole record);
 
-    void changeAdminRoleByUserId(@Param("userId") Integer userId,@Param("roleId") Integer roleId);
+    void changeAdminRoleByUserId(@Param("userId") Integer userId, @Param("roleId") Integer roleId);
 
     void deleteAllRoleWithMenu(Integer roleId);
 
     void deleteAllRoleWithPerm(Integer roleId);
 
-    void addRoleWithMenus(@Param("roleId") Integer roleId,@Param("list") List<Integer> menus);
+    void addRoleWithMenus(@Param("roleId") Integer roleId, @Param("list") List<Integer> menus);
 
-    void addRoleWithPerms(@Param("roleId") Integer roleId,@Param("list") List<Integer> perms);
+    void addRoleWithPerms(@Param("roleId") Integer roleId, @Param("list") List<Integer> perms);
 }

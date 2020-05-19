@@ -38,15 +38,15 @@ public class EssayWithSongEsService {
     private static RestHighLevelClient staticRestHighLevelClient;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         staticRestHighLevelClient = restHighLevelClient;
     } //给static的字段注入
 
 
     private static final String index = "essay";
-    private static final String type= "essay";
+    private static final String type = "essay";
 
-    public static void add(Object data)  {
+    public static void add(Object data) {
         try {
             IndexRequest indexRequest = new IndexRequest();
             Long id = System.currentTimeMillis();
@@ -56,21 +56,21 @@ public class EssayWithSongEsService {
             indexRequest.index(index);
             indexRequest.type(type);
             staticRestHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    public static List<EssayForElastic> find(String message){
+    public static List<EssayForElastic> find(String message, int start, int size) {
         SearchRequest searchRequest = new SearchRequest(index);
         searchRequest.types(type);
-
 //        HighlightBuilder sourceBuilder = new HighlightBuilder();
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-        if("".equals(message)){
+        sourceBuilder.from(start);
+        sourceBuilder.size(size);
+        if ("".equals(message)) {
             sourceBuilder.query(QueryBuilders.matchAllQuery());
-        }else{
+        } else {
             //字段优先级权重
             Map<String, Float> weightMap = new HashMap<>();
             weightMap.put("songName", 3.0F);
@@ -80,47 +80,108 @@ public class EssayWithSongEsService {
             HighlightBuilder highlightBuilder = new HighlightBuilder();
             HighlightBuilder.Field highlightTitle = new HighlightBuilder.Field("title");
             HighlightBuilder.Field highlightSongName = new HighlightBuilder.Field("songName");
-            HighlightBuilder.Field highlightIntor= new HighlightBuilder.Field("intor");
+            HighlightBuilder.Field highlightIntor = new HighlightBuilder.Field("intor");
             highlightBuilder.field(highlightSongName);
             highlightBuilder.field(highlightTitle);
             highlightBuilder.field(highlightIntor);
             highlightBuilder.preTags("<span style='color: red'>");//高亮的字段会在前面加上该标签
             highlightBuilder.postTags("</span>");
             sourceBuilder.highlighter(highlightBuilder);
-
-            sourceBuilder.query(QueryBuilders.multiMatchQuery(message, "songName","title", "intor").fields(weightMap));//先匹配歌曲，再匹配标题，最后匹配简介
+            sourceBuilder.query(QueryBuilders.multiMatchQuery(message, "songName", "title", "intor").fields(weightMap));//先匹配歌曲，再匹配标题，最后匹配简介
         }
         searchRequest.source(sourceBuilder);
         try {
             List<EssayForElastic> list = new ArrayList<>();
             SearchResponse response = staticRestHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             SearchHits hits = response.getHits();
-            for(SearchHit hit: hits){
+            for (SearchHit hit : hits) {
                 EssayForElastic result = (EssayForElastic) JSONObject.toBean(JSONObject.fromObject(hit.getSourceAsString()), EssayForElastic.class);
                 //设置高亮字段
-                if (hit.getHighlightFields() != null)  {
-                    for( HighlightField field: hit.getHighlightFields().values()){
-                       switch (field.name()){//加入自定义的样式
-                           case "title": result.setTitle(field.fragments()[0].string()); break;
-                           case "songName": result.setSongName(field.fragments()[0].string()); break;
-                           case "intor": result.setIntor(field.fragments()[0].string()); break;
-                       }
+                if (hit.getHighlightFields() != null) {
+                    for (HighlightField field : hit.getHighlightFields().values()) {
+                        switch (field.name()) {//加入自定义的样式
+                            case "title":
+                                result.setTitle(field.fragments()[0].string());
+                                break;
+                            case "songName":
+                                result.setSongName(field.fragments()[0].string());
+                                break;
+                            case "intor":
+                                result.setIntor(field.fragments()[0].string());
+                                break;
+                        }
                     }
                 }
                 list.add(result);
             }
             return list;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static void delete(){
-
+    public static int findNums(String message) {
+        SearchRequest searchRequest = new SearchRequest(index);
+        searchRequest.types(type);
+//        HighlightBuilder sourceBuilder = new HighlightBuilder();
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        if ("".equals(message)) {
+            sourceBuilder.query(QueryBuilders.matchAllQuery());
+        } else {
+            //字段优先级权重
+            Map<String, Float> weightMap = new HashMap<>();
+            weightMap.put("songName", 3.0F);
+            weightMap.put("title", 2.0F);
+            weightMap.put("intor", 1.0F);
+            //设置关键值高亮
+            HighlightBuilder highlightBuilder = new HighlightBuilder();
+            HighlightBuilder.Field highlightTitle = new HighlightBuilder.Field("title");
+            HighlightBuilder.Field highlightSongName = new HighlightBuilder.Field("songName");
+            HighlightBuilder.Field highlightIntor = new HighlightBuilder.Field("intor");
+            highlightBuilder.field(highlightSongName);
+            highlightBuilder.field(highlightTitle);
+            highlightBuilder.field(highlightIntor);
+            highlightBuilder.preTags("<span style='color: red'>");//高亮的字段会在前面加上该标签
+            highlightBuilder.postTags("</span>");
+            sourceBuilder.highlighter(highlightBuilder);
+            sourceBuilder.query(QueryBuilders.multiMatchQuery(message, "songName", "title", "intor").fields(weightMap));//先匹配歌曲，再匹配标题，最后匹配简介
+        }
+        searchRequest.source(sourceBuilder);
+        try {
+            List<EssayForElastic> list = new ArrayList<>();
+            SearchResponse response = staticRestHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            SearchHits hits = response.getHits();
+            for (SearchHit hit : hits) {
+                EssayForElastic result = (EssayForElastic) JSONObject.toBean(JSONObject.fromObject(hit.getSourceAsString()), EssayForElastic.class);
+                //设置高亮字段
+                if (hit.getHighlightFields() != null) {
+                    for (HighlightField field : hit.getHighlightFields().values()) {
+                        switch (field.name()) {//加入自定义的样式
+                            case "title":
+                                result.setTitle(field.fragments()[0].string());
+                                break;
+                            case "songName":
+                                result.setSongName(field.fragments()[0].string());
+                                break;
+                            case "intor":
+                                result.setIntor(field.fragments()[0].string());
+                                break;
+                        }
+                    }
+                }
+                list.add(result);
+            }
+            return list.size();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
+    public static void delete() {
 
+    }
 
 
 }
